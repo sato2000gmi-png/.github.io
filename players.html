@@ -211,7 +211,7 @@ button.active{
 
 .crossYear{
   display:inline-block;
-  margin-left:5px;
+  margin-left:8px;
   padding:2px 5px;
   border-radius:4px;
   background:#eef0f2;
@@ -233,8 +233,7 @@ button.active{
   font-size:10px;
   font-weight:500;
   color:#999;
-  margin-left:5px;
-  vertical-align:2px;
+  margin-left:4px;
   white-space:nowrap
 }
 
@@ -1197,7 +1196,7 @@ function card(p){
 
   let playerId=
     p.id
-      ?`<span class="playerId">${p.id}</span>`
+      ?`<span class="playerId">No.${p.id.replace(/^p/,"")}</span>`
       :"";
 
   return`
@@ -1218,7 +1217,7 @@ function card(p){
         </div>
 
         <div class="name">
-          ${p.nm}${playerId}
+          ${p.nm}
         </div>
 
         <div class="basic">
@@ -1226,9 +1225,10 @@ function card(p){
           <span>${p.age}歳</span>
 
           <span>
-            ${p.th==="L"?"左":"右"}投
-            ${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
+            ${p.th==="L"?"左":"右"}投${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
           </span>
+
+          ${playerId}
 
         </div>
 
