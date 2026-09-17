@@ -229,6 +229,15 @@ button.active{
   line-height:1.15
 }
 
+.playerId{
+  font-size:10px;
+  font-weight:500;
+  color:#999;
+  margin-left:5px;
+  vertical-align:2px;
+  white-space:nowrap
+}
+
 .basic{
   display:flex;
   align-items:center;
@@ -404,6 +413,40 @@ button.active{
 
 .normalAbility{
   color:#555
+}
+
+/* もっと見る */
+.moreArea{
+  display:none;
+  justify-content:center;
+  margin:16px 0 8px
+}
+
+.moreArea.show{
+  display:flex
+}
+
+.moreBtn{
+  min-width:140px;
+  padding:8px 14px;
+  font-size:13px;
+  font-weight:600;
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:8px
+}
+
+.moreBtn:hover{
+  background:#f7f7f7
+}
+
+.searchNotice{
+  padding:28px 10px;
+  text-align:center;
+  color:#777;
+  font-size:13px;
+  background:#fff;
+  border-radius:10px
 }
 
 @media(max-width:1050px){
@@ -612,6 +655,10 @@ button.active{
 
 <div class="grid" id="grid"></div>
 
+<div class="moreArea" id="moreArea">
+  <button class="moreBtn" id="moreBtn">もっと見る</button>
+</div>
+
 <script>
 
 const TEAM_MAP={
@@ -785,6 +832,13 @@ let descending=true;
 /* 名前検索 */
 let searchName="";
 let crossYearSearch=false;
+
+/* 表示件数 */
+const RENDER_STEP=150;
+let renderLimit=RENDER_STEP;
+
+/* 検索入力の遅延処理 */
+let searchTimer=null;
 
 function rankOf(v){
   if(v>=90)return"S";
@@ -1141,6 +1195,11 @@ function card(p){
       ?`<span class="crossYear">${p.__year}年度</span>`
       :"";
 
+  let playerId=
+    p.id
+      ?`<span class="playerId">${p.id}</span>`
+      :"";
+
   return`
 
   <div
@@ -1159,7 +1218,7 @@ function card(p){
         </div>
 
         <div class="name">
-          ${p.nm}
+          ${p.nm}${playerId}
         </div>
 
         <div class="basic">
@@ -1385,40 +1444,56 @@ function baseFilter(p){
   return true;
 }
 
+function nameMatches(p){
+
+  if(!searchName){
+    return true;
+  }
+
+  return String(p.nm||"")
+    .toLocaleLowerCase()
+    .includes(
+      searchName.toLocaleLowerCase()
+    );
+}
+
 function applyFilters(){
 
-  let arr;
+  /*
+   * 全年度横断で名前が空欄の場合は、
+   * 大量の年度データをカード化しない。
+   */
+  if(crossYearSearch && !searchName){
+    return [];
+  }
+
+  let arr=[];
 
   /*
-   * 通常検索：
-   * 現在選択中の年度だけ
+   * 通常検索
    */
   if(!crossYearSearch){
 
-    arr=players.filter(p=>{
+    for(let p of players){
 
-      if(
-        searchName &&
-        !String(p.nm||"")
-          .toLocaleLowerCase()
-          .includes(searchName.toLocaleLowerCase())
-      ){
-        return false;
+      if(!nameMatches(p)){
+        continue;
       }
 
-      return baseFilter(p);
+      if(!baseFilter(p)){
+        continue;
+      }
 
-    });
+      arr.push(p);
+
+    }
 
   }
 
   /*
-   * 全年度横断検索：
-   * URLに保存されている全年度を対象
+   * 全年度横断検索
    */
   else{
-
-    arr=[];
 
     for(let y of availableYears){
 
@@ -1426,12 +1501,7 @@ function applyFilters(){
 
       for(let p of list){
 
-        if(
-          searchName &&
-          !String(p.nm||"")
-            .toLocaleLowerCase()
-            .includes(searchName.toLocaleLowerCase())
-        ){
+        if(!nameMatches(p)){
           continue;
         }
 
@@ -1477,9 +1547,24 @@ function applyFilters(){
     }
     else if(sortMode==="name"){
 
+      let result=
+        String(a.nm||"").localeCompare(
+          String(b.nm||""),
+          "ja"
+        );
+
+      if(result!==0){
+        return descending
+          ?-result
+          :result;
+      }
+
+      /*
+       * 同姓同名ならIDで安定して区別
+       */
       return descending
-        ?b.nm.localeCompare(a.nm,"ja")
-        :a.nm.localeCompare(b.nm,"ja");
+        ?String(b.id||"").localeCompare(String(a.id||""))
+        :String(a.id||"").localeCompare(String(b.id||""));
 
     }
     else{
@@ -1489,9 +1574,21 @@ function applyFilters(){
 
     }
 
-    return descending
-      ?y-x
-      :x-y;
+    if(x!==y){
+
+      return descending
+        ?y-x
+        :x-y;
+
+    }
+
+    /*
+     * 同値ならID順。
+     * 毎回カード順が変わるのを防ぐ。
+     */
+    return String(a.id||"").localeCompare(
+      String(b.id||"")
+    );
 
   });
 
@@ -1500,6 +1597,30 @@ function applyFilters(){
 
 function render(){
 
+  let grid=
+    document.getElementById("grid");
+
+  let moreArea=
+    document.getElementById("moreArea");
+
+  /*
+   * 全年度横断＋名前なし
+   */
+  if(crossYearSearch && !searchName){
+
+    document.getElementById("count").textContent=
+      "全年度横断検索：選手名を入力してください";
+
+    grid.innerHTML=
+      `<div class="searchNotice">
+        選手名を入力すると、保存されている全年度から検索します。
+      </div>`;
+
+    moreArea.classList.remove("show");
+
+    return;
+  }
+
   let arr=applyFilters();
 
   let totalText=
@@ -1507,11 +1628,45 @@ function render(){
       ?`全${availableYears.length}年度`
       :`全${players.length}人`;
 
-  document.getElementById("count").textContent=
-    `表示：${arr.length}人 / ${totalText}`;
+  let visible=
+    arr.slice(0,renderLimit);
 
-  document.getElementById("grid").innerHTML=
-    arr.map(card).join("");
+  document.getElementById("count").textContent=
+    arr.length>visible.length
+      ?`表示：${visible.length}人 / 検索結果 ${arr.length}人 / ${totalText}`
+      :`表示：${arr.length}人 / ${totalText}`;
+
+  /*
+   * 一度に生成するカード数を制限
+   */
+  grid.innerHTML=
+    visible.map(card).join("");
+
+  /*
+   * まだ未表示のカードがあれば
+   * 「もっと見る」を出す。
+   */
+  if(arr.length>visible.length){
+
+    moreArea.classList.add("show");
+
+    document.getElementById("moreBtn").textContent=
+      `もっと見る（残り${arr.length-visible.length}人）`;
+
+  }else{
+
+    moreArea.classList.remove("show");
+
+  }
+
+}
+
+function resetAndRender(){
+
+  renderLimit=RENDER_STEP;
+
+  render();
+
 }
 
 function setup(){
@@ -1534,7 +1689,7 @@ function setup(){
   sel.addEventListener("change",()=>{
 
     selectedTeam=sel.value;
-    render();
+    resetAndRender();
 
   });
 
@@ -1543,7 +1698,7 @@ function setup(){
     .addEventListener("change",e=>{
 
       selectedLeague=e.target.value;
-      render();
+      resetAndRender();
 
     });
 
@@ -1588,7 +1743,7 @@ function setup(){
 
           });
 
-        render();
+        resetAndRender();
 
       });
 
@@ -1599,7 +1754,7 @@ function setup(){
     .addEventListener("change",e=>{
 
       includeSub=e.target.checked;
-      render();
+      resetAndRender();
 
     });
 
@@ -1614,7 +1769,7 @@ function setup(){
             .map(x=>x.dataset.role)
         );
 
-        render();
+        resetAndRender();
 
       });
 
@@ -1625,7 +1780,7 @@ function setup(){
     .addEventListener("change",e=>{
 
       excludeLowRole=e.target.checked;
-      render();
+      resetAndRender();
 
     });
 
@@ -1634,7 +1789,7 @@ function setup(){
     .addEventListener("change",e=>{
 
       selectedPot=e.target.value;
-      render();
+      resetAndRender();
 
     });
 
@@ -1643,7 +1798,7 @@ function setup(){
     .addEventListener("change",e=>{
 
       selectedGrowth=e.target.value;
-      render();
+      resetAndRender();
 
     });
 
@@ -1652,7 +1807,7 @@ function setup(){
     .addEventListener("change",e=>{
 
       sortMode=e.target.value;
-      render();
+      resetAndRender();
 
     });
 
@@ -1667,12 +1822,15 @@ function setup(){
           ?"↓ 高い順"
           :"↑ 低い順";
 
-      render();
+      resetAndRender();
 
     });
 
   /*
    * 選手名検索
+   *
+   * 文字入力のたびに即座に大量のDOMを作らず、
+   * 100msほど待ってから検索する。
    */
   document
     .getElementById("nameSearch")
@@ -1680,7 +1838,13 @@ function setup(){
 
       searchName=e.target.value.trim();
 
-      render();
+      clearTimeout(searchTimer);
+
+      searchTimer=setTimeout(()=>{
+
+        resetAndRender();
+
+      },100);
 
     });
 
@@ -1692,6 +1856,19 @@ function setup(){
     .addEventListener("change",e=>{
 
       crossYearSearch=e.target.checked;
+
+      resetAndRender();
+
+    });
+
+  /*
+   * もっと見る
+   */
+  document
+    .getElementById("moreBtn")
+    .addEventListener("click",()=>{
+
+      renderLimit+=RENDER_STEP;
 
       render();
 
@@ -1719,9 +1896,10 @@ function updateYearText(year){
       players=yearData[y]||[];
 
       updateYearText(y);
-      render();
+      resetAndRender();
 
     });
+
 }
 
 async function loadData(){
@@ -1801,12 +1979,6 @@ async function loadData(){
 
     /*
      * 新形式
-     * {
-     *   years:{
-     *     "2026":[...],
-     *     "2027":[...]
-     *   }
-     * }
      */
     if(data.years){
 
@@ -1820,10 +1992,6 @@ async function loadData(){
 
     /*
      * 旧形式
-     * {
-     *   year:2026,
-     *   players:[...]
-     * }
      */
     else if(data.players){
 
@@ -1867,6 +2035,7 @@ async function loadData(){
         "データの読み込みに失敗しました。";
 
   }
+
 }
 
 loadData();
