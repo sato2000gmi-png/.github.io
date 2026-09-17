@@ -3,18 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>現在選手データベース</title>
+<title>在籍選手データベース</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   padding:20px;
   background:#f3f4f6;
   color:#222;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+    "Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif
 }
-h1{margin:0 0 6px;font-size:24px}
-.sub{color:#666;font-size:13px;margin-bottom:16px}
+
+h1{
+  margin:0 0 6px;
+  font-size:24px
+}
+
+.sub{
+  color:#666;
+  font-size:13px;
+  margin-bottom:16px
+}
 
 .panel{
   background:#fff;
@@ -30,18 +42,46 @@ h1{margin:0 0 6px;font-size:24px}
   gap:8px;
   align-items:center
 }
-select,button{
+
+label{
+  font-size:13px;
+  color:#444
+}
+
+select,
+input,
+button{
   font-size:14px;
   padding:8px 10px;
   border:1px solid #ccc;
   border-radius:8px;
   background:#fff
 }
-button{cursor:pointer}
+
+input{
+  width:70px
+}
+
+button{
+  cursor:pointer
+}
+
 button.active{
   background:#333;
   color:#fff;
   border-color:#333
+}
+
+button.subActive{
+  background:#666;
+  color:#fff;
+  border-color:#666
+}
+
+.sectionTitle{
+  font-size:13px;
+  font-weight:700;
+  margin:12px 0 6px
 }
 
 .count{
@@ -52,7 +92,7 @@ button.active{
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:14px
 }
 
@@ -61,7 +101,8 @@ button.active{
   border-radius:12px;
   padding:14px;
   box-shadow:0 2px 8px rgba(0,0,0,.08);
-  border:1px solid #e5e7eb
+  border:1px solid #e5e7eb;
+  min-width:0
 }
 
 .cardHead{
@@ -70,15 +111,18 @@ button.active{
   align-items:flex-start;
   margin-bottom:10px
 }
+
 .team{
   font-size:12px;
   color:#666
 }
+
 .name{
   font-size:20px;
   font-weight:700;
   margin-top:2px
 }
+
 .basic{
   font-size:13px;
   color:#555;
@@ -91,6 +135,7 @@ button.active{
   margin:10px 0;
   flex-wrap:wrap
 }
+
 .badge{
   padding:5px 8px;
   border-radius:7px;
@@ -104,6 +149,7 @@ button.active{
   font-weight:700;
   margin:10px 0 5px
 }
+
 .stat{
   display:grid;
   grid-template-columns:58px 34px 1fr 24px;
@@ -112,18 +158,21 @@ button.active{
   font-size:12px;
   margin:4px 0
 }
+
 .bar{
   height:9px;
   background:#e5e7eb;
   border-radius:99px;
   overflow:hidden
 }
+
 .bar i{
   display:block;
   height:100%;
   background:#555;
   border-radius:99px
 }
+
 .rank{
   font-weight:700;
   text-align:center
@@ -136,36 +185,88 @@ button.active{
   font-size:12px;
   line-height:1.7
 }
-.info b{font-weight:700}
+
+.info b{
+  font-weight:700
+}
 
 .abilities{
   margin-top:5px
 }
-.good{color:#176b3a}
-.bad{color:#a33}
+
+.good{
+  color:#176b3a
+}
+
+.bad{
+  color:#a33
+}
 
 .peak{
   color:#555
 }
 
-.hidden{display:none}
+.hidden{
+  display:none
+}
 
-@media(max-width:600px){
-  body{padding:10px}
-  .grid{grid-template-columns:1fr}
-  .card{padding:12px}
+.positionButtons,
+.roleButtons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px
+}
+
+.positionButtons button,
+.roleButtons button{
+  padding:6px 9px;
+  font-size:12px
+}
+
+.small{
+  font-size:11px;
+  color:#777
+}
+
+@media(max-width:1000px){
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+}
+
+@media(max-width:650px){
+  body{
+    padding:10px
+  }
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .card{
+    padding:12px
+  }
 }
 </style>
 </head>
 
 <body>
 
-<h1>現在選手データベース</h1>
+<h1>在籍選手データベース</h1>
 <div class="sub" id="yearText">データを読み込んでいます…</div>
 
 <div class="panel">
 
   <div class="controls">
+    <label>
+      リーグ
+      <select id="leagueFilter">
+        <option value="ALL">全リーグ</option>
+        <option value="C">Cリーグ</option>
+        <option value="P">Pリーグ</option>
+      </select>
+    </label>
+
     <label>
       球団
       <select id="teamFilter"></select>
@@ -194,7 +295,58 @@ button.active{
     <button id="orderBtn">↓ 高い順</button>
   </div>
 
-  <div class="controls" style="margin-top:8px">
+  <div class="sectionTitle">総合値フィルター</div>
+
+  <div class="controls">
+    <label>
+      最低
+      <input id="overallMin" type="number" min="0" max="99" placeholder="0">
+    </label>
+
+    <label>
+      最高
+      <input id="overallMax" type="number" min="0" max="99" placeholder="99">
+    </label>
+
+    <label>
+      年齢
+      <input id="ageMin" type="number" min="0" max="99" placeholder="0">
+    </label>
+
+    <label>
+      〜
+      <input id="ageMax" type="number" min="0" max="99" placeholder="99">
+    </label>
+
+    <label>
+      潜在
+      <select id="potFilter">
+        <option value="ALL">指定なし</option>
+        <option value="5">S</option>
+        <option value="4">A</option>
+        <option value="3">B</option>
+        <option value="2">C</option>
+        <option value="1">D</option>
+        <option value="SA">S・A</option>
+        <option value="AB">A・B以上</option>
+      </select>
+    </label>
+
+    <label>
+      プロスペクト
+      <select id="prospectFilter">
+        <option value="ALL">指定なし</option>
+        <option value="YOUNG_HIGH">若手＋高潜在</option>
+        <option value="HIGH_POT">高潜在</option>
+        <option value="GAP">伸びしろ大</option>
+        <option value="AWAKEN">若手＋低現能力</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="sectionTitle">守備位置</div>
+
+  <div class="positionButtons">
     <button class="posBtn active" data-pos="ALL">全部</button>
     <button class="posBtn" data-pos="C">捕手</button>
     <button class="posBtn" data-pos="1B">一塁</button>
@@ -202,7 +354,19 @@ button.active{
     <button class="posBtn" data-pos="3B">三塁</button>
     <button class="posBtn" data-pos="SS">遊撃</button>
     <button class="posBtn" data-pos="OF">外野</button>
-    <button class="posBtn" data-pos="P">投手</button>
+  </div>
+
+  <div class="controls" style="margin-top:7px">
+    <button id="subPosBtn">サブ守備適性も含める：OFF</button>
+  </div>
+
+  <div class="sectionTitle">投手起用</div>
+
+  <div class="roleButtons">
+    <button class="roleBtn active" data-role="ALL">全部</button>
+    <button class="roleBtn" data-role="sp">先発</button>
+    <button class="roleBtn" data-role="rp">中継ぎ</button>
+    <button class="roleBtn" data-role="cl">抑え</button>
   </div>
 
   <div class="count" id="count"></div>
@@ -211,9 +375,20 @@ button.active{
 <div class="grid" id="grid"></div>
 
 <script>
-const TEAM_NAMES=[
-  "阪神","DeNA","巨人","広島","ヤクルト","中日",
-  "ソフトバンク","日本ハム","ロッテ","楽天","オリックス","西武"
+
+const TEAM_DATA=[
+  {idx:0,nm:"東京クラウンズ",sh:"東京",ab:"TKC",lg:"C",col:"#d4a017"},
+  {idx:1,nm:"横浜DeNAベイスターズ",sh:"横浜",ab:"YKS",lg:"C",col:"#1d6fd6"},
+  {idx:2,nm:"名古屋シャークズ",sh:"名古屋",ab:"NGS",lg:"C",col:"#0e9aa7"},
+  {idx:3,nm:"京都ウルブズ",sh:"京都",ab:"KYW",lg:"C",col:"#7c3aed"},
+  {idx:4,nm:"大阪サンダーズ",sh:"大阪",ab:"OST",lg:"C",col:"#e8500a"},
+  {idx:5,nm:"広島フェニックス",sh:"広島",ab:"HRP",lg:"C",col:"#dc2626"},
+  {idx:6,nm:"札幌ベアーズ",sh:"札幌",ab:"SPB",lg:"P",col:"#92400e"},
+  {idx:7,nm:"仙台フロンティアーズ",sh:"仙台",ab:"SDF",lg:"P",col:"#b91c1c"},
+  {idx:8,nm:"埼玉ファルコンズ",sh:"埼玉",ab:"STF",lg:"P",col:"#1e3a8a"},
+  {idx:9,nm:"千葉オーシャンズ",sh:"千葉",ab:"CBO",lg:"P",col:"#0284c7"},
+  {idx:10,nm:"神戸ブレイカーズ",sh:"神戸",ab:"KBB",lg:"P",col:"#059669"},
+  {idx:11,nm:"福岡ブレイズ",sh:"福岡",ab:"FKB",lg:"P",col:"#ea580c"}
 ];
 
 const POS_NAMES={
@@ -225,6 +400,8 @@ const POS_NAMES={
   SS:"遊撃",
   OF:"外野"
 };
+
+const POS_KEYS=["C","1B","2B","3B","SS","OF"];
 
 const POT_NAMES={
   5:"S",
@@ -326,11 +503,32 @@ const ABILITY_NAMES={
 };
 
 let players=[];
+
+let selectedLeague="ALL";
 let selectedTeam="MY";
 let selectedType="ALL";
-let selectedPos="ALL";
+
+let selectedPositions=[];
+let selectedRoles=[];
+
+let includeSubPosition=false;
+
 let sortMode="overall";
 let descending=true;
+
+function teamOf(p){
+  return TEAM_DATA[Number(p.team)] || null;
+}
+
+function teamName(p){
+  const t=teamOf(p);
+  return t ? t.nm : "不明球団";
+}
+
+function leagueOf(p){
+  const t=teamOf(p);
+  return t ? t.lg : "";
+}
 
 function rankOf(v){
   if(v>=90)return"S";
@@ -345,344 +543,866 @@ function rankOf(v){
 
 function overallOf(p){
   if(p.t==="B"){
-    return (p.ab.mt+p.ab.pw+p.ab.sp+p.ab.am+p.ab.fd)/5;
+    return(
+      (p.ab.mt+
+       p.ab.pw+
+       p.ab.sp+
+       p.ab.am+
+       p.ab.fd)/5
+    );
   }
-  return (p.ap.vl+p.ap.ct+p.ap.st+p.ap.br)/4;
+
+  return(
+    (p.ap.vl+
+     p.ap.ct+
+     p.ap.st+
+     p.ap.br)/4
+  );
 }
 
 function pitchValue(p){
-  return p.ap.vl*0.30+
-         p.ap.ct*0.30+
-         p.ap.st*0.16+
-         p.ap.br*0.24;
+  return(
+    p.ap.vl*0.30+
+    p.ap.ct*0.30+
+    p.ap.st*0.16+
+    p.ap.br*0.24
+  );
 }
 
 function abilityText(p){
-  if(!p.sa||!p.sa.length)return"なし";
-  return p.sa.map(x=>ABILITY_NAMES[x]||x).join("、");
+
+  if(!p.sa || !p.sa.length){
+    return"なし";
+  }
+
+  let good=[];
+  let bad=[];
+
+  p.sa.forEach(id=>{
+    const n=ABILITY_NAMES[id]||id;
+
+    if([
+      "sanshin","heisatsu","chanceX","vsLeftBX","murake",
+      "slowB","stealX","throwX","errorPr","ippatsu","yonkyu",
+      "slowP","makeun","tanki","fragGlass","glassBody","tofu"
+    ].includes(id)){
+      bad.push(n);
+    }else{
+      good.push(n);
+    }
+  });
+
+  let html="";
+
+  if(good.length){
+    html+='<span class="good">'+good.join("、")+"</span>";
+  }
+
+  if(bad.length){
+    if(html)html+=" / ";
+    html+='<span class="bad">'+bad.join("、")+"</span>";
+  }
+
+  return html||"なし";
 }
 
 function phaseOf(p){
-  let peakS,peakE;
 
-  if(p.gt==="early"){peakS=23;peakE=27}
-  else if(p.gt==="normal"){peakS=26;peakE=30}
-  else if(p.gt==="late"){peakS=29;peakE=33}
-  else {peakS=25;peakE=33}
+  if(p.t==="P" && !p.ap)return"";
 
-  if(p.age<peakS)return"成長期";
-  if(p.age<=peakE)return"ピーク";
-  return"衰退期";
+  let peakAge;
+
+  if(p.gt==="early"){
+    peakAge=23;
+  }else if(p.gt==="normal"){
+    peakAge=26;
+  }else if(p.gt==="late"){
+    peakAge=29;
+  }else{
+    peakAge=25;
+  }
+
+  if(p.age<peakAge)return"成長期";
+
+  let endAge;
+
+  if(p.gt==="early")endAge=27;
+  else if(p.gt==="normal")endAge=30;
+  else if(p.gt==="late")endAge=33;
+  else endAge=33;
+
+  if(p.age<=endAge)return"ピーク期";
+
+  return"衰え期";
 }
 
 function statRows(p){
-  let arr=[];
+
+  let rows=[];
 
   if(p.t==="B"){
-    arr=[
-      ["ミート",p.ab.mt],
-      ["パワー",p.ab.pw],
-      ["走力",p.ab.sp],
-      ["肩力",p.ab.am],
-      ["守備",p.ab.fd]
+
+    const a=[
+      ["ミート","mt"],
+      ["パワー","pw"],
+      ["走力","sp"],
+      ["肩力","am"],
+      ["守備","fd"]
     ];
+
+    a.forEach(x=>{
+      const v=Number(p.ab[x[1]]||0);
+
+      rows.push(
+        '<div class="stat">'+
+        '<span>'+x[0]+'</span>'+
+        '<span class="rank">'+rankOf(v)+'</span>'+
+        '<div class="bar"><i style="width:'+v+'%"></i></div>'+
+        '<span>'+v+'</span>'+
+        '</div>'
+      );
+    });
+
   }else{
-    arr=[
-      ["球速",p.ap.vl],
-      ["制球",p.ap.ct],
-      ["スタ",p.ap.st],
-      ["変化",p.ap.br]
+
+    const a=[
+      ["球速","vl"],
+      ["制球","ct"],
+      ["スタミナ","st"],
+      ["変化球","br"]
     ];
+
+    a.forEach(x=>{
+      const v=Number(p.ap[x[1]]||0);
+
+      rows.push(
+        '<div class="stat">'+
+        '<span>'+x[0]+'</span>'+
+        '<span class="rank">'+rankOf(v)+'</span>'+
+        '<div class="bar"><i style="width:'+v+'%"></i></div>'+
+        '<span>'+v+'</span>'+
+        '</div>'
+      );
+    });
   }
 
-  return arr.map(x=>{
-    let v=x[1];
-    return `
-      <div class="stat">
-        <span>${x[0]}</span>
-        <span>${v}</span>
-        <div class="bar"><i style="width:${v}%"></i></div>
-        <span class="rank">${rankOf(v)}</span>
-      </div>`;
-  }).join("");
+  return rows.join("");
 }
 
 function peakText(p){
+
   if(!p.peak)return"不明";
 
+  let vals=[];
+
   if(p.t==="B"){
-    return `${p.peak.mt} / ${p.peak.pw} / ${p.peak.sp} / ${p.peak.am} / ${p.peak.fd}`;
+    vals=[
+      p.peak.mt,
+      p.peak.pw,
+      p.peak.sp,
+      p.peak.am,
+      p.peak.fd
+    ];
+  }else{
+    vals=[
+      p.peak.vl,
+      p.peak.ct,
+      p.peak.st,
+      p.peak.br
+    ];
   }
 
-  return `${p.peak.vl} / ${p.peak.ct} / ${p.peak.st} / ${p.peak.br}`;
+  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+
+  return avg.toFixed(1)+" ("+rankOf(avg)+")";
 }
 
 function peakGap(p){
+
   if(!p.peak)return 0;
 
+  let cur=overallOf(p);
+
+  let peak;
+
   if(p.t==="B"){
-    return (p.peak.mt-p.ab.mt)+
-           (p.peak.pw-p.ab.pw)+
-           (p.peak.sp-p.ab.sp)+
-           (p.peak.am-p.ab.am)+
-           (p.peak.fd-p.ab.fd);
+    peak=(
+      p.peak.mt+
+      p.peak.pw+
+      p.peak.sp+
+      p.peak.am+
+      p.peak.fd
+    )/5;
+  }else{
+    peak=(
+      p.peak.vl+
+      p.peak.ct+
+      p.peak.st+
+      p.peak.br
+    )/4;
   }
 
-  return (p.peak.vl-p.ap.vl)+
-         (p.peak.ct-p.ap.ct)+
-         (p.peak.st-p.ap.st)+
-         (p.peak.br-p.ap.br);
+  return peak-cur;
 }
 
 function defenseText(p){
-  if(p.t==="P"||!p.df)return"—";
 
-  let a=[];
-  for(let k in p.df){
-    if(p.df[k]>0){
-      let lv=p.df[k];
-      let mark=lv>=3?"◎":lv===2?"○":"△";
-      a.push((POS_NAMES[k]||k)+mark);
+  if(p.t!=="B" || !p.df)return"—";
+
+  let arr=[];
+
+  POS_KEYS.forEach(pos=>{
+    const v=Number(p.df[pos]||0);
+
+    if(v>0){
+      arr.push(
+        POS_NAMES[pos]+
+        (v===3?"◎":v===2?"○":"△")
+      );
     }
-  }
-  return a.length?a.join("、"):"—";
+  });
+
+  return arr.length?arr.join("、"):"—";
 }
 
 function roleText(p){
-  if(p.t!=="P"||!p.rl)return"—";
 
-  let a=[];
-  if(p.rl.sp>0)a.push("先発"+(p.rl.sp>=3?"◎":p.rl.sp===2?"○":"△"));
-  if(p.rl.rp>0)a.push("中継ぎ"+(p.rl.rp>=3?"◎":p.rl.rp===2?"○":"△"));
-  if(p.rl.cl>0)a.push("抑え"+(p.rl.cl>=3?"◎":p.rl.cl===2?"○":"△"));
+  if(p.t!=="P" || !p.rl)return"—";
 
-  return a.length?a.join("、"):"—";
+  let arr=[];
+
+  if(p.rl.sp>0)arr.push("先発");
+  if(p.rl.rp>0)arr.push("中継ぎ");
+  if(p.rl.cl>0)arr.push("抑え");
+
+  return arr.length?arr.join("、"):"—";
 }
 
 function draftText(p){
+
   if(!p.drft)return"—";
-  if(!p.drft.y)return"未ドラフト";
 
-  let src={
-    HS:"高卒",
-    UNI:"大卒",
-    SOC:"社会人",
-    IND:"独立",
-    FRI:"自由契約",
-    FOR:"外国人"
-  }[p.drft.src]||p.drft.src||"";
+  const d=p.drft;
 
-  return `${p.drft.y}年 ${p.drft.rd}位 ${src}`;
+  if(!d.y)return"—";
+
+  return d.y+"年 "+
+    (d.rd?d.rd+"位 ":"")+
+    (d.src||"");
+}
+
+function positionMatches(p){
+
+  if(p.t==="P")return true;
+
+  if(!selectedPositions.length)return true;
+
+  for(const pos of selectedPositions){
+
+    if(includeSubPosition){
+      if(Number(p.df && p.df[pos] || 0)>0){
+        return true;
+      }
+    }else{
+      if(Number(p.df && p.df[pos] || 0)===3){
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function roleMatches(p){
+
+  if(!selectedRoles.length)return true;
+
+  if(p.t!=="P")return false;
+
+  for(const role of selectedRoles){
+    if(Number(p.rl && p.rl[role] || 0)>0){
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function potMatches(p){
+
+  const v=Number(p.pot||0);
+
+  const f=document.getElementById("potFilter").value;
+
+  if(f==="ALL")return true;
+  if(f==="SA")return v>=4;
+  if(f==="AB")return v>=3;
+
+  return v===Number(f);
+}
+
+function prospectMatches(p){
+
+  const f=document.getElementById("prospectFilter").value;
+
+  if(f==="ALL")return true;
+
+  const o=overallOf(p);
+  const pot=Number(p.pot||0);
+
+  if(f==="YOUNG_HIGH"){
+    return p.age<=23 && pot>=4;
+  }
+
+  if(f==="HIGH_POT"){
+    return pot>=4;
+  }
+
+  if(f==="GAP"){
+    return peakGap(p)>=10;
+  }
+
+  if(f==="AWAKEN"){
+    return p.age<=23 && o<60 && pot>=3;
+  }
+
+  return true;
 }
 
 function card(p){
-  let overall=overallOf(p);
-  let team=TEAM_NAMES[p.team]||("球団"+p.team);
 
-  let basic=
-    p.t==="P"
-      ?"投手"
-      :(POS_NAMES[p.pos]||p.pos);
+  const o=overallOf(p);
+  const rank=rankOf(o);
+  const team=teamOf(p);
+
+  let summary="";
+
+  summary+=
+    '<span class="badge">総合 '+o.toFixed(1)+
+    " ("+rank+")</span>";
+
+  summary+=
+    '<span class="badge">潜在 '+(POT_NAMES[p.pot]||p.pot)+
+    "</span>";
+
+  summary+=
+    '<span class="badge">'+
+    (GROWTH_NAMES[p.gt]||p.gt)+
+    "</span>";
+
+  summary+=
+    '<span class="badge">'+
+    phaseOf(p)+
+    "</span>";
+
+  let basic=[];
+
+  basic.push("年齢 "+p.age);
+
+  if(p.t==="B"){
+    basic.push("右投"+(p.bt==="L"?"左打":p.bt==="S"?"両打":"右打"));
+    basic.push(POS_NAMES[p.pos]||p.pos);
+  }else{
+    basic.push((p.th==="L"?"左投":"右投"));
+    basic.push("投手");
+  }
+
+  let role=roleText(p);
 
   return `
-  <div class="card">
+    <div class="card">
 
-    <div class="cardHead">
-      <div>
-        <div class="team">${team}</div>
-        <div class="name">${p.nm}</div>
-        <div class="basic">${p.age}歳　${basic}　${p.th==="L"?"左":"右"}投${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打</div>
+      <div class="cardHead">
+        <div>
+          <div class="team">
+            ${team ? team.nm : "不明"}
+            ${team ? " / "+team.lg+"リーグ" : ""}
+          </div>
+          <div class="name">${p.nm}</div>
+          <div class="basic">${basic.join(" / ")}</div>
+        </div>
+
+        <div class="rank">${rank}</div>
+      </div>
+
+      <div class="summary">
+        ${summary}
+      </div>
+
+      <div class="statTitle">
+        能力値
+      </div>
+
+      ${statRows(p)}
+
+      <div class="info">
+
+        <div>
+          <b>ピーク能力：</b>
+          <span class="peak">${peakText(p)}</span>
+        </div>
+
+        <div>
+          <b>現在との差：</b>
+          <span class="peak">約${peakGap(p).toFixed(1)}</span>
+        </div>
+
+        ${
+          p.t==="P"
+          ?
+          '<div><b>地力：</b>'+pitchValue(p).toFixed(1)+
+          " ("+rankOf(pitchValue(p))+")</div>"
+          :
+          ""
+        }
+
+        ${
+          p.t==="B"
+          ?
+          '<div><b>守備適性：</b>'+defenseText(p)+'</div>'
+          :
+          ""
+        }
+
+        ${
+          p.t==="P"
+          ?
+          '<div><b>投手起用：</b>'+role+'</div>'
+          :
+          ""
+        }
+
+        <div>
+          <b>特殊能力：</b>
+          <div class="abilities">${abilityText(p)}</div>
+        </div>
+
+        <div>
+          <b>ドラフト：</b>${draftText(p)}
+        </div>
+
+        <div>
+          <b>在籍年数：</b>${p.years||0}年
+        </div>
+
       </div>
     </div>
-
-    <div class="summary">
-      <span class="badge">総合 ${overall.toFixed(1)}</span>
-      ${p.t==="P"?`<span class="badge">地力 ${pitchValue(p).toFixed(1)}</span>`:""}
-      <span class="badge">潜在 ${POT_NAMES[p.pot]||"?"}</span>
-      <span class="badge">${GROWTH_NAMES[p.gt]||p.gt}</span>
-    </div>
-
-    <div class="statTitle">現在能力</div>
-    ${statRows(p)}
-
-    <div class="info">
-      <b>成長：</b>${phaseOf(p)}　
-      <b>ピーク：</b>${peakText(p)}
-    </div>
-
-    <div class="info">
-      <b>${p.t==="P"?"投手役割":"守備適性"}：</b>
-      ${p.t==="P"?roleText(p):defenseText(p)}
-    </div>
-
-    <div class="info abilities">
-      <b>特殊能力：</b>${abilityText(p)}
-    </div>
-
-    <div class="info">
-      <b>ドラフト：</b>${draftText(p)}　
-      <b>在籍：</b>${p.years||0}年
-    </div>
-
-  </div>`;
+  `;
 }
 
 function applyFilters(){
-  let arr=players.filter(p=>{
-    if(selectedTeam!=="ALL"&&selectedTeam!=="MY"&&String(p.team)!==selectedTeam)return false;
 
-    if(selectedTeam==="MY"){
-      if(String(p.team)!=="1")return false;
+  const league=
+    document.getElementById("leagueFilter").value;
+
+  const type=
+    document.getElementById("typeFilter").value;
+
+  const overallMin=
+    Number(document.getElementById("overallMin").value||0);
+
+  const overallMax=
+    Number(document.getElementById("overallMax").value||99);
+
+  const ageMin=
+    Number(document.getElementById("ageMin").value||0);
+
+  const ageMax=
+    Number(document.getElementById("ageMax").value||99);
+
+  return players.filter(p=>{
+
+    if(league!=="ALL" && leagueOf(p)!==league){
+      return false;
     }
 
-    if(selectedType!=="ALL"&&p.t!==selectedType)return false;
-
-    if(selectedPos!=="ALL"){
-      if(selectedPos==="P"){
-        if(p.t!=="P")return false;
-      }else{
-        if(p.t!=="B"||p.pos!==selectedPos)return false;
+    if(selectedTeam==="MY"){
+      if(Number(p.team)!==1)return false;
+    }else if(selectedTeam!=="ALL"){
+      if(Number(p.team)!==Number(selectedTeam)){
+        return false;
       }
+    }
+
+    if(type!=="ALL" && p.t!==type){
+      return false;
+    }
+
+    if(p.age<ageMin || p.age>ageMax){
+      return false;
+    }
+
+    const o=overallOf(p);
+
+    if(o<overallMin || o>overallMax){
+      return false;
+    }
+
+    if(!potMatches(p)){
+      return false;
+    }
+
+    if(!prospectMatches(p)){
+      return false;
+    }
+
+    if(p.t==="B" && !positionMatches(p)){
+      return false;
+    }
+
+    if(!roleMatches(p)){
+      return false;
     }
 
     return true;
   });
+}
+
+function sortPlayers(arr){
+
+  const key=sortMode;
 
   arr.sort((a,b)=>{
-    let x,y;
 
-    if(sortMode==="overall"){
-      x=overallOf(a);
-      y=overallOf(b);
-    }else if(sortMode==="pot"){
-      x=a.pot;
-      y=b.pot;
-    }else if(sortMode==="age"){
-      x=a.age;
-      y=b.age;
-    }else if(sortMode==="name"){
-      return descending
-        ?b.nm.localeCompare(a.nm,"ja")
-        :a.nm.localeCompare(b.nm,"ja");
-    }else{
-      x=peakGap(a);
-      y=peakGap(b);
+    let av;
+    let bv;
+
+    if(key==="overall"){
+      av=overallOf(a);
+      bv=overallOf(b);
+    }else if(key==="pot"){
+      av=Number(a.pot||0);
+      bv=Number(b.pot||0);
+    }else if(key==="age"){
+      av=Number(a.age||0);
+      bv=Number(b.age||0);
+    }else if(key==="name"){
+      av=a.nm||"";
+      bv=b.nm||"";
+    }else if(key==="peakGap"){
+      av=peakGap(a);
+      bv=peakGap(b);
     }
 
-    return descending?y-x:x-y;
+    if(typeof av==="string"){
+      return descending
+        ? bv.localeCompare(av,"ja")
+        : av.localeCompare(bv,"ja");
+    }
+
+    return descending
+      ? bv-av
+      : av-bv;
   });
 
   return arr;
 }
 
 function render(){
+
+  const grid=document.getElementById("grid");
+
   let arr=applyFilters();
 
-  document.getElementById("count").textContent=
-    `表示：${arr.length}人 / 全${players.length}人`;
+  sortPlayers(arr);
 
-  document.getElementById("grid").innerHTML=
-    arr.map(card).join("");
+  document.getElementById("count").textContent=
+    arr.length+"人表示 / 全"+players.length+"人";
+
+  /*
+   * 一度にinnerHTMLへ流し込むことで、
+   * 792人程度でも個別DOM追加を繰り返さない。
+   */
+  grid.innerHTML=arr.map(card).join("");
 }
 
-function setup(){
-  let sel=document.getElementById("teamFilter");
+function setupTeamFilter(){
 
-  sel.innerHTML=
-    `<option value="MY">自球団（DeNA）</option>`+
-    `<option value="ALL">全12球団</option>`+
-    TEAM_NAMES.map((x,i)=>`<option value="${i}">${x}</option>`).join("");
+  const select=document.getElementById("teamFilter");
 
-  sel.addEventListener("change",()=>{
-    selectedTeam=sel.value;
-    render();
+  let html="";
+
+  html+='<option value="MY">自球団（横浜）</option>';
+  html+='<option value="ALL">全球団</option>';
+
+  TEAM_DATA.forEach(t=>{
+    html+=
+      '<option value="'+t.idx+'">'+
+      t.nm+
+      " ("+t.lg+")"+
+      "</option>";
   });
 
-  document.getElementById("typeFilter").addEventListener("change",e=>{
-    selectedType=e.target.value;
-    render();
-  });
+  select.innerHTML=html;
 
-  document.getElementById("sortFilter").addEventListener("change",e=>{
-    sortMode=e.target.value;
-    render();
-  });
+  select.value="MY";
+}
 
-  document.getElementById("orderBtn").addEventListener("click",e=>{
-    descending=!descending;
-    e.target.textContent=descending?"↓ 高い順":"↑ 低い順";
-    render();
-  });
+function setupEvents(){
 
-  document.querySelectorAll(".posBtn").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll(".posBtn").forEach(x=>x.classList.remove("active"));
-      btn.classList.add("active");
-      selectedPos=btn.dataset.pos;
+  document.getElementById("leagueFilter")
+    .addEventListener("change",()=>{
+
+      selectedLeague=
+        document.getElementById("leagueFilter").value;
+
+      const team=
+        document.getElementById("teamFilter");
+
+      if(selectedLeague==="ALL"){
+        /*
+         * 何もしない。
+         * 球団選択はそのまま維持。
+         */
+      }else{
+
+        /*
+         * 選択中球団が別リーグなら全球団に戻す。
+         */
+        if(selectedTeam!=="ALL" &&
+           selectedTeam!=="MY"){
+
+          const t=TEAM_DATA[Number(selectedTeam)];
+
+          if(t && t.lg!==selectedLeague){
+            selectedTeam="ALL";
+            team.value="ALL";
+          }
+        }
+      }
+
       render();
     });
+
+  document.getElementById("teamFilter")
+    .addEventListener("change",e=>{
+      selectedTeam=e.target.value;
+      render();
+    });
+
+  document.getElementById("typeFilter")
+    .addEventListener("change",()=>{
+
+      selectedType=
+        document.getElementById("typeFilter").value;
+
+      render();
+    });
+
+  document.getElementById("sortFilter")
+    .addEventListener("change",e=>{
+      sortMode=e.target.value;
+      render();
+    });
+
+  document.getElementById("orderBtn")
+    .addEventListener("click",e=>{
+
+      descending=!descending;
+
+      e.target.textContent=
+        descending
+        ?"↓ 高い順"
+        :"↑ 低い順";
+
+      render();
+    });
+
+  [
+    "overallMin",
+    "overallMax",
+    "ageMin",
+    "ageMax",
+    "potFilter",
+    "prospectFilter"
+  ].forEach(id=>{
+
+    document.getElementById(id)
+      .addEventListener("input",render);
+
+    document.getElementById(id)
+      .addEventListener("change",render);
   });
+
+  document.querySelectorAll(".posBtn")
+    .forEach(btn=>{
+
+      btn.addEventListener("click",()=>{
+
+        const pos=btn.dataset.pos;
+
+        if(pos==="ALL"){
+
+          selectedPositions=[];
+
+          document.querySelectorAll(".posBtn")
+            .forEach(x=>x.classList.remove("active"));
+
+          btn.classList.add("active");
+
+        }else{
+
+          document.querySelector('[data-pos="ALL"]')
+            .classList.remove("active");
+
+          if(selectedPositions.includes(pos)){
+
+            selectedPositions=
+              selectedPositions.filter(x=>x!==pos);
+
+            btn.classList.remove("active");
+
+          }else{
+
+            selectedPositions.push(pos);
+            btn.classList.add("active");
+          }
+
+          if(selectedPositions.length===0){
+            document.querySelector('[data-pos="ALL"]')
+              .classList.add("active");
+          }
+        }
+
+        render();
+      });
+    });
+
+  document.getElementById("subPosBtn")
+    .addEventListener("click",e=>{
+
+      includeSubPosition=!includeSubPosition;
+
+      e.target.textContent=
+        "サブ守備適性も含める："+
+        (includeSubPosition?"ON":"OFF");
+
+      e.target.classList.toggle(
+        "subActive",
+        includeSubPosition
+      );
+
+      render();
+    });
+
+  document.querySelectorAll(".roleBtn")
+    .forEach(btn=>{
+
+      btn.addEventListener("click",()=>{
+
+        const role=btn.dataset.role;
+
+        if(role==="ALL"){
+
+          selectedRoles=[];
+
+          document.querySelectorAll(".roleBtn")
+            .forEach(x=>x.classList.remove("active"));
+
+          btn.classList.add("active");
+
+        }else{
+
+          document.querySelector('[data-role="ALL"]')
+            .classList.remove("active");
+
+          if(selectedRoles.includes(role)){
+
+            selectedRoles=
+              selectedRoles.filter(x=>x!==role);
+
+            btn.classList.remove("active");
+
+          }else{
+
+            selectedRoles.push(role);
+            btn.classList.add("active");
+          }
+
+          if(selectedRoles.length===0){
+            document.querySelector('[data-role="ALL"]')
+              .classList.add("active");
+          }
+        }
+
+        render();
+      });
+    });
 }
 
 async function loadData(){
-  let hash=location.hash.slice(1);
-
-  if(!hash){
-    document.getElementById("yearText").textContent=
-      "URLデータがありません。ゲームから作成したURLを開いてください。";
-    return;
-  }
 
   try{
-    hash=hash.replace(/-/g,"+").replace(/_/g,"/");
-    while(hash.length%4)hash+="=";
 
-    let bin=atob(hash);
-    let u=new Uint8Array(bin.length);
+    const hash=
+      location.hash.replace(/^#/,"");
 
-    for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
-
-    let ds=new DecompressionStream("deflate");
-    let w=ds.writable.getWriter();
-    let r=ds.readable.getReader();
-
-    w.write(u);
-    w.close();
-
-    let chunks=[],x;
-
-    while(!(x=await r.read()).done){
-      chunks.push(x.value);
+    if(!hash){
+      throw new Error("URLデータがありません");
     }
 
-    let total=chunks.reduce((n,a)=>n+a.length,0);
-    let out=new Uint8Array(total);
-    let off=0;
+    let s=
+      hash.replace(/-/g,"+")
+          .replace(/_/g,"/");
 
-    for(let c of chunks){
-      out.set(c,off);
-      off+=c.length;
+    while(s.length%4)s+="=";
+
+    const bin=atob(s);
+
+    const bytes=new Uint8Array(bin.length);
+
+    for(let i=0;i<bin.length;i++){
+      bytes[i]=bin.charCodeAt(i);
     }
 
-    let text=new TextDecoder().decode(out);
-    let data=JSON.parse(text);
+    const ds=
+      new DecompressionStream("deflate");
 
-    players=data.players||[];
+    const stream=
+      new Blob([bytes])
+        .stream()
+        .pipeThrough(ds);
+
+    const ab=
+      await new Response(stream).arrayBuffer();
+
+    const json=
+      new TextDecoder().decode(ab);
+
+    const data=
+      JSON.parse(json);
+
+    players=
+      Array.isArray(data.players)
+      ?data.players
+      :[];
 
     document.getElementById("yearText").textContent=
-      `${data.year||"?"}年度　現在選手 ${players.length}人`;
+      (data.year||"不明")+"年度・在籍選手 "+
+      players.length+"人";
 
-    setup();
+    setupTeamFilter();
+    setupEvents();
     render();
 
   }catch(e){
+
     console.error(e);
+
     document.getElementById("yearText").textContent=
-      "データの読み込みに失敗しました。";
+      "データを読み込めませんでした";
+
+    document.getElementById("grid").innerHTML=
+      '<div class="panel">'+
+      "URLデータの読み込みに失敗しました。"+
+      "<br><span class='small'>"+
+      String(e.message||e)+
+      "</span></div>";
   }
 }
 
 loadData();
+
 </script>
 
 </body>
