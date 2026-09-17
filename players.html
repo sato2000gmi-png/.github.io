@@ -45,7 +45,7 @@ h1{
 select,button{
   font-size:13px;
   padding:6px 8px;
-  border:1px solid #d1d5db;
+  border:1px solid #ccc;
   border-radius:7px;
   background:#fff
 }
@@ -61,20 +61,19 @@ button.active{
 }
 
 .count{
-  margin-top:8px;
+  margin-top:7px;
   font-size:12px;
   color:#666
 }
 
-/* PCは2列 */
+/* PC：3列固定 */
 .grid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:11px;
-  max-width:1100px;
-  margin:0 auto
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px
 }
 
+/* カードを少し小型化 */
 .card{
   position:relative;
   background:#fff;
@@ -85,7 +84,6 @@ button.active{
   overflow:hidden
 }
 
-/* 球団カラー */
 .teamLine{
   height:4px;
   margin:0 -11px 9px;
@@ -94,7 +92,7 @@ button.active{
 
 .cardHead{
   position:relative;
-  min-height:60px;
+  min-height:64px;
   margin-bottom:7px
 }
 
@@ -104,32 +102,33 @@ button.active{
   font-weight:700
 }
 
+/* 球団名→名前の間を少し広げる */
 .name{
   font-size:18px;
   font-weight:700;
-  line-height:1.25;
-  margin-top:1px;
-  padding-right:78px
+  margin-top:6px;
+  padding-right:76px;
+  line-height:1.15
 }
 
 .basic{
   display:flex;
   align-items:center;
-  gap:5px;
-  font-size:11px;
+  flex-wrap:wrap;
+  gap:4px;
+  font-size:12px;
   color:#555;
-  margin-top:3px;
-  padding-right:78px
+  margin-top:4px;
+  padding-right:76px
 }
 
-/* ポジションバッジ
-   背景なし・枠と文字だけ */
+/* ポジション：背景なし・枠と文字だけ */
 .posBadge{
   position:absolute;
   right:0;
   top:14px;
 
-  min-width:55px;
+  min-width:57px;
   padding:7px 8px;
 
   border-radius:8px;
@@ -143,21 +142,25 @@ button.active{
   border:2px solid currentColor
 }
 
-/* 明るく鮮やかなポジションカラー */
+/* 彩度・明度を上げたポジション色 */
 .pos-pitcher{
-  color:#f05a68
+  color:#ef5964;
+  border-color:#ef5964
 }
 
 .pos-catcher{
-  color:#20a8b0
+  color:#16a6a8;
+  border-color:#16a6a8
 }
 
 .pos-infield{
-  color:#e3a62b
+  color:#d69a16;
+  border-color:#d69a16
 }
 
 .pos-outfield{
-  color:#42ad61
+  color:#45a85b;
+  border-color:#45a85b
 }
 
 /* 要約 */
@@ -169,9 +172,9 @@ button.active{
 }
 
 .badge{
-  padding:4px 6px;
+  padding:4px 7px;
   border-radius:6px;
-  background:#f1f3f5;
+  background:#f0f0f0;
   font-size:11px;
   font-weight:600
 }
@@ -180,12 +183,12 @@ button.active{
 .statTitle{
   font-size:12px;
   font-weight:700;
-  margin:7px 0 4px
+  margin:8px 0 4px
 }
 
 .stat{
   display:grid;
-  grid-template-columns:52px 27px 1fr 20px;
+  grid-template-columns:48px 28px 1fr 21px;
   gap:4px;
   align-items:center;
   font-size:11px;
@@ -193,8 +196,8 @@ button.active{
 }
 
 .bar{
-  height:7px;
-  background:#e9ecef;
+  height:8px;
+  background:#e7e9ec;
   border-radius:99px;
   overflow:hidden
 }
@@ -205,36 +208,41 @@ button.active{
   border-radius:99px
 }
 
-/* 棒グラフ
-   前回より明るく、ただし少し薄め */
-.bar-S{background:#f58fba}
-.bar-A{background:#f17f91}
-.bar-B{background:#f6ad73}
-.bar-C{background:#ead16b}
-.bar-D{background:#acd56f}
-.bar-E{background:#6fc8df}
-.bar-F{background:#9cacc0}
-.bar-G{background:#8998aa}
-
-/* 数値・ランク */
+/*
+ * ランク文字
+ * 鮮やかめ
+ */
 .rank{
   font-weight:700;
   text-align:center
 }
 
-.rank-S{color:#ec4f91}
-.rank-A{color:#e94d68}
-.rank-B{color:#ed873e}
-.rank-C{color:#d3ae22}
-.rank-D{color:#72ad3c}
-.rank-E{color:#299fbd}
-.rank-F{color:#70869e}
-.rank-G{color:#647488}
+.rank-S{color:#e83f91}
+.rank-A{color:#ed485f}
+.rank-B{color:#ee7835}
+.rank-C{color:#cda515}
+.rank-D{color:#68ae3e}
+.rank-E{color:#239fbd}
+.rank-F{color:#657f98}
+.rank-G{color:#596b7f}
+
+/*
+ * バー
+ * 上のランク色を少しだけ薄くした色
+ */
+.bar-S{background:#f38fbe}
+.bar-A{background:#f18391}
+.bar-B{background:#f3a06c}
+.bar-C{background:#e4cb67}
+.bar-D{background:#9bcf76}
+.bar-E{background:#6fc4d8}
+.bar-F{background:#93a7ba}
+.bar-G{background:#8494a6}
 
 /* 詳細 */
 .info{
   border-top:1px solid #eee;
-  margin-top:7px;
+  margin-top:8px;
   padding-top:6px;
   font-size:11px;
   line-height:1.55
@@ -244,54 +252,49 @@ button.active{
   font-weight:700
 }
 
-/* 成長・ピーク */
+/*
+ * 成長・ピーク
+ * ピークを無理にflex化せず、
+ * 一続きの文字列として扱う
+ */
 .growthInfo{
-  display:block;
-  overflow:hidden
-}
-
-.growthLine{
   white-space:nowrap;
+  overflow:hidden
 }
 
 .peakLine{
-  display:flex;
-  align-items:center;
-  gap:0;
   white-space:nowrap;
-  overflow:hidden
+  overflow:hidden;
+  color:#555
 }
 
 .peakStats{
-  display:flex;
-  flex-wrap:nowrap;
-  gap:0 8px;
-  white-space:nowrap;
-  min-width:0
+  display:inline;
+  white-space:nowrap
 }
 
 .peakStat{
   white-space:nowrap;
-  flex:none
+  color:#555
 }
 
 .peakStat b{
-  margin-right:2px;
-  color:#444
+  color:#555;
+  margin-right:1px
 }
 
 /* 特殊能力 */
 .abilities{
-  white-space:normal
+  margin-top:5px
 }
 
 .good{
-  color:#e3263f;
+  color:#dc2626;
   font-weight:600
 }
 
 .bad{
-  color:#2674d9;
+  color:#2563eb;
   font-weight:600
 }
 
@@ -299,39 +302,31 @@ button.active{
   color:#555
 }
 
-/* タブレット以下 */
-@media(max-width:750px){
+/* iPad：2列 */
+@media(max-width:1050px){
   .grid{
-    grid-template-columns:1fr;
-    max-width:560px
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px
   }
 }
 
-/* スマホ */
-@media(max-width:500px){
+/* スマホ：1列 */
+@media(max-width:600px){
   body{
     padding:9px
   }
 
+  .grid{
+    grid-template-columns:1fr
+  }
+
   .card{
-    padding:0 10px 10px
+    padding:0 11px 11px
   }
 
   .teamLine{
-    margin-left:-10px;
-    margin-right:-10px
-  }
-
-  .name{
-    font-size:17px
-  }
-
-  .stat{
-    grid-template-columns:48px 25px 1fr 19px
-  }
-
-  .peakStats{
-    gap:0 6px
+    margin-left:-11px;
+    margin-right:-11px
   }
 }
 </style>
@@ -340,7 +335,10 @@ button.active{
 <body>
 
 <h1>在籍選手データベース</h1>
-<div class="sub" id="yearText">データを読み込んでいます…</div>
+
+<div class="sub" id="yearText">
+  データを読み込んでいます…
+</div>
 
 <div class="panel">
 
@@ -397,18 +395,90 @@ button.active{
 <script>
 
 const TEAM_MAP={
-  0:{nm:"東京クラウンズ",sh:"東京",ab:"TKC",lg:"C",col:"#d4a017"},
-  1:{nm:"横浜DeNAベイスターズ",sh:"横浜",ab:"YKS",lg:"C",col:"#1d6fd6"},
-  2:{nm:"名古屋シャークズ",sh:"名古屋",ab:"NGS",lg:"C",col:"#0e9aa7"},
-  3:{nm:"京都ウルブズ",sh:"京都",ab:"KYW",lg:"C",col:"#7c3aed"},
-  4:{nm:"大阪サンダーズ",sh:"大阪",ab:"OST",lg:"C",col:"#e8500a"},
-  5:{nm:"広島フェニックス",sh:"広島",ab:"HRP",lg:"C",col:"#dc2626"},
-  6:{nm:"札幌ベアーズ",sh:"札幌",ab:"SPB",lg:"P",col:"#92400e"},
-  7:{nm:"仙台フロンティアーズ",sh:"仙台",ab:"SDF",lg:"P",col:"#b91c1c"},
-  8:{nm:"埼玉ファルコンズ",sh:"埼玉",ab:"STF",lg:"P",col:"#1e3a8a"},
-  9:{nm:"千葉オーシャンズ",sh:"千葉",ab:"CBO",lg:"P",col:"#0284c7"},
-  10:{nm:"神戸ブレイカーズ",sh:"神戸",ab:"KBB",lg:"P",col:"#059669"},
-  11:{nm:"福岡ブレイズ",sh:"福岡",ab:"FKB",lg:"P",col:"#ea580c"}
+  0:{
+    nm:"東京クラウンズ",
+    sh:"東京",
+    ab:"TKC",
+    lg:"C",
+    col:"#d4a017"
+  },
+  1:{
+    nm:"横浜DeNAベイスターズ",
+    sh:"横浜",
+    ab:"YKS",
+    lg:"C",
+    col:"#1d6fd6"
+  },
+  2:{
+    nm:"名古屋シャークズ",
+    sh:"名古屋",
+    ab:"NGS",
+    lg:"C",
+    col:"#0e9aa7"
+  },
+  3:{
+    nm:"京都ウルブズ",
+    sh:"京都",
+    ab:"KYW",
+    lg:"C",
+    col:"#7c3aed"
+  },
+  4:{
+    nm:"大阪サンダーズ",
+    sh:"大阪",
+    ab:"OST",
+    lg:"C",
+    col:"#e8500a"
+  },
+  5:{
+    nm:"広島フェニックス",
+    sh:"広島",
+    ab:"HRP",
+    lg:"C",
+    col:"#dc2626"
+  },
+  6:{
+    nm:"札幌ベアーズ",
+    sh:"札幌",
+    ab:"SPB",
+    lg:"P",
+    col:"#92400e"
+  },
+  7:{
+    nm:"仙台フロンティアーズ",
+    sh:"仙台",
+    ab:"SDF",
+    lg:"P",
+    col:"#b91c1c"
+  },
+  8:{
+    nm:"埼玉ファルコンズ",
+    sh:"埼玉",
+    ab:"STF",
+    lg:"P",
+    col:"#1e3a8a"
+  },
+  9:{
+    nm:"千葉オーシャンズ",
+    sh:"千葉",
+    ab:"CBO",
+    lg:"P",
+    col:"#0284c7"
+  },
+  10:{
+    nm:"神戸ブレイカーズ",
+    sh:"神戸",
+    ab:"KBB",
+    lg:"P",
+    col:"#059669"
+  },
+  11:{
+    nm:"福岡ブレイズ",
+    sh:"福岡",
+    ab:"FKB",
+    lg:"P",
+    col:"#ea580c"
+  }
 };
 
 const POS_NAMES={
@@ -437,6 +507,7 @@ const GROWTH_NAMES={
 };
 
 const ABILITY_NAMES={
+
   avgHit:"アベレージヒッター",
   powHit:"パワーヒッター",
   wideAng:"広角打法",
@@ -500,6 +571,7 @@ const ABILITY_NAMES={
   cleanup:"クリーンナップ",
   lowerStar:"下位の主役",
   second:"ローテの柱",
+
   sanshin:"三振癖",
   heisatsu:"併殺癖",
   chanceX:"チャンス×",
@@ -580,17 +652,19 @@ function overallOf(p){
 }
 
 function pitchValue(p){
+
   return(
-    p.ap.vl*.30+
-    p.ap.ct*.30+
-    p.ap.st*.16+
-    p.ap.br*.24
+    p.ap.vl*0.30+
+    p.ap.ct*0.30+
+    p.ap.st*0.16+
+    p.ap.br*0.24
   );
 }
 
 function positionClass(pos){
 
   if(pos==="P")return"pos-pitcher";
+
   if(pos==="C")return"pos-catcher";
 
   if(
@@ -598,7 +672,9 @@ function positionClass(pos){
     pos==="2B"||
     pos==="3B"||
     pos==="SS"
-  )return"pos-infield";
+  ){
+    return"pos-infield";
+  }
 
   if(pos==="OF")return"pos-outfield";
 
@@ -644,13 +720,16 @@ function phaseOf(p){
   if(p.gt==="early"){
     peakS=23;
     peakE=27;
-  }else if(p.gt==="normal"){
+  }
+  else if(p.gt==="normal"){
     peakS=26;
     peakE=30;
-  }else if(p.gt==="late"){
+  }
+  else if(p.gt==="late"){
     peakS=29;
     peakE=33;
-  }else{
+  }
+  else{
     peakS=25;
     peakE=33;
   }
@@ -671,7 +750,7 @@ function barClass(v){
 
 function statRows(p){
 
-  let arr;
+  let arr=[];
 
   if(p.t==="B"){
 
@@ -696,8 +775,8 @@ function statRows(p){
 
   return arr.map(x=>{
 
-    const v=Number(x[1])||0;
-    const r=rankOf(v);
+    let v=Number(x[1])||0;
+    let r=rankOf(v);
 
     return`
       <div class="stat">
@@ -711,38 +790,43 @@ function statRows(p){
           ></i>
         </div>
 
-        <span class="rank ${rankClass(v)}">${r}</span>
+        <span class="rank ${rankClass(v)}">
+          ${r}
+        </span>
       </div>
     `;
 
   }).join("");
 }
 
+/* ピーク部分は全部同じ色・同じinline構造 */
 function peakText(p){
 
-  if(!p.peak)return"不明";
+  if(!p.peak){
+    return"不明";
+  }
 
   if(p.t==="B"){
 
     return`
-      <div class="peakStats">
-        <span class="peakStat"><b>ミート</b>${p.peak.mt}</span>
-        <span class="peakStat"><b>パワー</b>${p.peak.pw}</span>
-        <span class="peakStat"><b>走力</b>${p.peak.sp}</span>
-        <span class="peakStat"><b>肩</b>${p.peak.am}</span>
+      <span class="peakStats">
+        <span class="peakStat"><b>ミート</b>${p.peak.mt}</span>　
+        <span class="peakStat"><b>パワー</b>${p.peak.pw}</span>　
+        <span class="peakStat"><b>走力</b>${p.peak.sp}</span>　
+        <span class="peakStat"><b>肩</b>${p.peak.am}</span>　
         <span class="peakStat"><b>守備</b>${p.peak.fd}</span>
-      </div>
+      </span>
     `;
 
   }
 
   return`
-    <div class="peakStats">
-      <span class="peakStat"><b>球速</b>${p.peak.vl}</span>
-      <span class="peakStat"><b>制球</b>${p.peak.ct}</span>
-      <span class="peakStat"><b>スタ</b>${p.peak.st}</span>
-      <span class="peakStat"><b>変化</b>${p.peak.br}</span>
-    </div>
+    <span class="peakStats">
+      <span class="peakStat"><b>球速</b>${p.peak.vl}</span>　
+      <span class="peakStat"><b>制球</b>${p.peak.ct}</span>　
+      <span class="peakStat"><b>スタミナ</b>${p.peak.st}</span>　
+      <span class="peakStat"><b>変化球</b>${p.peak.br}</span>
+    </span>
   `;
 }
 
@@ -753,26 +837,28 @@ function peakGap(p){
   if(p.t==="B"){
 
     return(
-      p.peak.mt-p.ab.mt+
-      p.peak.pw-p.ab.pw+
-      p.peak.sp-p.ab.sp+
-      p.peak.am-p.ab.am+
-      p.peak.fd-p.ab.fd
+      (p.peak.mt-p.ab.mt)+
+      (p.peak.pw-p.ab.pw)+
+      (p.peak.sp-p.ab.sp)+
+      (p.peak.am-p.ab.am)+
+      (p.peak.fd-p.ab.fd)
     );
 
   }
 
   return(
-    p.peak.vl-p.ap.vl+
-    p.peak.ct-p.ap.ct+
-    p.peak.st-p.ap.st+
-    p.peak.br-p.ap.br
+    (p.peak.vl-p.ap.vl)+
+    (p.peak.ct-p.ap.ct)+
+    (p.peak.st-p.ap.st)+
+    (p.peak.br-p.ap.br)
   );
 }
 
 function defenseText(p){
 
-  if(p.t==="P"||!p.df)return"—";
+  if(p.t==="P"||!p.df){
+    return"—";
+  }
 
   let a=[];
 
@@ -780,14 +866,17 @@ function defenseText(p){
 
     if(p.df[k]>0){
 
-      const lv=p.df[k];
+      let lv=p.df[k];
 
-      const mark=
+      let mark=
         lv>=3?"◎":
         lv===2?"○":
         "△";
 
-      a.push((POS_NAMES[k]||k)+mark);
+      a.push(
+        (POS_NAMES[k]||k)+mark
+      );
+
     }
   }
 
@@ -796,28 +885,48 @@ function defenseText(p){
 
 function roleText(p){
 
-  if(p.t!=="P"||!p.rl)return"—";
+  if(p.t!=="P"||!p.rl){
+    return"—";
+  }
 
   let a=[];
 
   if(p.rl.sp>0){
     a.push(
       "先発"+
-      (p.rl.sp>=3?"◎":p.rl.sp===2?"○":"△")
+      (
+        p.rl.sp>=3
+          ?"◎"
+          :p.rl.sp===2
+            ?"○"
+            :"△"
+      )
     );
   }
 
   if(p.rl.rp>0){
     a.push(
       "中継ぎ"+
-      (p.rl.rp>=3?"◎":p.rl.rp===2?"○":"△")
+      (
+        p.rl.rp>=3
+          ?"◎"
+          :p.rl.rp===2
+            ?"○"
+            :"△"
+      )
     );
   }
 
   if(p.rl.cl>0){
     a.push(
       "抑え"+
-      (p.rl.cl>=3?"◎":p.rl.cl===2?"○":"△")
+      (
+        p.rl.cl>=3
+          ?"◎"
+          :p.rl.cl===2
+            ?"○"
+            :"△"
+      )
     );
   }
 
@@ -826,11 +935,15 @@ function roleText(p){
 
 function draftText(p){
 
-  if(!p.drft)return"—";
+  if(!p.drft){
+    return"—";
+  }
 
-  if(!p.drft.y)return"未ドラフト";
+  if(!p.drft.y){
+    return"未ドラフト";
+  }
 
-  const src={
+  let src={
     HS:"高卒",
     UNI:"大卒",
     SOC:"社会人",
@@ -844,18 +957,26 @@ function draftText(p){
 
 function card(p){
 
-  const overall=overallOf(p);
-  const team=TEAM_MAP[p.team];
+  let overall=overallOf(p);
 
-  const teamName=
-    team?team.nm:"球団"+p.team;
+  let team=TEAM_MAP[p.team];
 
-  const teamColor=
-    team?team.col:"#999";
+  let teamName=
+    team
+      ?team.nm
+      :"球団"+p.team;
+
+  let teamColor=
+    team
+      ?team.col
+      :"#999";
 
   return`
 
-  <div class="card" style="--team-color:${teamColor}">
+  <div
+    class="card"
+    style="--team-color:${teamColor}"
+  >
 
     <div class="teamLine"></div>
 
@@ -863,16 +984,23 @@ function card(p){
 
       <div>
 
-        <div class="team">${teamName}</div>
+        <div class="team">
+          ${teamName}
+        </div>
 
-        <div class="name">${p.nm}</div>
+        <div class="name">
+          ${p.nm}
+        </div>
 
         <div class="basic">
+
           <span>${p.age}歳</span>
+
           <span>
             ${p.th==="L"?"左":"右"}投
             ${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
           </span>
+
         </div>
 
       </div>
@@ -889,8 +1017,12 @@ function card(p){
 
       ${
         p.t==="P"
-        ?`<span class="badge">地力 ${pitchValue(p).toFixed(1)}</span>`
-        :""
+          ?`
+            <span class="badge">
+              地力 ${pitchValue(p).toFixed(1)}
+            </span>
+          `
+          :""
       }
 
       <span class="badge">
@@ -903,27 +1035,35 @@ function card(p){
 
     </div>
 
-    <div class="statTitle">現在能力</div>
+    <div class="statTitle">
+      現在能力
+    </div>
 
     ${statRows(p)}
 
     <div class="info growthInfo">
 
-      <div class="growthLine">
+      <div>
         <b>成長：</b>${phaseOf(p)}
       </div>
 
       <div class="peakLine">
-        <b>ピーク：</b>
-        ${peakText(p)}
+        <b>ピーク：</b>${peakText(p)}
       </div>
 
     </div>
 
     <div class="info">
 
-      <b>${p.t==="P"?"投手役割":"守備適性"}：</b>
-      ${p.t==="P"?roleText(p):defenseText(p)}
+      <b>
+        ${p.t==="P"?"投手役割":"守備適性"}：
+      </b>
+
+      ${
+        p.t==="P"
+          ?roleText(p)
+          :defenseText(p)
+      }
 
     </div>
 
@@ -936,8 +1076,11 @@ function card(p){
 
     <div class="info">
 
-      <b>ドラフト：</b>${draftText(p)}
-      <b>　　在籍：</b>${p.years||0}年
+      <b>ドラフト：</b>
+      ${draftText(p)}
+
+      <b>　　在籍：</b>
+      ${p.years||0}年
 
     </div>
 
@@ -950,12 +1093,12 @@ function applyFilters(){
 
   let arr=players.filter(p=>{
 
-    if(selectedTeam!=="ALL"&&selectedTeam!=="MY"){
-
-      if(String(p.team)!==selectedTeam){
-        return false;
-      }
-
+    if(
+      selectedTeam!=="ALL"&&
+      selectedTeam!=="MY"&&
+      String(p.team)!==selectedTeam
+    ){
+      return false;
     }
 
     if(selectedTeam==="MY"){
@@ -977,7 +1120,9 @@ function applyFilters(){
 
       if(selectedPos==="P"){
 
-        if(p.t!=="P")return false;
+        if(p.t!=="P"){
+          return false;
+        }
 
       }else{
 
@@ -1001,31 +1146,40 @@ function applyFilters(){
     let x,y;
 
     if(sortMode==="overall"){
+
       x=overallOf(a);
       y=overallOf(b);
 
-    }else if(sortMode==="pot"){
+    }
+    else if(sortMode==="pot"){
+
       x=a.pot;
       y=b.pot;
 
-    }else if(sortMode==="age"){
+    }
+    else if(sortMode==="age"){
+
       x=a.age;
       y=b.age;
 
-    }else if(sortMode==="name"){
+    }
+    else if(sortMode==="name"){
 
       return descending
         ?b.nm.localeCompare(a.nm,"ja")
         :a.nm.localeCompare(b.nm,"ja");
 
-    }else{
+    }
+    else{
 
       x=peakGap(a);
       y=peakGap(b);
 
     }
 
-    return descending?y-x:x-y;
+    return descending
+      ?y-x
+      :x-y;
 
   });
 
@@ -1034,7 +1188,7 @@ function applyFilters(){
 
 function render(){
 
-  const arr=applyFilters();
+  let arr=applyFilters();
 
   document.getElementById("count").textContent=
     `表示：${arr.length}人 / 全${players.length}人`;
@@ -1045,34 +1199,44 @@ function render(){
 
 function setup(){
 
-  const sel=document.getElementById("teamFilter");
+  let sel=
+    document.getElementById("teamFilter");
 
   sel.innerHTML=
     `<option value="MY">自球団（横浜）</option>`+
     `<option value="ALL">全12球団</option>`+
     Object.keys(TEAM_MAP)
-      .map(i=>
-        `<option value="${i}">${TEAM_MAP[i].nm}</option>`
+      .map(
+        i=>
+          `<option value="${i}">
+            ${TEAM_MAP[i].nm}
+          </option>`
       )
       .join("");
 
   sel.addEventListener("change",()=>{
+
     selectedTeam=sel.value;
     render();
+
   });
 
   document
     .getElementById("typeFilter")
     .addEventListener("change",e=>{
+
       selectedType=e.target.value;
       render();
+
     });
 
   document
     .getElementById("sortFilter")
     .addEventListener("change",e=>{
+
       sortMode=e.target.value;
       render();
+
     });
 
   document
@@ -1082,7 +1246,9 @@ function setup(){
       descending=!descending;
 
       e.target.textContent=
-        descending?"↓ 高い順":"↑ 低い順";
+        descending
+          ?"↓ 高い順"
+          :"↑ 低い順";
 
       render();
 
@@ -1134,50 +1300,65 @@ async function loadData(){
       hash+="=";
     }
 
-    const bin=atob(hash);
-    const u=new Uint8Array(bin.length);
+    let bin=atob(hash);
+
+    let u=
+      new Uint8Array(bin.length);
 
     for(let i=0;i<bin.length;i++){
       u[i]=bin.charCodeAt(i);
     }
 
-    const ds=new DecompressionStream("deflate");
-    const w=ds.writable.getWriter();
-    const r=ds.readable.getReader();
+    let ds=
+      new DecompressionStream("deflate");
+
+    let w=
+      ds.writable.getWriter();
+
+    let r=
+      ds.readable.getReader();
 
     w.write(u);
     w.close();
 
-    const chunks=[];
+    let chunks=[];
     let x;
 
     while(!(x=await r.read()).done){
       chunks.push(x.value);
     }
 
-    const total=
-      chunks.reduce((n,a)=>n+a.length,0);
+    let total=
+      chunks.reduce(
+        (n,a)=>n+a.length,
+        0
+      );
 
-    const out=new Uint8Array(total);
+    let out=
+      new Uint8Array(total);
 
     let off=0;
 
-    for(const c of chunks){
+    for(let c of chunks){
+
       out.set(c,off);
       off+=c.length;
+
     }
 
-    const text=
+    let text=
       new TextDecoder().decode(out);
 
-    const data=JSON.parse(text);
+    let data=
+      JSON.parse(text);
 
-    players=data.players||[];
+    players=
+      data.players||[];
 
     document
       .getElementById("yearText")
       .textContent=
-        `${data.year||"?"}年度　${players.length}人`;
+        `${data.year||"?"}年度　在籍選手 ${players.length}人`;
 
     setup();
     render();
