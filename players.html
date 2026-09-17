@@ -42,6 +42,11 @@ h1{
   align-items:center
 }
 
+.filterLabel{
+  font-size:13px;
+  font-weight:600
+}
+
 select,button{
   font-size:13px;
   padding:6px 8px;
@@ -58,6 +63,44 @@ button.active{
   background:#333;
   color:#fff;
   border-color:#333
+}
+
+.checkLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  padding:4px 2px
+}
+
+.checkLabel input{
+  margin:0;
+  width:14px;
+  height:14px
+}
+
+.posTitle{
+  width:100%;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:0
+}
+
+.roleArea{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  margin-top:6px;
+  font-size:12px
+}
+
+.roleLabel{
+  font-size:12px;
+  font-weight:700;
+  margin-right:2px
 }
 
 .count{
@@ -102,9 +145,9 @@ button.active{
   font-weight:700
 }
 
-/* 球団名→名前の間を少し広げる */
+/* 名前を少し大きく */
 .name{
-  font-size:18px;
+  font-size:19px;
   font-weight:700;
   margin-top:6px;
   padding-right:76px;
@@ -254,32 +297,33 @@ button.active{
 
 /*
  * 成長・ピーク
- * ピークを無理にflex化せず、
- * 一続きの文字列として扱う
+ * すべて同じ黒色
  */
 .growthInfo{
   white-space:nowrap;
-  overflow:hidden
+  overflow:hidden;
+  color:#222
 }
 
 .peakLine{
   white-space:nowrap;
   overflow:hidden;
-  color:#555
+  color:inherit
 }
 
 .peakStats{
   display:inline;
-  white-space:nowrap
+  white-space:nowrap;
+  color:inherit
 }
 
 .peakStat{
   white-space:nowrap;
-  color:#555
+  color:inherit
 }
 
 .peakStat b{
-  color:#555;
+  color:inherit;
   margin-right:1px
 }
 
@@ -342,19 +386,102 @@ button.active{
 
 <div class="panel">
 
+  <!-- リーグ・球団 -->
   <div class="controls">
+
+    <label>
+      リーグ
+      <select id="leagueFilter">
+        <option value="ALL">全部</option>
+        <option value="C">セ・リーグ</option>
+        <option value="P">パ・リーグ</option>
+      </select>
+    </label>
 
     <label>
       球団
       <select id="teamFilter"></select>
     </label>
 
+  </div>
+
+  <!-- ポジション -->
+  <div class="controls" style="margin-top:8px">
+
+    <div class="posTitle">
+      ポジション
+    </div>
+
+    <button class="posBtn active" data-pos="ALL">全部</button>
+    <button class="posBtn" data-pos="C">捕手</button>
+    <button class="posBtn" data-pos="1B">一塁</button>
+    <button class="posBtn" data-pos="2B">二塁</button>
+    <button class="posBtn" data-pos="3B">三塁</button>
+    <button class="posBtn" data-pos="SS">遊撃</button>
+    <button class="posBtn" data-pos="OF">外野</button>
+    <button class="posBtn" data-pos="P">投手</button>
+
+  </div>
+
+  <!-- 野手・投手の追加条件 -->
+  <div class="roleArea">
+
+    <span class="roleLabel">野手なら</span>
+
+    <label class="checkLabel">
+      <input type="checkbox" id="includeSub">
+      サブポジションも含める
+    </label>
+
+    <span class="roleLabel" style="margin-left:14px">
+      投手なら
+    </span>
+
+    <label class="checkLabel">
+      <input type="checkbox" class="roleCheck" data-role="sp">
+      先発
+    </label>
+
+    <label class="checkLabel">
+      <input type="checkbox" class="roleCheck" data-role="rp">
+      中継ぎ
+    </label>
+
+    <label class="checkLabel">
+      <input type="checkbox" class="roleCheck" data-role="cl">
+      抑え
+    </label>
+
+    <label class="checkLabel">
+      <input type="checkbox" id="excludeLowRole">
+      △適性を除外
+    </label>
+
+  </div>
+
+  <!-- 潜在・成長・並び順 -->
+  <div class="controls" style="margin-top:8px">
+
     <label>
-      種別
-      <select id="typeFilter">
-        <option value="ALL">全員</option>
-        <option value="P">投手</option>
-        <option value="B">野手</option>
+      潜在
+      <select id="potFilter">
+        <option value="ALL">全部</option>
+        <option value="5">S</option>
+        <option value="4">A以上</option>
+        <option value="3">B以上</option>
+        <option value="2">C以上</option>
+        <option value="1">D以上</option>
+      </select>
+    </label>
+
+    <label>
+      成長
+      <select id="growthFilter">
+        <option value="ALL">全部</option>
+        <option value="early">早熟</option>
+        <option value="normal">普通</option>
+        <option value="late">晩成</option>
+        <option value="long">持続</option>
       </select>
     </label>
 
@@ -370,19 +497,6 @@ button.active{
     </label>
 
     <button id="orderBtn">↓ 高い順</button>
-
-  </div>
-
-  <div class="controls" style="margin-top:6px">
-
-    <button class="posBtn active" data-pos="ALL">全部</button>
-    <button class="posBtn" data-pos="C">捕手</button>
-    <button class="posBtn" data-pos="1B">一塁</button>
-    <button class="posBtn" data-pos="2B">二塁</button>
-    <button class="posBtn" data-pos="3B">三塁</button>
-    <button class="posBtn" data-pos="SS">遊撃</button>
-    <button class="posBtn" data-pos="OF">外野</button>
-    <button class="posBtn" data-pos="P">投手</button>
 
   </div>
 
@@ -614,9 +728,21 @@ const BAD_ABILITIES=new Set([
 ]);
 
 let players=[];
+
+let selectedLeague="ALL";
 let selectedTeam="MY";
-let selectedType="ALL";
-let selectedPos="ALL";
+
+let selectedPositions=new Set(["ALL"]);
+
+let includeSub=false;
+
+let selectedRoles=new Set();
+
+let excludeLowRole=false;
+
+let selectedPot="ALL";
+let selectedGrowth="ALL";
+
 let sortMode="overall";
 let descending=true;
 
@@ -799,7 +925,6 @@ function statRows(p){
   }).join("");
 }
 
-/* ピーク部分は全部同じ色・同じinline構造 */
 function peakText(p){
 
   if(!p.peak){
@@ -1089,10 +1214,95 @@ function card(p){
   `;
 }
 
+function positionMatches(p){
+
+  if(selectedPositions.has("ALL")){
+    return true;
+  }
+
+  for(let pos of selectedPositions){
+
+    if(pos==="P"){
+
+      if(p.t==="P"){
+        return true;
+      }
+
+      continue;
+    }
+
+    if(p.t!=="B"){
+      continue;
+    }
+
+    if(p.pos===pos){
+      return true;
+    }
+
+    if(
+      includeSub &&
+      p.df &&
+      Number(p.df[pos]||0)>0
+    ){
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function roleMatches(p){
+
+  if(p.t!=="P"){
+    return true;
+  }
+
+  if(selectedRoles.size===0){
+    return true;
+  }
+
+  if(!p.rl){
+    return false;
+  }
+
+  for(let role of selectedRoles){
+
+    let lv=Number(p.rl[role]||0);
+
+    if(excludeLowRole){
+
+      if(lv>=2){
+        return true;
+      }
+
+    }else{
+
+      if(lv>0){
+        return true;
+      }
+
+    }
+  }
+
+  return false;
+}
+
 function applyFilters(){
 
   let arr=players.filter(p=>{
 
+    /* リーグ */
+    if(selectedLeague!=="ALL"){
+
+      let team=TEAM_MAP[p.team];
+
+      if(!team||team.lg!==selectedLeague){
+        return false;
+      }
+
+    }
+
+    /* 球団 */
     if(
       selectedTeam!=="ALL"&&
       selectedTeam!=="MY"&&
@@ -1109,32 +1319,30 @@ function applyFilters(){
 
     }
 
+    /* ポジション */
+    if(!positionMatches(p)){
+      return false;
+    }
+
+    /* 投手役割 */
+    if(!roleMatches(p)){
+      return false;
+    }
+
+    /* 潜在 */
     if(
-      selectedType!=="ALL"&&
-      p.t!==selectedType
+      selectedPot!=="ALL"&&
+      Number(p.pot)<Number(selectedPot)
     ){
       return false;
     }
 
-    if(selectedPos!=="ALL"){
-
-      if(selectedPos==="P"){
-
-        if(p.t!=="P"){
-          return false;
-        }
-
-      }else{
-
-        if(
-          p.t!=="B"||
-          p.pos!==selectedPos
-        ){
-          return false;
-        }
-
-      }
-
+    /* 成長 */
+    if(
+      selectedGrowth!=="ALL"&&
+      p.gt!==selectedGrowth
+    ){
+      return false;
     }
 
     return true;
@@ -1199,6 +1407,7 @@ function render(){
 
 function setup(){
 
+  /* 球団 */
   let sel=
     document.getElementById("teamFilter");
 
@@ -1221,15 +1430,123 @@ function setup(){
 
   });
 
+  /* リーグ */
   document
-    .getElementById("typeFilter")
+    .getElementById("leagueFilter")
     .addEventListener("change",e=>{
 
-      selectedType=e.target.value;
+      selectedLeague=e.target.value;
       render();
 
     });
 
+  /* ポジション */
+  document
+    .querySelectorAll(".posBtn")
+    .forEach(btn=>{
+
+      btn.addEventListener("click",()=>{
+
+        let pos=btn.dataset.pos;
+
+        if(pos==="ALL"){
+
+          selectedPositions=new Set(["ALL"]);
+
+        }else{
+
+          if(selectedPositions.has("ALL")){
+            selectedPositions.delete("ALL");
+          }
+
+          if(selectedPositions.has(pos)){
+            selectedPositions.delete(pos);
+          }else{
+            selectedPositions.add(pos);
+          }
+
+          if(selectedPositions.size===0){
+            selectedPositions.add("ALL");
+          }
+
+        }
+
+        document
+          .querySelectorAll(".posBtn")
+          .forEach(x=>{
+
+            x.classList.toggle(
+              "active",
+              selectedPositions.has(x.dataset.pos)
+            );
+
+          });
+
+        render();
+
+      });
+
+    });
+
+  /* サブポジション */
+  document
+    .getElementById("includeSub")
+    .addEventListener("change",e=>{
+
+      includeSub=e.target.checked;
+      render();
+
+    });
+
+  /* 投手役割 */
+  document
+    .querySelectorAll(".roleCheck")
+    .forEach(box=>{
+
+      box.addEventListener("change",()=>{
+
+        selectedRoles=new Set(
+          [...document.querySelectorAll(".roleCheck:checked")]
+            .map(x=>x.dataset.role)
+        );
+
+        render();
+
+      });
+
+    });
+
+  /* △適性を除外 */
+  document
+    .getElementById("excludeLowRole")
+    .addEventListener("change",e=>{
+
+      excludeLowRole=e.target.checked;
+      render();
+
+    });
+
+  /* 潜在 */
+  document
+    .getElementById("potFilter")
+    .addEventListener("change",e=>{
+
+      selectedPot=e.target.value;
+      render();
+
+    });
+
+  /* 成長 */
+  document
+    .getElementById("growthFilter")
+    .addEventListener("change",e=>{
+
+      selectedGrowth=e.target.value;
+      render();
+
+    });
+
+  /* 並び順 */
   document
     .getElementById("sortFilter")
     .addEventListener("change",e=>{
@@ -1239,6 +1556,7 @@ function setup(){
 
     });
 
+  /* 高い順・低い順 */
   document
     .getElementById("orderBtn")
     .addEventListener("click",e=>{
@@ -1251,28 +1569,6 @@ function setup(){
           :"↑ 低い順";
 
       render();
-
-    });
-
-  document
-    .querySelectorAll(".posBtn")
-    .forEach(btn=>{
-
-      btn.addEventListener("click",()=>{
-
-        document
-          .querySelectorAll(".posBtn")
-          .forEach(x=>
-            x.classList.remove("active")
-          );
-
-        btn.classList.add("active");
-
-        selectedPos=btn.dataset.pos;
-
-        render();
-
-      });
 
     });
 }
