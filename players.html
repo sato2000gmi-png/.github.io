@@ -1486,19 +1486,6 @@ function setup(){
 
     });
 
-  /* 年度切り替え */
-  document
-    .getElementById("yearFilter")
-    .addEventListener("change",e=>{
-
-      const year=e.target.value;
-
-      players=yearData[year]||[];
-
-      updateYearText(year);
-      render();
-
-    });
 }
 
 function updateYearText(year){
