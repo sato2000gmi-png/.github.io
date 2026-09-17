@@ -66,9 +66,10 @@ button.active{
   color:#666
 }
 
+/* デスクトップでは3列 */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:14px
 }
 
@@ -90,9 +91,8 @@ button.active{
 }
 
 .cardHead{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
+  position:relative;
+  min-height:72px;
   margin-bottom:10px
 }
 
@@ -105,7 +105,8 @@ button.active{
 .name{
   font-size:20px;
   font-weight:700;
-  margin-top:2px
+  margin-top:2px;
+  padding-right:88px
 }
 
 .basic{
@@ -115,37 +116,52 @@ button.active{
   gap:5px;
   font-size:13px;
   color:#555;
-  margin-top:4px
+  margin-top:5px;
+  padding-right:88px
 }
 
 /* ポジションバッジ */
 .posBadge{
-  display:inline-block;
-  padding:2px 7px;
-  border-radius:5px;
-  font-size:12px;
+  position:absolute;
+  right:0;
+  top:15px;
+
+  min-width:68px;
+  padding:9px 10px;
+
+  border-radius:10px;
+
+  font-size:15px;
   font-weight:700;
-  line-height:1.4
+  line-height:1;
+  text-align:center;
+
+  border:1px solid transparent
 }
 
+/* 少し落ち着いた、おしゃれ寄りのポジション色 */
 .pos-pitcher{
-  background:#fee2e2;
-  color:#b91c1c
+  background:#f8dddd;
+  color:#a94747;
+  border-color:#edc2c2
 }
 
 .pos-catcher{
-  background:#dbeafe;
-  color:#1d4ed8
+  background:#dcebea;
+  color:#317779;
+  border-color:#c1dedd
 }
 
 .pos-infield{
-  background:#fef3c7;
-  color:#a16207
+  background:#f3ead1;
+  color:#9a7830;
+  border-color:#e6d8ae
 }
 
 .pos-outfield{
-  background:#dcfce7;
-  color:#15803d
+  background:#deebdf;
+  color:#4d8057;
+  border-color:#c5dcc8
 }
 
 /* 要約 */
@@ -193,32 +209,29 @@ button.active{
   border-radius:99px
 }
 
+/* ドラフト候補ページより少し落ち着かせつつ、前回より鮮やか */
 .rank{
   font-weight:700;
   text-align:center
 }
 
-/*
- * ドラフト候補ページと同じランク色を、
- * 在籍選手ページでは少し淡くしたもの
- */
-.rank-S{color:#e58ab0}
-.rank-A{color:#e77b8c}
-.rank-B{color:#e5a06a}
-.rank-C{color:#d8bd5a}
-.rank-D{color:#a7c86c}
-.rank-E{color:#72b9d4}
-.rank-F{color:#9aa6b5}
-.rank-G{color:#7f8998}
+.rank-S{color:#ed5f9a}
+.rank-A{color:#e94d69}
+.rank-B{color:#ef8b43}
+.rank-C{color:#d6b52f}
+.rank-D{color:#82b84d}
+.rank-E{color:#35a9ca}
+.rank-F{color:#71879e}
+.rank-G{color:#657488}
 
-.bar-S{background:#f3a6c2}
-.bar-A{background:#f29aa7}
-.bar-B{background:#f2b887}
-.bar-C{background:#ead47d}
-.bar-D{background:#c1dc8d}
-.bar-E{background:#8fd0e5}
-.bar-F{background:#b7c0cb}
-.bar-G{background:#9da6b2}
+.bar-S{background:#f27db0}
+.bar-A{background:#ef657c}
+.bar-B{background:#f49a55}
+.bar-C{background:#e6c34f}
+.bar-D{background:#9dca5a}
+.bar-E{background:#4fb9d6}
+.bar-F{background:#8495aa}
+.bar-G{background:#6f7d91}
 
 /* 詳細情報 */
 .info{
@@ -233,6 +246,30 @@ button.active{
   font-weight:700
 }
 
+/* 成長・ピーク */
+.growthInfo{
+  display:flex;
+  flex-direction:column;
+  gap:1px
+}
+
+.peakStats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:2px 9px;
+  color:#555
+}
+
+.peakStat{
+  white-space:nowrap
+}
+
+.peakStat b{
+  margin-right:2px;
+  color:#444
+}
+
+/* 特殊能力 */
 .abilities{
   margin-top:5px
 }
@@ -251,29 +288,18 @@ button.active{
   color:#555
 }
 
-.peak{
-  color:#555
-}
-
-.peakStats{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px 10px;
-  margin-top:2px
-}
-
-.peakStat{
-  white-space:nowrap
-}
-
-.peakStat b{
-  margin-right:2px
-}
-
 .hidden{
   display:none
 }
 
+/* タブレット */
+@media(max-width:1050px){
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+}
+
+/* スマホ */
 @media(max-width:600px){
   body{
     padding:10px
@@ -353,6 +379,7 @@ button.active{
 <div class="grid" id="grid"></div>
 
 <script>
+
 const TEAM_MAP={
   0:{
     nm:"東京クラウンズ",
@@ -466,6 +493,7 @@ const GROWTH_NAMES={
 };
 
 const ABILITY_NAMES={
+
   avgHit:"アベレージヒッター",
   powHit:"パワーヒッター",
   wideAng:"広角打法",
@@ -550,22 +578,25 @@ const ABILITY_NAMES={
 };
 
 const GOOD_ABILITIES=new Set([
-  "avgHit","powHit","wideAng","chance3","chance2","vsLeftB3",
-  "vsAce","katame","shokyu","nebari","manrui","sayonara","gyakkyo",
-  "kaimaku","natsu","aki","daida","bunt","shobu","steal3","baserun3",
-  "headsl","fldArt","laser","throw3","lead3","block3","nobi","kire",
-  "omoi","vsPinch","vsLeftP3","tough","quick","kensei","kSama",
-  "kanto","tetsuwan","hikeshi","shiriagari","kachiun","ironBody",
-  "recover","mood","ninki","toushi","vetAji","bigstage","omatsuri",
-  "gapHit","vsRightB3","soku","badball","leadoff","gekitetsu",
-  "groundball","noWalk","lateStopper","vsRightP3","lucky","cleanup",
-  "lowerStar","second"
+  "avgHit","powHit","wideAng","chance3","chance2",
+  "vsLeftB3","vsAce","katame","shokyu","nebari",
+  "manrui","sayonara","gyakkyo","kaimaku","natsu",
+  "aki","daida","bunt","shobu","steal3","baserun3",
+  "headsl","fldArt","laser","throw3","lead3","block3",
+  "nobi","kire","omoi","vsPinch","vsLeftP3","tough",
+  "quick","kensei","kSama","kanto","tetsuwan","hikeshi",
+  "shiriagari","kachiun","ironBody","recover","mood",
+  "ninki","toushi","vetAji","bigstage","omatsuri","gapHit",
+  "vsRightB3","soku","badball","leadoff","gekitetsu",
+  "groundball","noWalk","lateStopper","vsRightP3",
+  "lucky","cleanup","lowerStar","second"
 ]);
 
 const BAD_ABILITIES=new Set([
-  "sanshin","heisatsu","chanceX","vsLeftBX","murake","slowB",
-  "stealX","throwX","errorPr","ippatsu","yonkyu","slowP","makeun",
-  "tanki","fragGlass","glassBody","tofu"
+  "sanshin","heisatsu","chanceX","vsLeftBX","murake",
+  "slowB","stealX","throwX","errorPr","ippatsu",
+  "yonkyu","slowP","makeun","tanki","fragGlass",
+  "glassBody","tofu"
 ]);
 
 let players=[];
@@ -587,6 +618,7 @@ function rankOf(v){
 }
 
 function overallOf(p){
+
   if(p.t==="B"){
     return(
       p.ab.mt+
@@ -606,6 +638,7 @@ function overallOf(p){
 }
 
 function pitchValue(p){
+
   return(
     p.ap.vl*0.30+
     p.ap.ct*0.30+
@@ -615,16 +648,27 @@ function pitchValue(p){
 }
 
 function positionClass(pos){
+
   if(pos==="P")return"pos-pitcher";
+
   if(pos==="C")return"pos-catcher";
-  if(pos==="1B"||pos==="2B"||pos==="3B"||pos==="SS"){
+
+  if(
+    pos==="1B"||
+    pos==="2B"||
+    pos==="3B"||
+    pos==="SS"
+  ){
     return"pos-infield";
   }
+
   if(pos==="OF")return"pos-outfield";
+
   return"";
 }
 
 function positionBadge(pos){
+
   return`
     <span class="posBadge ${positionClass(pos)}">
       ${POS_NAMES[pos]||pos}
@@ -678,6 +722,7 @@ function phaseOf(p){
 
   if(p.age<peakS)return"成長期";
   if(p.age<=peakE)return"ピーク";
+
   return"衰退期";
 }
 
@@ -694,6 +739,7 @@ function statRows(p){
   let arr=[];
 
   if(p.t==="B"){
+
     arr=[
       ["ミート",p.ab.mt],
       ["パワー",p.ab.pw],
@@ -701,14 +747,16 @@ function statRows(p){
       ["肩力",p.ab.am],
       ["守備",p.ab.fd]
     ];
-  }
-  else{
+
+  }else{
+
     arr=[
       ["球速",p.ap.vl],
       ["制球",p.ap.ct],
       ["スタ",p.ap.st],
       ["変化",p.ap.br]
     ];
+
   }
 
   return arr.map(x=>{
@@ -719,11 +767,21 @@ function statRows(p){
     return`
       <div class="stat">
         <span>${x[0]}</span>
-        <span class="${rankClass(v)}">${v}</span>
+
+        <span class="${rankClass(v)}">
+          ${v}
+        </span>
+
         <div class="bar">
-          <i class="${barClass(v)}" style="width:${Math.min(v,99)}%"></i>
+          <i
+            class="${barClass(v)}"
+            style="width:${Math.min(v,99)}%"
+          ></i>
         </div>
-        <span class="rank ${rankClass(v)}">${r}</span>
+
+        <span class="rank ${rankClass(v)}">
+          ${r}
+        </span>
       </div>
     `;
 
@@ -740,21 +798,48 @@ function peakText(p){
 
     return`
       <div class="peakStats">
-        <span class="peakStat"><b>ミート</b>${p.peak.mt}</span>
-        <span class="peakStat"><b>パワー</b>${p.peak.pw}</span>
-        <span class="peakStat"><b>走力</b>${p.peak.sp}</span>
-        <span class="peakStat"><b>肩</b>${p.peak.am}</span>
-        <span class="peakStat"><b>守備</b>${p.peak.fd}</span>
+        <span class="peakStat">
+          <b>ミート</b>${p.peak.mt}
+        </span>
+
+        <span class="peakStat">
+          <b>パワー</b>${p.peak.pw}
+        </span>
+
+        <span class="peakStat">
+          <b>走力</b>${p.peak.sp}
+        </span>
+
+        <span class="peakStat">
+          <b>肩</b>${p.peak.am}
+        </span>
+
+        <span class="peakStat">
+          <b>守備</b>${p.peak.fd}
+        </span>
       </div>
     `;
   }
 
   return`
     <div class="peakStats">
-      <span class="peakStat"><b>球速</b>${p.peak.vl}</span>
-      <span class="peakStat"><b>制球</b>${p.peak.ct}</span>
-      <span class="peakStat"><b>スタミナ</b>${p.peak.st}</span>
-      <span class="peakStat"><b>変化球</b>${p.peak.br}</span>
+
+      <span class="peakStat">
+        <b>球速</b>${p.peak.vl}
+      </span>
+
+      <span class="peakStat">
+        <b>制球</b>${p.peak.ct}
+      </span>
+
+      <span class="peakStat">
+        <b>スタミナ</b>${p.peak.st}
+      </span>
+
+      <span class="peakStat">
+        <b>変化球</b>${p.peak.br}
+      </span>
+
     </div>
   `;
 }
@@ -764,6 +849,7 @@ function peakGap(p){
   if(!p.peak)return 0;
 
   if(p.t==="B"){
+
     return(
       (p.peak.mt-p.ab.mt)+
       (p.peak.pw-p.ab.pw)+
@@ -771,6 +857,7 @@ function peakGap(p){
       (p.peak.am-p.ab.am)+
       (p.peak.fd-p.ab.fd)
     );
+
   }
 
   return(
@@ -803,6 +890,7 @@ function defenseText(p){
       a.push(
         (POS_NAMES[k]||k)+mark
       );
+
     }
   }
 
@@ -820,21 +908,39 @@ function roleText(p){
   if(p.rl.sp>0){
     a.push(
       "先発"+
-      (p.rl.sp>=3?"◎":p.rl.sp===2?"○":"△")
+      (
+        p.rl.sp>=3
+          ?"◎"
+          :p.rl.sp===2
+            ?"○"
+            :"△"
+      )
     );
   }
 
   if(p.rl.rp>0){
     a.push(
       "中継ぎ"+
-      (p.rl.rp>=3?"◎":p.rl.rp===2?"○":"△")
+      (
+        p.rl.rp>=3
+          ?"◎"
+          :p.rl.rp===2
+            ?"○"
+            :"△"
+      )
     );
   }
 
   if(p.rl.cl>0){
     a.push(
       "抑え"+
-      (p.rl.cl>=3?"◎":p.rl.cl===2?"○":"△")
+      (
+        p.rl.cl>=3
+          ?"◎"
+          :p.rl.cl===2
+            ?"○"
+            :"△"
+      )
     );
   }
 
@@ -866,18 +972,25 @@ function draftText(p){
 function card(p){
 
   let overall=overallOf(p);
+
   let team=TEAM_MAP[p.team];
 
-  let teamName=team?team.nm:("球団"+p.team);
-  let teamColor=team?team.col:"#999";
+  let teamName=
+    team
+      ?team.nm
+      :"球団"+p.team;
 
-  let basicType=
-    p.t==="P"
-      ?"投手"
-      :(POS_NAMES[p.pos]||p.pos);
+  let teamColor=
+    team
+      ?team.col
+      :"#999";
 
   return`
-  <div class="card" style="--team-color:${teamColor}">
+
+  <div
+    class="card"
+    style="--team-color:${teamColor}"
+  >
 
     <div class="teamLine"></div>
 
@@ -897,8 +1010,6 @@ function card(p){
 
           <span>${p.age}歳</span>
 
-          ${positionBadge(p.pos)}
-
           <span>
             ${p.th==="L"?"左":"右"}投
             ${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
@@ -908,6 +1019,8 @@ function card(p){
 
       </div>
 
+      ${positionBadge(p.pos)}
+
     </div>
 
     <div class="summary">
@@ -916,13 +1029,14 @@ function card(p){
         総合 ${overall.toFixed(1)}
       </span>
 
-      ${p.t==="P"
-        ?`
-          <span class="badge">
-            地力 ${pitchValue(p).toFixed(1)}
-          </span>
-        `
-        :""
+      ${
+        p.t==="P"
+          ?`
+            <span class="badge">
+              地力 ${pitchValue(p).toFixed(1)}
+            </span>
+          `
+          :""
       }
 
       <span class="badge">
@@ -941,10 +1055,16 @@ function card(p){
 
     ${statRows(p)}
 
-    <div class="info">
-      <b>成長：</b>${phaseOf(p)}
-      <b>　ピーク：</b>
-      ${peakText(p)}
+    <div class="info growthInfo">
+
+      <div>
+        <b>成長：</b>${phaseOf(p)}
+      </div>
+
+      <div>
+        <b>ピーク：</b>${peakText(p)}
+      </div>
+
     </div>
 
     <div class="info">
@@ -953,9 +1073,10 @@ function card(p){
         ${p.t==="P"?"投手役割":"守備適性"}：
       </b>
 
-      ${p.t==="P"
-        ?roleText(p)
-        :defenseText(p)
+      ${
+        p.t==="P"
+          ?roleText(p)
+          :defenseText(p)
       }
 
     </div>
@@ -978,6 +1099,7 @@ function card(p){
     </div>
 
   </div>
+
   `;
 }
 
@@ -994,9 +1116,11 @@ function applyFilters(){
     }
 
     if(selectedTeam==="MY"){
+
       if(String(p.team)!=="1"){
         return false;
       }
+
     }
 
     if(
@@ -1024,9 +1148,11 @@ function applyFilters(){
         }
 
       }
+
     }
 
     return true;
+
   });
 
   arr.sort((a,b)=>{
@@ -1034,16 +1160,22 @@ function applyFilters(){
     let x,y;
 
     if(sortMode==="overall"){
+
       x=overallOf(a);
       y=overallOf(b);
+
     }
     else if(sortMode==="pot"){
+
       x=a.pot;
       y=b.pot;
+
     }
     else if(sortMode==="age"){
+
       x=a.age;
       y=b.age;
+
     }
     else if(sortMode==="name"){
 
@@ -1081,33 +1213,48 @@ function render(){
 
 function setup(){
 
-  let sel=document.getElementById("teamFilter");
+  let sel=
+    document.getElementById("teamFilter");
 
   sel.innerHTML=
     `<option value="MY">自球団（横浜）</option>`+
     `<option value="ALL">全12球団</option>`+
     Object.keys(TEAM_MAP)
-      .map(i=>`<option value="${i}">${TEAM_MAP[i].nm}</option>`)
+      .map(
+        i=>
+          `<option value="${i}">
+            ${TEAM_MAP[i].nm}
+          </option>`
+      )
       .join("");
 
   sel.addEventListener("change",()=>{
+
     selectedTeam=sel.value;
     render();
+
   });
 
-  document.getElementById("typeFilter")
+  document
+    .getElementById("typeFilter")
     .addEventListener("change",e=>{
+
       selectedType=e.target.value;
       render();
+
     });
 
-  document.getElementById("sortFilter")
+  document
+    .getElementById("sortFilter")
     .addEventListener("change",e=>{
+
       sortMode=e.target.value;
       render();
+
     });
 
-  document.getElementById("orderBtn")
+  document
+    .getElementById("orderBtn")
     .addEventListener("click",e=>{
 
       descending=!descending;
@@ -1121,13 +1268,17 @@ function setup(){
 
     });
 
-  document.querySelectorAll(".posBtn")
+  document
+    .querySelectorAll(".posBtn")
     .forEach(btn=>{
 
       btn.addEventListener("click",()=>{
 
-        document.querySelectorAll(".posBtn")
-          .forEach(x=>x.classList.remove("active"));
+        document
+          .querySelectorAll(".posBtn")
+          .forEach(x=>
+            x.classList.remove("active")
+          );
 
         btn.classList.add("active");
 
@@ -1154,25 +1305,32 @@ async function loadData(){
 
   try{
 
-    hash=hash
-      .replace(/-/g,"+")
-      .replace(/_/g,"/");
+    hash=
+      hash
+        .replace(/-/g,"+")
+        .replace(/_/g,"/");
 
     while(hash.length%4){
       hash+="=";
     }
 
     let bin=atob(hash);
-    let u=new Uint8Array(bin.length);
+
+    let u=
+      new Uint8Array(bin.length);
 
     for(let i=0;i<bin.length;i++){
       u[i]=bin.charCodeAt(i);
     }
 
-    let ds=new DecompressionStream("deflate");
+    let ds=
+      new DecompressionStream("deflate");
 
-    let w=ds.writable.getWriter();
-    let r=ds.readable.getReader();
+    let w=
+      ds.writable.getWriter();
+
+    let r=
+      ds.readable.getReader();
 
     w.write(u);
     w.close();
@@ -1185,25 +1343,36 @@ async function loadData(){
     }
 
     let total=
-      chunks.reduce((n,a)=>n+a.length,0);
+      chunks.reduce(
+        (n,a)=>n+a.length,
+        0
+      );
 
-    let out=new Uint8Array(total);
+    let out=
+      new Uint8Array(total);
+
     let off=0;
 
     for(let c of chunks){
+
       out.set(c,off);
       off+=c.length;
+
     }
 
     let text=
       new TextDecoder().decode(out);
 
-    let data=JSON.parse(text);
+    let data=
+      JSON.parse(text);
 
-    players=data.players||[];
+    players=
+      data.players||[];
 
-    document.getElementById("yearText").textContent=
-      `${data.year||"?"}年度　現在選手 ${players.length}人`;
+    document
+      .getElementById("yearText")
+      .textContent=
+        `${data.year||"?"}年度　現在選手 ${players.length}人`;
 
     setup();
     render();
@@ -1212,13 +1381,16 @@ async function loadData(){
 
     console.error(e);
 
-    document.getElementById("yearText").textContent=
-      "データの読み込みに失敗しました。";
+    document
+      .getElementById("yearText")
+      .textContent=
+        "データの読み込みに失敗しました。";
 
   }
 }
 
 loadData();
+
 </script>
 
 </body>
