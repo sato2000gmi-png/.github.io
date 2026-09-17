@@ -28,7 +28,27 @@ h1{
   font-size:20px;
   margin:0 0 3px;
 }
+  
+/* ポジション別カラー */
+.pos-pitcher{
+  color:#d32f2f !important;
+  font-weight:700;
+}
 
+.pos-catcher{
+  color:#1976d2 !important;
+  font-weight:700;
+}
+
+.pos-infield{
+  color:#d89b00 !important;
+  font-weight:700;
+}
+
+.pos-outfield{
+  color:#2e8b57 !important;
+  font-weight:700;
+}
 .subtitle{
   font-size:12px;
   color:#777;
@@ -216,7 +236,15 @@ const POS={
   SS:"遊撃",
   OF:"外野"
 };
-
+  
+function posClass(pos){
+  if(pos==="P") return "pos-pitcher";
+  if(pos==="C") return "pos-catcher";
+  if(["1B","2B","3B","SS"].includes(pos)) return "pos-infield";
+  if(pos==="OF") return "pos-outfield";
+  return "";
+}
+  
 const ABILITY_NAME={
   mt:"ミート",
   pw:"パワー",
@@ -491,7 +519,7 @@ function render(arr){
 
         <div class="basic">
           ${x.age??"?"}歳　
-          <span>${POS[x.pos]||x.pos||"?"}</span>　
+<span class="${posClass(x.pos)}">${POS[x.pos]||x.pos||"?"}</span>　
           潜在
           <b style="color:${potentialColor}">
             [${potential}]
