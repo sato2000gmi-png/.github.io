@@ -42,6 +42,16 @@ h1{
   align-items:center
 }
 
+/* 検索欄の大きな行間 */
+.filterRow + .filterRow{
+  margin-top:11px
+}
+
+/* 潜在・成長・並び順の横間隔 */
+.sortControls{
+  column-gap:13px
+}
+
 .filterLabel{
   font-size:13px;
   font-weight:600
@@ -88,12 +98,16 @@ button.active{
   margin-bottom:0
 }
 
+/* ポジションボタン同士は少し詰める */
+.positionControls{
+  gap:4px
+}
+
 .roleArea{
   display:flex;
   flex-wrap:wrap;
   align-items:center;
   gap:6px;
-  margin-top:6px;
   font-size:12px
 }
 
@@ -165,7 +179,7 @@ button.active{
   padding-right:76px
 }
 
-/* ポジション：背景なし・枠と文字だけ */
+/* ポジション：背景あり・白文字 */
 .posBadge{
   position:absolute;
   right:0;
@@ -181,29 +195,29 @@ button.active{
   line-height:1;
   text-align:center;
 
-  background:transparent;
-  border:2px solid currentColor
+  color:#fff;
+  border:2px solid transparent
 }
 
-/* 彩度・明度を上げたポジション色 */
+/* ポジション色 */
 .pos-pitcher{
-  color:#ef5964;
-  border-color:#ef5964
+  background:#e34f5b;
+  border-color:#e34f5b
 }
 
 .pos-catcher{
-  color:#16a6a8;
-  border-color:#16a6a8
+  background:#15999b;
+  border-color:#15999b
 }
 
 .pos-infield{
-  color:#d69a16;
-  border-color:#d69a16
+  background:#c99413;
+  border-color:#c99413
 }
 
 .pos-outfield{
-  color:#45a85b;
-  border-color:#45a85b
+  background:#3f9c53;
+  border-color:#3f9c53
 }
 
 /* 要約 */
@@ -387,7 +401,7 @@ button.active{
 <div class="panel">
 
   <!-- リーグ・球団 -->
-  <div class="controls">
+  <div class="controls filterRow">
 
     <label>
       リーグ
@@ -406,7 +420,7 @@ button.active{
   </div>
 
   <!-- ポジション -->
-  <div class="controls" style="margin-top:8px">
+  <div class="controls filterRow positionControls">
 
     <div class="posTitle">
       ポジション
@@ -424,7 +438,7 @@ button.active{
   </div>
 
   <!-- 野手・投手の追加条件 -->
-  <div class="roleArea">
+  <div class="roleArea filterRow">
 
     <span class="roleLabel">野手なら</span>
 
@@ -460,7 +474,7 @@ button.active{
   </div>
 
   <!-- 潜在・成長・並び順 -->
-  <div class="controls" style="margin-top:8px">
+  <div class="controls filterRow sortControls">
 
     <label>
       潜在
