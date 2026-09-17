@@ -11,19 +11,20 @@
 body{
   margin:0;
   padding:20px;
-  background:#f3f4f6;
+  background:#eef1f5;
   color:#222;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",
     "Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif
 }
 
 h1{
-  margin:0 0 6px;
-  font-size:24px
+  margin:0 0 5px;
+  font-size:24px;
+  letter-spacing:.02em
 }
 
 .sub{
-  color:#666;
+  color:#68707d;
   font-size:13px;
   margin-bottom:16px
 }
@@ -33,181 +34,65 @@ h1{
   border-radius:12px;
   padding:14px;
   margin-bottom:16px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08)
+  box-shadow:0 2px 8px rgba(30,40,60,.08);
+  border:1px solid #e3e7ed
 }
 
 .controls{
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
+  gap:7px;
   align-items:center
 }
 
-label{
-  font-size:13px;
-  color:#444
+.sectionTitle{
+  font-size:12px;
+  font-weight:800;
+  color:#69717e;
+  margin:11px 0 6px;
+  letter-spacing:.03em
 }
 
 select,
 input,
 button{
-  font-size:14px;
-  padding:8px 10px;
-  border:1px solid #ccc;
+  font-family:inherit;
+  font-size:13px;
+  padding:7px 9px;
+  border:1px solid #d5dae2;
   border-radius:8px;
   background:#fff
 }
 
-input{
-  width:70px
+button{
+  cursor:pointer;
+  transition:.12s
 }
 
-button{
-  cursor:pointer
+button:hover{
+  background:#f3f5f8
 }
 
 button.active{
-  background:#333;
+  background:#344054;
   color:#fff;
-  border-color:#333
+  border-color:#344054
 }
 
 button.subActive{
-  background:#666;
+  background:#667085;
   color:#fff;
-  border-color:#666
+  border-color:#667085
 }
 
-.sectionTitle{
-  font-size:13px;
-  font-weight:700;
-  margin:12px 0 6px
+input{
+  width:65px
 }
 
 .count{
   margin-top:10px;
-  font-size:13px;
-  color:#666
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px
-}
-
-.card{
-  background:#fff;
-  border-radius:12px;
-  padding:14px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-  border:1px solid #e5e7eb;
-  min-width:0
-}
-
-.cardHead{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  margin-bottom:10px
-}
-
-.team{
   font-size:12px;
-  color:#666
-}
-
-.name{
-  font-size:20px;
-  font-weight:700;
-  margin-top:2px
-}
-
-.basic{
-  font-size:13px;
-  color:#555;
-  margin-top:3px
-}
-
-.summary{
-  display:flex;
-  gap:8px;
-  margin:10px 0;
-  flex-wrap:wrap
-}
-
-.badge{
-  padding:5px 8px;
-  border-radius:7px;
-  background:#f0f0f0;
-  font-size:13px;
-  font-weight:600
-}
-
-.statTitle{
-  font-size:13px;
-  font-weight:700;
-  margin:10px 0 5px
-}
-
-.stat{
-  display:grid;
-  grid-template-columns:58px 34px 1fr 24px;
-  gap:5px;
-  align-items:center;
-  font-size:12px;
-  margin:4px 0
-}
-
-.bar{
-  height:9px;
-  background:#e5e7eb;
-  border-radius:99px;
-  overflow:hidden
-}
-
-.bar i{
-  display:block;
-  height:100%;
-  background:#555;
-  border-radius:99px
-}
-
-.rank{
-  font-weight:700;
-  text-align:center
-}
-
-.info{
-  border-top:1px solid #eee;
-  margin-top:10px;
-  padding-top:8px;
-  font-size:12px;
-  line-height:1.7
-}
-
-.info b{
-  font-weight:700
-}
-
-.abilities{
-  margin-top:5px
-}
-
-.good{
-  color:#176b3a
-}
-
-.bad{
-  color:#a33
-}
-
-.peak{
-  color:#555
-}
-
-.hidden{
-  display:none
+  color:#68707d
 }
 
 .positionButtons,
@@ -219,13 +104,198 @@ button.subActive{
 
 .positionButtons button,
 .roleButtons button{
-  padding:6px 9px;
+  padding:6px 10px;
   font-size:12px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px
+}
+
+.card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(30,40,60,.10);
+  border:1px solid #dfe4eb
+}
+
+.cardTop{
+  height:6px;
+  background:var(--team-color,#667085)
+}
+
+.cardBody{
+  padding:14px
+}
+
+.cardHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:9px
+}
+
+.team{
+  font-size:11px;
+  color:#737b88;
+  font-weight:700
+}
+
+.name{
+  font-size:20px;
+  font-weight:800;
+  margin-top:2px;
+  letter-spacing:.01em
+}
+
+.basic{
+  font-size:12px;
+  color:#596273;
+  margin-top:4px
+}
+
+.summary{
+  display:flex;
+  gap:6px;
+  margin:9px 0 11px;
+  flex-wrap:wrap
+}
+
+.badge{
+  padding:5px 8px;
+  border-radius:7px;
+  background:#f1f4f8;
+  font-size:12px;
+  font-weight:700;
+  color:#3e4857
+}
+
+.badge.overall{
+  background:#e8eef9;
+  color:#24539a
+}
+
+.badge.pot{
+  background:#fff1cf;
+  color:#8a5a00
+}
+
+.badge.growth{
+  background:#e9f6ef;
+  color:#23734b
+}
+
+.badge.phase{
+  background:#f0eafa;
+  color:#6844a0
+}
+
+.statTitle{
+  font-size:12px;
+  font-weight:800;
+  color:#56606f;
+  margin:10px 0 6px
+}
+
+.stat{
+  display:grid;
+  grid-template-columns:58px 30px 1fr 27px;
+  gap:5px;
+  align-items:center;
+  font-size:12px;
+  margin:5px 0
+}
+
+.statName{
+  color:#4f5967
+}
+
+.bar{
+  height:9px;
+  background:#e7eaf0;
+  border-radius:99px;
+  overflow:hidden
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  background:#4f6f9e;
+  border-radius:99px
+}
+
+.rank{
+  font-weight:800;
+  text-align:center;
+  color:#46505e
+}
+
+.current{
+  text-align:right;
+  font-weight:700
+}
+
+.peakBlock{
+  margin-top:11px;
+  padding:9px 10px;
+  border-radius:9px;
+  background:#f7f8fa;
+  border:1px solid #e8ebef
+}
+
+.peakTitle{
+  font-size:11px;
+  font-weight:800;
+  color:#68707d;
+  margin-bottom:5px
+}
+
+.peakRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px 10px;
+  font-size:11px;
+  color:#555f6d
+}
+
+.peakItem b{
+  color:#263241
+}
+
+.info{
+  border-top:1px solid #edf0f3;
+  margin-top:10px;
+  padding-top:8px;
+  font-size:12px;
+  line-height:1.75;
+  color:#4f5967
+}
+
+.info b{
+  color:#303946
+}
+
+.abilities{
+  margin-top:2px
+}
+
+.good{
+  color:#176b3a;
+  font-weight:600
+}
+
+.bad{
+  color:#a33;
+  font-weight:600
 }
 
 .small{
   font-size:11px;
-  color:#777
+  color:#7a8390
 }
 
 @media(max-width:1000px){
@@ -243,7 +313,7 @@ button.subActive{
     grid-template-columns:1fr
   }
 
-  .card{
+  .cardBody{
     padding:12px
   }
 }
@@ -258,6 +328,7 @@ button.subActive{
 <div class="panel">
 
   <div class="controls">
+
     <label>
       リーグ
       <select id="leagueFilter">
@@ -288,34 +359,36 @@ button.subActive{
         <option value="pot">潜在</option>
         <option value="age">年齢</option>
         <option value="name">名前</option>
-        <option value="peakGap">現在→ピーク</option>
+        <option value="peakGap">現在→ピーク記録</option>
       </select>
     </label>
 
     <button id="orderBtn">↓ 高い順</button>
+
   </div>
 
-  <div class="sectionTitle">総合値フィルター</div>
+  <div class="sectionTitle">能力・年齢フィルター</div>
 
   <div class="controls">
-    <label>
-      最低
-      <input id="overallMin" type="number" min="0" max="99" placeholder="0">
-    </label>
 
     <label>
-      最高
-      <input id="overallMax" type="number" min="0" max="99" placeholder="99">
-    </label>
-
-    <label>
-      年齢
-      <input id="ageMin" type="number" min="0" max="99" placeholder="0">
+      総合
+      <input id="overallMin" type="number" min="0" max="99" placeholder="下限">
     </label>
 
     <label>
       〜
-      <input id="ageMax" type="number" min="0" max="99" placeholder="99">
+      <input id="overallMax" type="number" min="0" max="99" placeholder="上限">
+    </label>
+
+    <label>
+      年齢
+      <input id="ageMin" type="number" min="0" max="99" placeholder="下限">
+    </label>
+
+    <label>
+      〜
+      <input id="ageMax" type="number" min="0" max="99" placeholder="上限">
     </label>
 
     <label>
@@ -338,15 +411,17 @@ button.subActive{
         <option value="ALL">指定なし</option>
         <option value="YOUNG_HIGH">若手＋高潜在</option>
         <option value="HIGH_POT">高潜在</option>
-        <option value="GAP">伸びしろ大</option>
+        <option value="GAP">ピーク記録との差大</option>
         <option value="AWAKEN">若手＋低現能力</option>
       </select>
     </label>
+
   </div>
 
-  <div class="sectionTitle">守備位置</div>
+  <div class="sectionTitle">野手の守備位置</div>
 
   <div class="positionButtons">
+
     <button class="posBtn active" data-pos="ALL">全部</button>
     <button class="posBtn" data-pos="C">捕手</button>
     <button class="posBtn" data-pos="1B">一塁</button>
@@ -354,22 +429,28 @@ button.subActive{
     <button class="posBtn" data-pos="3B">三塁</button>
     <button class="posBtn" data-pos="SS">遊撃</button>
     <button class="posBtn" data-pos="OF">外野</button>
+
   </div>
 
   <div class="controls" style="margin-top:7px">
-    <button id="subPosBtn">サブ守備適性も含める：OFF</button>
+    <button id="subPosBtn">
+      サブ守備適性も含める：OFF
+    </button>
   </div>
 
   <div class="sectionTitle">投手起用</div>
 
   <div class="roleButtons">
+
     <button class="roleBtn active" data-role="ALL">全部</button>
     <button class="roleBtn" data-role="sp">先発</button>
     <button class="roleBtn" data-role="rp">中継ぎ</button>
     <button class="roleBtn" data-role="cl">抑え</button>
+
   </div>
 
   <div class="count" id="count"></div>
+
 </div>
 
 <div class="grid" id="grid"></div>
@@ -502,6 +583,12 @@ const ABILITY_NAMES={
   tofu:"豆腐メンタル"
 };
 
+const BAD_ABILITIES=[
+  "sanshin","heisatsu","chanceX","vsLeftBX","murake",
+  "slowB","stealX","throwX","errorPr","ippatsu","yonkyu",
+  "slowP","makeun","tanki","fragGlass","glassBody","tofu"
+];
+
 let players=[];
 
 let selectedLeague="ALL";
@@ -517,17 +604,12 @@ let sortMode="overall";
 let descending=true;
 
 function teamOf(p){
-  return TEAM_DATA[Number(p.team)] || null;
-}
-
-function teamName(p){
-  const t=teamOf(p);
-  return t ? t.nm : "不明球団";
+  return TEAM_DATA[Number(p.team)]||null;
 }
 
 function leagueOf(p){
   const t=teamOf(p);
-  return t ? t.lg : "";
+  return t?t.lg:"";
 }
 
 function rankOf(v){
@@ -542,54 +624,51 @@ function rankOf(v){
 }
 
 function overallOf(p){
+
   if(p.t==="B"){
     return(
-      (p.ab.mt+
-       p.ab.pw+
-       p.ab.sp+
-       p.ab.am+
-       p.ab.fd)/5
-    );
+      p.ab.mt+
+      p.ab.pw+
+      p.ab.sp+
+      p.ab.am+
+      p.ab.fd
+    )/5;
   }
 
   return(
-    (p.ap.vl+
-     p.ap.ct+
-     p.ap.st+
-     p.ap.br)/4
-  );
+    p.ap.vl+
+    p.ap.ct+
+    p.ap.st+
+    p.ap.br
+  )/4;
 }
 
 function pitchValue(p){
   return(
-    p.ap.vl*0.30+
-    p.ap.ct*0.30+
-    p.ap.st*0.16+
-    p.ap.br*0.24
+    p.ap.vl*.30+
+    p.ap.ct*.30+
+    p.ap.st*.16+
+    p.ap.br*.24
   );
 }
 
 function abilityText(p){
 
-  if(!p.sa || !p.sa.length){
-    return"なし";
-  }
+  if(!p.sa||!p.sa.length)return"なし";
 
   let good=[];
   let bad=[];
 
   p.sa.forEach(id=>{
+
     const n=ABILITY_NAMES[id]||id;
 
-    if([
-      "sanshin","heisatsu","chanceX","vsLeftBX","murake",
-      "slowB","stealX","throwX","errorPr","ippatsu","yonkyu",
-      "slowP","makeun","tanki","fragGlass","glassBody","tofu"
-    ].includes(id)){
+    if(BAD_ABILITIES.includes(id)){
       bad.push(n);
     }else{
       good.push(n);
     }
+
   });
 
   let html="";
@@ -608,41 +687,34 @@ function abilityText(p){
 
 function phaseOf(p){
 
-  if(p.t==="P" && !p.ap)return"";
+  const peakStart={
+    early:23,
+    normal:26,
+    late:29,
+    long:25
+  };
 
-  let peakAge;
+  const peakEnd={
+    early:27,
+    normal:30,
+    late:33,
+    long:33
+  };
 
-  if(p.gt==="early"){
-    peakAge=23;
-  }else if(p.gt==="normal"){
-    peakAge=26;
-  }else if(p.gt==="late"){
-    peakAge=29;
-  }else{
-    peakAge=25;
-  }
+  const s=peakStart[p.gt]||26;
+  const e=peakEnd[p.gt]||30;
 
-  if(p.age<peakAge)return"成長期";
-
-  let endAge;
-
-  if(p.gt==="early")endAge=27;
-  else if(p.gt==="normal")endAge=30;
-  else if(p.gt==="late")endAge=33;
-  else endAge=33;
-
-  if(p.age<=endAge)return"ピーク期";
+  if(p.age<s)return"成長期";
+  if(p.age<=e)return"ピーク期";
 
   return"衰え期";
 }
 
-function statRows(p){
-
-  let rows=[];
+function statData(p){
 
   if(p.t==="B"){
 
-    const a=[
+    return[
       ["ミート","mt"],
       ["パワー","pw"],
       ["走力","sp"],
@@ -650,116 +722,118 @@ function statRows(p){
       ["守備","fd"]
     ];
 
-    a.forEach(x=>{
-      const v=Number(p.ab[x[1]]||0);
-
-      rows.push(
-        '<div class="stat">'+
-        '<span>'+x[0]+'</span>'+
-        '<span class="rank">'+rankOf(v)+'</span>'+
-        '<div class="bar"><i style="width:'+v+'%"></i></div>'+
-        '<span>'+v+'</span>'+
-        '</div>'
-      );
-    });
-
-  }else{
-
-    const a=[
-      ["球速","vl"],
-      ["制球","ct"],
-      ["スタミナ","st"],
-      ["変化球","br"]
-    ];
-
-    a.forEach(x=>{
-      const v=Number(p.ap[x[1]]||0);
-
-      rows.push(
-        '<div class="stat">'+
-        '<span>'+x[0]+'</span>'+
-        '<span class="rank">'+rankOf(v)+'</span>'+
-        '<div class="bar"><i style="width:'+v+'%"></i></div>'+
-        '<span>'+v+'</span>'+
-        '</div>'
-      );
-    });
   }
 
-  return rows.join("");
+  return[
+    ["球速","vl"],
+    ["制球","ct"],
+    ["スタミナ","st"],
+    ["変化球","br"]
+  ];
 }
 
-function peakText(p){
+function currentPeakRows(p){
 
-  if(!p.peak)return"不明";
+  if(!p.peak)return"";
 
-  let vals=[];
+  const rows=statData(p);
 
-  if(p.t==="B"){
-    vals=[
-      p.peak.mt,
-      p.peak.pw,
-      p.peak.sp,
-      p.peak.am,
-      p.peak.fd
-    ];
-  }else{
-    vals=[
-      p.peak.vl,
-      p.peak.ct,
-      p.peak.st,
-      p.peak.br
-    ];
-  }
+  return rows.map(x=>{
 
-  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+    const key=x[1];
 
-  return avg.toFixed(1)+" ("+rankOf(avg)+")";
+    const current=
+      Number(
+        p.t==="B"
+        ?p.ab[key]
+        :p.ap[key]
+      )||0;
+
+    const peak=
+      Number(p.peak[key])||0;
+
+    const diff=peak-current;
+
+    return`
+      <span class="peakItem">
+        ${x[0]} <b>${current}</b>→<b>${peak}</b>
+        ${diff>0?`(+${diff})`:""}
+      </span>
+    `;
+
+  }).join("");
+}
+
+function statRows(p){
+
+  return statData(p).map(x=>{
+
+    const v=
+      Number(
+        p.t==="B"
+        ?p.ab[x[1]]
+        :p.ap[x[1]]
+      )||0;
+
+    return`
+      <div class="stat">
+        <span class="statName">${x[0]}</span>
+        <span class="rank">${rankOf(v)}</span>
+        <div class="bar">
+          <i style="width:${v}%"></i>
+        </div>
+        <span class="current">${v}</span>
+      </div>
+    `;
+
+  }).join("");
 }
 
 function peakGap(p){
 
   if(!p.peak)return 0;
 
-  let cur=overallOf(p);
+  const rows=statData(p);
 
-  let peak;
+  let total=0;
 
-  if(p.t==="B"){
-    peak=(
-      p.peak.mt+
-      p.peak.pw+
-      p.peak.sp+
-      p.peak.am+
-      p.peak.fd
-    )/5;
-  }else{
-    peak=(
-      p.peak.vl+
-      p.peak.ct+
-      p.peak.st+
-      p.peak.br
-    )/4;
-  }
+  rows.forEach(x=>{
 
-  return peak-cur;
+    const cur=
+      Number(
+        p.t==="B"
+        ?p.ab[x[1]]
+        :p.ap[x[1]]
+      )||0;
+
+    const peak=
+      Number(p.peak[x[1]])||0;
+
+    total+=Math.max(0,peak-cur);
+  });
+
+  return total/rows.length;
 }
 
 function defenseText(p){
 
-  if(p.t!=="B" || !p.df)return"—";
+  if(p.t!=="B"||!p.df)return"—";
 
   let arr=[];
 
   POS_KEYS.forEach(pos=>{
+
     const v=Number(p.df[pos]||0);
 
     if(v>0){
+
       arr.push(
         POS_NAMES[pos]+
         (v===3?"◎":v===2?"○":"△")
       );
+
     }
+
   });
 
   return arr.length?arr.join("、"):"—";
@@ -767,7 +841,7 @@ function defenseText(p){
 
 function roleText(p){
 
-  if(p.t!=="P" || !p.rl)return"—";
+  if(p.t!=="P"||!p.rl)return"—";
 
   let arr=[];
 
@@ -780,15 +854,13 @@ function roleText(p){
 
 function draftText(p){
 
-  if(!p.drft)return"—";
+  if(!p.drft||!p.drft.y)return"—";
 
-  const d=p.drft;
-
-  if(!d.y)return"—";
-
-  return d.y+"年 "+
-    (d.rd?d.rd+"位 ":"")+
-    (d.src||"");
+  return(
+    p.drft.y+"年 "+
+    (p.drft.rd?p.drft.rd+"位 ":"")+
+    (p.drft.src||"")
+  );
 }
 
 function positionMatches(p){
@@ -797,20 +869,14 @@ function positionMatches(p){
 
   if(!selectedPositions.length)return true;
 
-  for(const pos of selectedPositions){
+  return selectedPositions.some(pos=>{
 
-    if(includeSubPosition){
-      if(Number(p.df && p.df[pos] || 0)>0){
-        return true;
-      }
-    }else{
-      if(Number(p.df && p.df[pos] || 0)===3){
-        return true;
-      }
-    }
-  }
+    const v=Number(p.df&&p.df[pos]||0);
 
-  return false;
+    return includeSubPosition
+      ?v>0
+      :v===3;
+  });
 }
 
 function roleMatches(p){
@@ -819,20 +885,17 @@ function roleMatches(p){
 
   if(p.t!=="P")return false;
 
-  for(const role of selectedRoles){
-    if(Number(p.rl && p.rl[role] || 0)>0){
-      return true;
-    }
-  }
-
-  return false;
+  return selectedRoles.some(
+    role=>Number(p.rl&&p.rl[role]||0)>0
+  );
 }
 
 function potMatches(p){
 
-  const v=Number(p.pot||0);
+  const f=
+    document.getElementById("potFilter").value;
 
-  const f=document.getElementById("potFilter").value;
+  const v=Number(p.pot||0);
 
   if(f==="ALL")return true;
   if(f==="SA")return v>=4;
@@ -843,7 +906,8 @@ function potMatches(p){
 
 function prospectMatches(p){
 
-  const f=document.getElementById("prospectFilter").value;
+  const f=
+    document.getElementById("prospectFilter").value;
 
   if(f==="ALL")return true;
 
@@ -851,7 +915,7 @@ function prospectMatches(p){
   const pot=Number(p.pot||0);
 
   if(f==="YOUNG_HIGH"){
-    return p.age<=23 && pot>=4;
+    return p.age<=23&&pot>=4;
   }
 
   if(f==="HIGH_POT"){
@@ -863,7 +927,7 @@ function prospectMatches(p){
   }
 
   if(f==="AWAKEN"){
-    return p.age<=23 && o<60 && pot>=3;
+    return p.age<=23&&o<60&&pot>=3;
   }
 
   return true;
@@ -872,117 +936,142 @@ function prospectMatches(p){
 function card(p){
 
   const o=overallOf(p);
-  const rank=rankOf(o);
   const team=teamOf(p);
 
-  let summary="";
+  const basic=
+    p.t==="B"
+    ?
+    [
+      p.age+"歳",
+      p.bt==="L"?"左打":
+      p.bt==="S"?"両打":"右打",
+      POS_NAMES[p.pos]||p.pos
+    ].join(" / ")
+    :
+    [
+      p.age+"歳",
+      p.th==="L"?"左投":"右投",
+      "投手"
+    ].join(" / ");
 
-  summary+=
-    '<span class="badge">総合 '+o.toFixed(1)+
-    " ("+rank+")</span>";
+  const summary=`
 
-  summary+=
-    '<span class="badge">潜在 '+(POT_NAMES[p.pot]||p.pot)+
-    "</span>";
+    <span class="badge overall">
+      総合 ${o.toFixed(1)} (${rankOf(o)})
+    </span>
 
-  summary+=
-    '<span class="badge">'+
-    (GROWTH_NAMES[p.gt]||p.gt)+
-    "</span>";
+    <span class="badge pot">
+      潜在 ${POT_NAMES[p.pot]||p.pot}
+    </span>
 
-  summary+=
-    '<span class="badge">'+
-    phaseOf(p)+
-    "</span>";
+    <span class="badge growth">
+      ${GROWTH_NAMES[p.gt]||p.gt}
+    </span>
 
-  let basic=[];
+    <span class="badge phase">
+      ${phaseOf(p)}
+    </span>
+  `;
 
-  basic.push("年齢 "+p.age);
+  return`
+    <div class="card"
+      style="--team-color:${team?team.col:"#667085"}">
 
-  if(p.t==="B"){
-    basic.push("右投"+(p.bt==="L"?"左打":p.bt==="S"?"両打":"右打"));
-    basic.push(POS_NAMES[p.pos]||p.pos);
-  }else{
-    basic.push((p.th==="L"?"左投":"右投"));
-    basic.push("投手");
-  }
+      <div class="cardTop"></div>
 
-  let role=roleText(p);
+      <div class="cardBody">
 
-  return `
-    <div class="card">
+        <div class="cardHead">
 
-      <div class="cardHead">
-        <div>
-          <div class="team">
-            ${team ? team.nm : "不明"}
-            ${team ? " / "+team.lg+"リーグ" : ""}
+          <div>
+            <div class="team">
+              ${team?team.nm:"不明球団"}
+              ${team?" / "+team.lg+"リーグ":""}
+            </div>
+
+            <div class="name">
+              ${p.nm}
+            </div>
+
+            <div class="basic">
+              ${basic}
+            </div>
           </div>
-          <div class="name">${p.nm}</div>
-          <div class="basic">${basic.join(" / ")}</div>
+
         </div>
 
-        <div class="rank">${rank}</div>
-      </div>
-
-      <div class="summary">
-        ${summary}
-      </div>
-
-      <div class="statTitle">
-        能力値
-      </div>
-
-      ${statRows(p)}
-
-      <div class="info">
-
-        <div>
-          <b>ピーク能力：</b>
-          <span class="peak">${peakText(p)}</span>
+        <div class="summary">
+          ${summary}
         </div>
 
-        <div>
-          <b>現在との差：</b>
-          <span class="peak">約${peakGap(p).toFixed(1)}</span>
+        <div class="statTitle">
+          現在能力
         </div>
 
-        ${
-          p.t==="P"
-          ?
-          '<div><b>地力：</b>'+pitchValue(p).toFixed(1)+
-          " ("+rankOf(pitchValue(p))+")</div>"
-          :
-          ""
-        }
+        ${statRows(p)}
 
-        ${
-          p.t==="B"
-          ?
-          '<div><b>守備適性：</b>'+defenseText(p)+'</div>'
-          :
-          ""
-        }
+        <div class="peakBlock">
 
-        ${
-          p.t==="P"
-          ?
-          '<div><b>投手起用：</b>'+role+'</div>'
-          :
-          ""
-        }
+          <div class="peakTitle">
+            現在値 → ピーク記録
+          </div>
 
-        <div>
-          <b>特殊能力：</b>
-          <div class="abilities">${abilityText(p)}</div>
+          <div class="peakRow">
+            ${currentPeakRows(p)}
+          </div>
+
         </div>
 
-        <div>
-          <b>ドラフト：</b>${draftText(p)}
-        </div>
+        <div class="info">
 
-        <div>
-          <b>在籍年数：</b>${p.years||0}年
+          ${
+            p.t==="P"
+            ?
+            `<div>
+              <b>地力：</b>
+              ${pitchValue(p).toFixed(1)}
+              (${rankOf(pitchValue(p))})
+            </div>`
+            :""
+          }
+
+          ${
+            p.t==="B"
+            ?
+            `<div>
+              <b>守備適性：</b>
+              ${defenseText(p)}
+            </div>`
+            :""
+          }
+
+          ${
+            p.t==="P"
+            ?
+            `<div>
+              <b>投手起用：</b>
+              ${roleText(p)}
+            </div>`
+            :""
+          }
+
+          <div>
+            <b>特殊能力：</b>
+            <div class="abilities">
+              ${abilityText(p)}
+            </div>
+          </div>
+
+          <div>
+            <b>ドラフト：</b>
+            ${draftText(p)}
+          </div>
+
+          <div>
+            <b>在籍年数：</b>
+            ${p.years||0}年
+          </div>
+
         </div>
 
       </div>
@@ -999,42 +1088,54 @@ function applyFilters(){
     document.getElementById("typeFilter").value;
 
   const overallMin=
-    Number(document.getElementById("overallMin").value||0);
+    Number(
+      document.getElementById("overallMin").value||0
+    );
 
   const overallMax=
-    Number(document.getElementById("overallMax").value||99);
+    Number(
+      document.getElementById("overallMax").value||99
+    );
 
   const ageMin=
-    Number(document.getElementById("ageMin").value||0);
+    Number(
+      document.getElementById("ageMin").value||0
+    );
 
   const ageMax=
-    Number(document.getElementById("ageMax").value||99);
+    Number(
+      document.getElementById("ageMax").value||99
+    );
 
   return players.filter(p=>{
 
-    if(league!=="ALL" && leagueOf(p)!==league){
+    if(league!=="ALL"&&leagueOf(p)!==league){
       return false;
     }
 
     if(selectedTeam==="MY"){
+
       if(Number(p.team)!==1)return false;
+
     }else if(selectedTeam!=="ALL"){
+
       if(Number(p.team)!==Number(selectedTeam)){
         return false;
       }
+
     }
 
-    if(type!=="ALL" && p.t!==type){
-      return false;
-    }
-
-    if(p.age<ageMin || p.age>ageMax){
+    if(type!=="ALL"&&p.t!==type){
       return false;
     }
 
     const o=overallOf(p);
 
-    if(o<overallMin || o>overallMax){
+    if(o<overallMin||o>overallMax){
+      return false;
+    }
+
+    if(p.age<ageMin||p.age>ageMax){
       return false;
     }
 
@@ -1046,7 +1147,7 @@ function applyFilters(){
       return false;
     }
 
-    if(p.t==="B" && !positionMatches(p)){
+    if(p.t==="B"&&!positionMatches(p)){
       return false;
     }
 
@@ -1060,47 +1161,48 @@ function applyFilters(){
 
 function sortPlayers(arr){
 
-  const key=sortMode;
-
   arr.sort((a,b)=>{
 
-    let av;
-    let bv;
+    let av,bv;
 
-    if(key==="overall"){
+    if(sortMode==="overall"){
       av=overallOf(a);
       bv=overallOf(b);
-    }else if(key==="pot"){
+    }
+
+    else if(sortMode==="pot"){
       av=Number(a.pot||0);
       bv=Number(b.pot||0);
-    }else if(key==="age"){
+    }
+
+    else if(sortMode==="age"){
       av=Number(a.age||0);
       bv=Number(b.age||0);
-    }else if(key==="name"){
+    }
+
+    else if(sortMode==="name"){
       av=a.nm||"";
       bv=b.nm||"";
-    }else if(key==="peakGap"){
+
+      return descending
+        ?bv.localeCompare(av,"ja")
+        :av.localeCompare(bv,"ja");
+    }
+
+    else if(sortMode==="peakGap"){
       av=peakGap(a);
       bv=peakGap(b);
     }
 
-    if(typeof av==="string"){
-      return descending
-        ? bv.localeCompare(av,"ja")
-        : av.localeCompare(bv,"ja");
-    }
-
     return descending
-      ? bv-av
-      : av-bv;
+      ?bv-av
+      :av-bv;
   });
 
   return arr;
 }
 
 function render(){
-
-  const grid=document.getElementById("grid");
 
   let arr=applyFilters();
 
@@ -1109,32 +1211,34 @@ function render(){
   document.getElementById("count").textContent=
     arr.length+"人表示 / 全"+players.length+"人";
 
-  /*
-   * 一度にinnerHTMLへ流し込むことで、
-   * 792人程度でも個別DOM追加を繰り返さない。
-   */
-  grid.innerHTML=arr.map(card).join("");
+  document.getElementById("grid").innerHTML=
+    arr.map(card).join("");
 }
 
 function setupTeamFilter(){
 
-  const select=document.getElementById("teamFilter");
+  const select=
+    document.getElementById("teamFilter");
 
   let html="";
 
-  html+='<option value="MY">自球団（横浜）</option>';
-  html+='<option value="ALL">全球団</option>';
+  html+=
+    '<option value="MY">自球団（横浜）</option>';
+
+  html+=
+    '<option value="ALL">全球団</option>';
 
   TEAM_DATA.forEach(t=>{
+
     html+=
       '<option value="'+t.idx+'">'+
       t.nm+
       " ("+t.lg+")"+
       "</option>";
+
   });
 
   select.innerHTML=html;
-
   select.value="MY";
 }
 
@@ -1146,52 +1250,30 @@ function setupEvents(){
       selectedLeague=
         document.getElementById("leagueFilter").value;
 
-      const team=
-        document.getElementById("teamFilter");
-
-      if(selectedLeague==="ALL"){
-        /*
-         * 何もしない。
-         * 球団選択はそのまま維持。
-         */
-      }else{
-
-        /*
-         * 選択中球団が別リーグなら全球団に戻す。
-         */
-        if(selectedTeam!=="ALL" &&
-           selectedTeam!=="MY"){
-
-          const t=TEAM_DATA[Number(selectedTeam)];
-
-          if(t && t.lg!==selectedLeague){
-            selectedTeam="ALL";
-            team.value="ALL";
-          }
-        }
-      }
-
       render();
     });
 
   document.getElementById("teamFilter")
     .addEventListener("change",e=>{
+
       selectedTeam=e.target.value;
+
       render();
     });
 
   document.getElementById("typeFilter")
-    .addEventListener("change",()=>{
+    .addEventListener("change",e=>{
 
-      selectedType=
-        document.getElementById("typeFilter").value;
+      selectedType=e.target.value;
 
       render();
     });
 
   document.getElementById("sortFilter")
     .addEventListener("change",e=>{
+
       sortMode=e.target.value;
+
       render();
     });
 
@@ -1222,6 +1304,7 @@ function setupEvents(){
 
     document.getElementById(id)
       .addEventListener("change",render);
+
   });
 
   document.querySelectorAll(".posBtn")
@@ -1236,7 +1319,9 @@ function setupEvents(){
           selectedPositions=[];
 
           document.querySelectorAll(".posBtn")
-            .forEach(x=>x.classList.remove("active"));
+            .forEach(x=>
+              x.classList.remove("active")
+            );
 
           btn.classList.add("active");
 
@@ -1255,10 +1340,12 @@ function setupEvents(){
           }else{
 
             selectedPositions.push(pos);
+
             btn.classList.add("active");
           }
 
-          if(selectedPositions.length===0){
+          if(!selectedPositions.length){
+
             document.querySelector('[data-pos="ALL"]')
               .classList.add("active");
           }
@@ -1297,7 +1384,9 @@ function setupEvents(){
           selectedRoles=[];
 
           document.querySelectorAll(".roleBtn")
-            .forEach(x=>x.classList.remove("active"));
+            .forEach(x=>
+              x.classList.remove("active")
+            );
 
           btn.classList.add("active");
 
@@ -1316,10 +1405,12 @@ function setupEvents(){
           }else{
 
             selectedRoles.push(role);
+
             btn.classList.add("active");
           }
 
-          if(selectedRoles.length===0){
+          if(!selectedRoles.length){
+
             document.querySelector('[data-role="ALL"]')
               .classList.add("active");
           }
@@ -1342,14 +1433,16 @@ async function loadData(){
     }
 
     let s=
-      hash.replace(/-/g,"+")
-          .replace(/_/g,"/");
+      hash
+        .replace(/-/g,"+")
+        .replace(/_/g,"/");
 
     while(s.length%4)s+="=";
 
     const bin=atob(s);
 
-    const bytes=new Uint8Array(bin.length);
+    const bytes=
+      new Uint8Array(bin.length);
 
     for(let i=0;i<bin.length;i++){
       bytes[i]=bin.charCodeAt(i);
@@ -1364,10 +1457,12 @@ async function loadData(){
         .pipeThrough(ds);
 
     const ab=
-      await new Response(stream).arrayBuffer();
+      await new Response(stream)
+        .arrayBuffer();
 
     const json=
-      new TextDecoder().decode(ab);
+      new TextDecoder()
+        .decode(ab);
 
     const data=
       JSON.parse(json);
@@ -1378,8 +1473,10 @@ async function loadData(){
       :[];
 
     document.getElementById("yearText").textContent=
-      (data.year||"不明")+"年度・在籍選手 "+
-      players.length+"人";
+      (data.year||"不明")+
+      "年度・在籍選手 "+
+      players.length+
+      "人";
 
     setupTeamFilter();
     setupEvents();
