@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ja">
 <head>
@@ -8,107 +7,164 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#f3f4f6;
   color:#222;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
 }
+
 header{
   position:sticky;
   top:0;
   z-index:10;
   background:#fff;
   border-bottom:1px solid #ddd;
-  padding:12px
+  padding:12px;
 }
+
 h1{
   font-size:20px;
-  margin:0 0 8px
+  margin:0 0 3px;
 }
+
+.subtitle{
+  font-size:12px;
+  color:#777;
+  margin:0 0 10px;
+}
+
 .controls{
   display:flex;
   gap:6px;
-  flex-wrap:wrap
+  flex-wrap:wrap;
+  align-items:center;
 }
+
 button,select{
-  font-size:14px;
+  font-size:13px;
   padding:7px 10px;
   border:1px solid #bbb;
   border-radius:7px;
-  background:#fff
+  background:#fff;
 }
+
+button:active{
+  background:#eee;
+}
+
 #info{
   margin-top:8px;
-  font-size:13px;
-  color:#666
+  font-size:12px;
+  color:#777;
 }
+
 #cards{
-  max-width:1200px;
+  max-width:1100px;
   margin:auto;
   padding:12px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px
+  gap:14px 10px;
 }
+
 .card{
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:10px;
-  padding:12px;
-  box-shadow:0 1px 3px #0001
+  border:1px solid #ccc;
+  border-radius:8px;
+  padding:9px;
+  background:#fafafa;
+  overflow:hidden;
 }
-.name{
-  font-size:18px;
-  font-weight:bold
+
+.card h3{
+  font:600 15px sans-serif;
+  margin:0 0 5px;
+  border-bottom:1px solid #ddd;
+  padding-bottom:4px;
 }
-.sub{
-  color:#666;
+
+.basic{
   font-size:12px;
-  margin-top:3px
+  line-height:1.5;
 }
-.section{
-  margin-top:10px;
-  font-size:13px;
-  font-weight:bold;
-  border-bottom:1px solid #eee;
-  padding-bottom:3px
+
+.stats{
+  margin-top:6px;
+  padding-top:4px;
+  border-top:1px solid #eee;
+  white-space:nowrap;
+  font-family:monospace;
+  font-size:12px;
 }
-.barrow{
-  display:grid;
-  grid-template-columns:42px 1fr 28px;
-  gap:6px;
+
+.statrow{
+  display:flex;
   align-items:center;
-  margin:4px 0;
-  font-size:12px
+  gap:3px;
+  height:20px;
 }
+
+.name{
+  display:inline-block;
+  width:42px;
+}
+
+.num{
+  display:inline-block;
+  width:27px;
+  text-align:right;
+}
+
+.grade{
+  display:inline-block;
+  width:22px;
+  font-weight:bold;
+  text-align:center;
+}
+
 .bar{
-  height:9px;
-  background:#eee;
-  border-radius:99px;
-  overflow:hidden
+  letter-spacing:-1px;
+  white-space:nowrap;
 }
-.fill{
-  height:100%;
-  background:#4b82d8
-}
-.good{
-  color:#c62828;
-  font-weight:bold
-}
-.bad{
-  color:#1565c0;
-  font-weight:bold
-}
-.apt{
+
+.extra{
+  margin-top:7px;
+  padding-top:6px;
+  border-top:1px solid #e5e5e5;
+  white-space:normal;
   font-size:12px;
-  line-height:1.6
+  line-height:1.6;
 }
+
+.ab{
+  font-weight:600;
+}
+
+.none{
+  color:#888;
+}
+
+.apt{
+  font-weight:600;
+}
+
 @media(max-width:700px){
-  #cards{grid-template-columns:repeat(2,1fr)}
+  body{
+    padding:0;
+  }
+
+  #cards{
+    grid-template-columns:repeat(2,1fr);
+    gap:14px 10px;
+    padding:10px;
+  }
 }
+
 @media(max-width:430px){
-  #cards{grid-template-columns:1fr}
+  #cards{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -117,45 +173,71 @@ button,select{
 
 <header>
   <h1>ペナントメーカー 新人候補</h1>
+  <p class="subtitle">新人候補スカウティングデータ</p>
 
   <div class="controls">
     <select id="year"></select>
+
     <button data-sort="orig">元の順番</button>
-    <button data-sort="pot">将来性</button>
-    <button data-sort="ability">現在能力</button>
-    <button data-sort="pitcher">投手</button>
-    <button data-sort="batter">野手</button>
+    <button data-sort="pot">潜在能力順</button>
+    <button data-sort="now">現在能力順</button>
+    <button data-sort="pit">投手のみ</button>
+    <button data-sort="bat">野手のみ</button>
   </div>
 
-  <div id="info">URLデータを読み込み中…</div>
+  <div id="info">データを読み込み中…</div>
 </header>
 
 <div id="cards"></div>
 
 <script>
 
-const AB={
-  mt:"ミート",
-  pw:"パワー",
-  sp:"走力",
-  am:"肩力",
-  fd:"守備力"
+const POT_RANK={
+  5:"S",
+  4:"A",
+  3:"B",
+  2:"C",
+  1:"D"
+};
+
+const GROWTH={
+  early:"早熟",
+  normal:"普通",
+  late:"晩成",
+  long:"持続"
 };
 
 const POS={
   P:"投手",
   C:"捕手",
-  "1B":"一塁手",
-  "2B":"二塁手",
-  "3B":"三塁手",
-  SS:"遊撃手",
-  OF:"外野手"
+  "1B":"一塁",
+  "2B":"二塁",
+  "3B":"三塁",
+  SS:"遊撃",
+  OF:"外野"
 };
 
-const ROLE={
-  sp:"先発",
-  rp:"中継ぎ",
-  cl:"抑え"
+const ABILITY_NAME={
+  mt:"ミート",
+  pw:"パワー",
+  sp:"走力",
+  am:"肩",
+  fd:"守備",
+  vl:"球速",
+  ct:"制球",
+  st:"スタ",
+  br:"変化球"
+};
+
+const RANK_COLOR={
+  S:"#ff5fa2",
+  A:"#f43f5e",
+  B:"#fb923c",
+  C:"#facc15",
+  D:"#a3e635",
+  E:"#38bdf8",
+  F:"#94a3b8",
+  G:"#7d8aa5"
 };
 
 const GOOD={
@@ -245,44 +327,12 @@ const BAD={
 
 let years={};
 let current=[];
+let currentYear="";
 let mode="orig";
 
-function b64uToBytes(s){
-  s=s.replace(/-/g,"+").replace(/_/g,"/");
-  while(s.length%4)s+="=";
-  const b=atob(s);
-  const u=new Uint8Array(b.length);
-  for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
-  return u;
-}
-
-async function decompress(b64){
-  const ds=new DecompressionStream("deflate");
-  const w=ds.writable.getWriter();
-  w.write(b64uToBytes(b64));
-  w.close();
-
-  const r=ds.readable.getReader();
-  const chunks=[];
-  let x;
-
-  while(!(x=await r.read()).done){
-    chunks.push(x.value);
-  }
-
-  const blob=new Blob(chunks);
-  return JSON.parse(await blob.text());
-}
-
-function esc(s){
-  return String(s??"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;");
-}
-
 function rank(v){
+  v=Number(v)||0;
+
   if(v>=90)return"S";
   if(v>=80)return"A";
   if(v>=70)return"B";
@@ -293,170 +343,286 @@ function rank(v){
   return"G";
 }
 
-function total(o){
-  if(!o)return 0;
-  return Object.values(o).reduce((a,v)=>a+(Number(v)||0),0);
+function bar(v){
+  v=Math.max(0,Math.min(100,Number(v)||0));
+
+  const n=Math.round(v/5);
+
+  return "█".repeat(n)+"░".repeat(20-n);
 }
 
-function bar(label,v){
-  if(v==null)return"";
+function total(x){
+  const z=x.t==="B"?x.ab:x.ap;
 
-  v=Number(v);
+  let t=0;
+
+  Object.keys(z||{}).forEach(k=>{
+    t+=Number(z[k])||0;
+  });
+
+  return t;
+}
+
+function apt(v){
+  v=Number(v)||0;
+
+  if(v===3)return"◎";
+  if(v===2)return"○";
+  if(v===1)return"△";
+  return"—";
+}
+
+function aptColor(v){
+  return Number(v)>0?"#222":"#888";
+}
+
+function defenseHTML(x){
+
+  const order=["C","1B","2B","3B","SS","OF"];
+
+  return order
+    .filter(k=>(x.df&&x.df[k])>0)
+    .map(k=>{
+      const v=x.df[k];
+
+      return `
+        <span class="apt" style="color:${aptColor(v)}">
+          ${(POS[k]||k)}${apt(v)}
+        </span>
+      `;
+    })
+    .join("　");
+}
+
+function roleHTML(x){
+
+  const q=x.rl||{};
 
   return `
-    <div class="barrow">
-      <span>${esc(label)}</span>
-      <div class="bar">
-        <div class="fill" style="width:${Math.max(0,Math.min(100,v))}%"></div>
-      </div>
-      <span>${v}</span>
-    </div>
+    <span class="apt" style="color:${aptColor(q.sp||0)}">
+      先${apt(q.sp||0)}
+    </span>
+   　
+    <span class="apt" style="color:${aptColor(q.rp||0)}">
+      中${apt(q.rp||0)}
+    </span>
+   　
+    <span class="apt" style="color:${aptColor(q.cl||0)}">
+      抑${apt(q.cl||0)}
+    </span>
   `;
 }
 
-function abilityBlock(p){
+function abilityHTML(x){
 
-  const o=p.t==="P"?p.ap:p.ab;
+  const sa=Array.isArray(x.sa)?x.sa:[];
 
-  if(!o)return"";
+  if(!sa.length){
+    return '<span class="none">なし</span>';
+  }
 
-  if(p.t!=="P"){
+  return sa.map(id=>{
+
+    const q=GOOD[id];
+
+    if(q){
+      return `<span class="ab" style="color:#dc2626">${q}</span>`;
+    }
+
+    const b=BAD[id];
+
+    if(b){
+      return `<span class="ab" style="color:#2563eb">${b}</span>`;
+    }
+
+    return `<span class="ab">${id}</span>`;
+
+  }).join("　");
+}
+
+function abilityHTMLForStat(x){
+
+  const z=x.t==="B"?x.ab:x.ap;
+
+  if(!z)return"";
+
+  return Object.keys(z).map(k=>{
+
+    const v=Number(z[k])||0;
+    const q=rank(v);
+    const name=ABILITY_NAME[k]||k;
 
     return `
-      <div class="section">能力値</div>
-      ${bar("ミート",o.mt)}
-      ${bar("パワー",o.pw)}
-      ${bar("走力",o.sp)}
-      ${bar("肩力",o.am)}
-      ${bar("守備力",o.fd)}
+      <div class="statrow">
+        <span class="name">${name}</span>
+        <span class="num">${v}</span>
+        <b class="grade" style="color:${RANK_COLOR[q]}">[${q}]</b>
+        <span class="bar" style="color:${RANK_COLOR[q]}">${bar(v)}</span>
+      </div>
     `;
-  }
 
-  return `
-    <div class="section">投手能力</div>
-    ${
-      Object.entries(o)
-      .filter(([k,v])=>typeof v==="number")
-      .map(([k,v])=>bar(k,v))
-      .join("")
-    }
-  `;
+  }).join("");
 }
 
-function aptitudeBlock(p){
+function render(arr){
 
-  if(p.t==="P" && p.rl){
+  let s="";
 
-    const r=Object.entries(p.rl)
-      .filter(([k,v])=>v>0)
-      .map(([k,v])=>{
-        const n=ROLE[k]||k;
-        return `${n} ${v}`;
-      }).join(" / ");
+  arr.forEach((x,i)=>{
 
-    return r ? `<div class="apt"><b>起用適性：</b>${r}</div>` : "";
-  }
+    const potential=POT_RANK[x.pot]||"?";
+    const potentialColor=RANK_COLOR[potential]||"#777";
 
-  if(p.t!=="P" && p.df){
+    s+=`
+      <section class="card">
 
-    const r=Object.entries(p.df)
-      .filter(([k,v])=>v>0)
-      .map(([k,v])=>{
-        const n=POS[k]||k;
-        return `${n} ${v}`;
-      }).join(" / ");
+        <h3>${i+1}. ${x.nm||"名前不明"}</h3>
 
-    return r ? `<div class="apt"><b>守備適性：</b>${r}</div>` : "";
-  }
+        <div class="basic">
+          ${x.age??"?"}歳　
+          <span>${POS[x.pos]||x.pos||"?"}</span>　
+          潜在
+          <b style="color:${potentialColor}">
+            [${potential}]
+          </b>
+         　
+          ${GROWTH[x.gt]||x.gt||""}
+        </div>
 
-  return "";
-}
+        <div class="stats">
+          ${abilityHTMLForStat(x)}
+        </div>
 
-function specials(p){
+        ${
+          x.t==="B"
+          ?
+          `<div class="extra">
+             <b>守備適性</b>　
+             ${defenseHTML(x)}
+           </div>`
+          :
+          `<div class="extra">
+             <b>起用適性</b>　
+             ${roleHTML(x)}
+           </div>`
+        }
 
-  if(!Array.isArray(p.sa) || !p.sa.length)return"";
+        <div class="extra">
+          <b>特殊能力</b>　
+          ${abilityHTML(x)}
+        </div>
 
-  let good=[],bad=[];
+      </section>
+    `;
+  });
 
-  for(const id of p.sa){
-
-    if(GOOD[id])good.push(GOOD[id]);
-    else if(BAD[id])bad.push(BAD[id]);
-    else good.push(id);
-  }
-
-  return `
-    <div class="section">特殊能力</div>
-    ${good.length?`<div class="good">○ ${good.join(" / ")}</div>`:""}
-    ${bad.length?`<div class="bad">× ${bad.join(" / ")}</div>`:""}
-  `;
-}
-
-function card(p,i){
-
-  const pos=POS[p.pos]||p.pos||"";
-
-  return `
-    <div class="card">
-
-      <div class="name">${i+1}. ${esc(p.nm)}</div>
-
-      <div class="sub">
-        ${p.t==="P"?"投手":"野手"} / ${esc(pos)}
-        ${p.age!=null?` / ${p.age}歳`:""}
-      </div>
-
-      <div class="sub">
-        将来性 ${rank(
-          p.pot===5?95:
-          p.pot===4?85:
-          p.pot===3?75:
-          p.pot===2?65:
-          55
-        )}
-        ${p.pot!=null?`（${p.pot}）`:""}
-        ${p.gt?` / 成長 ${esc(p.gt)}`:""}
-      </div>
-
-      ${abilityBlock(p)}
-
-      ${aptitudeBlock(p)}
-
-      ${specials(p)}
-
-    </div>
-  `;
-}
-
-function render(){
-
-  let a=[...current];
-
-  if(mode==="pot"){
-    a.sort((x,y)=>(y.pot||0)-(x.pot||0));
-  }
-
-  if(mode==="ability"){
-    a.sort((x,y)=>{
-      const ax=total(x.t==="P"?x.ap:x.ab);
-      const ay=total(y.t==="P"?y.ap:y.ab);
-      return ay-ax;
-    });
-  }
-
-  if(mode==="pitcher"){
-    a=a.filter(x=>x.t==="P");
-  }
-
-  if(mode==="batter"){
-    a=a.filter(x=>x.t!=="P");
-  }
-
-  document.getElementById("cards").innerHTML=
-    a.map((p,i)=>card(p,i)).join("");
+  document.getElementById("cards").innerHTML=s;
 
   document.getElementById("info").textContent=
-    `${current.length}人 / ${mode==="orig"?"元の順番":mode}`;
+    `${currentYear}年度　${arr.length}人`;
+}
+
+function sortAndRender(){
+
+  let arr=[...current];
+
+  if(mode==="pot"){
+    arr.sort((x,y)=>
+      (y.pot||0)-(x.pot||0) ||
+      total(y)-total(x)
+    );
+  }
+
+  if(mode==="now"){
+    arr.sort((x,y)=>
+      total(y)-total(x) ||
+      (y.pot||0)-(x.pot||0)
+    );
+  }
+
+  if(mode==="pit"){
+    arr=arr.filter(x=>x.t==="P");
+  }
+
+  if(mode==="bat"){
+    arr=arr.filter(x=>x.t==="B");
+  }
+
+  render(arr);
+}
+
+function setupYears(){
+
+  const select=document.getElementById("year");
+
+  select.innerHTML="";
+
+  Object.keys(years)
+    .sort((a,b)=>Number(b)-Number(a))
+    .forEach(y=>{
+
+      const o=document.createElement("option");
+
+      o.value=y;
+      o.textContent=y+"年度";
+
+      select.appendChild(o);
+    });
+
+  if(currentYear && years[currentYear]){
+    select.value=currentYear;
+  }
+}
+
+function switchYear(y){
+
+  if(!years[y])return;
+
+  currentYear=y;
+  current=years[y];
+  mode="orig";
+
+  setupYears();
+  sortAndRender();
+}
+
+async function decodeData(hash){
+
+  hash=hash.replace(/^#/,"");
+
+  hash=hash.replace(/-/g,"+").replace(/_/g,"/");
+
+  while(hash.length%4){
+    hash+="=";
+  }
+
+  const binary=atob(hash);
+
+  const bytes=new Uint8Array(binary.length);
+
+  for(let i=0;i<binary.length;i++){
+    bytes[i]=binary.charCodeAt(i);
+  }
+
+  const ds=new DecompressionStream("deflate");
+
+  const writer=ds.writable.getWriter();
+
+  writer.write(bytes);
+  writer.close();
+
+  const reader=ds.readable.getReader();
+
+  const chunks=[];
+  let x;
+
+  while(!(x=await reader.read()).done){
+    chunks.push(x.value);
+  }
+
+  const blob=new Blob(chunks);
+
+  return JSON.parse(await blob.text());
 }
 
 async function load(){
@@ -464,38 +630,61 @@ async function load(){
   const hash=location.hash.slice(1);
 
   if(!hash){
+
     document.getElementById("info").textContent=
       "URLに新人候補データがありません。";
+
     return;
   }
 
   try{
 
-    const obj=await decompress(hash);
+    const obj=await decodeData(hash);
 
     /*
-      URLには
+      新形式:
       {
-        y: 年,
-        d: 候補者配列
+        years:{
+          "2026":[...],
+          "2027":[...]
+        }
       }
-      を保存する
+
+      旧形式:
+      {
+        y:2026,
+        d:[...]
+      }
+
+      の両方に対応
     */
 
-    const y=obj.y;
-    const d=obj.d;
+    if(obj.years){
 
-    years[y]=d;
+      years=obj.years;
 
-    current=d;
+    }else if(obj.y && obj.d){
 
-    const sel=document.getElementById("year");
-    sel.innerHTML=`<option value="${y}">${y}年度</option>`;
+      years[String(obj.y)]=obj.d;
 
-    document.getElementById("info").textContent=
-      `${y}年度・${d.length}人`;
+    }else{
 
-    render();
+      throw new Error("データ形式が不正です");
+
+    }
+
+    const ys=Object.keys(years)
+      .sort((a,b)=>Number(b)-Number(a));
+
+    if(!ys.length){
+      throw new Error("年度データなし");
+    }
+
+    currentYear=ys[0];
+    current=years[currentYear];
+
+    setupYears();
+    sortAndRender();
 
   }catch(e){
 
@@ -503,22 +692,28 @@ async function load(){
 
     document.getElementById("info").textContent=
       "URLデータを読み込めませんでした。";
+
   }
 }
 
 document.querySelectorAll("button[data-sort]")
-.forEach(b=>{
-  b.addEventListener("click",()=>{
-    mode=b.dataset.sort;
-    render();
+.forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    mode=button.dataset.sort;
+
+    sortAndRender();
+
   });
+
 });
 
 document.getElementById("year")
 .addEventListener("change",e=>{
-  current=years[e.target.value]||[];
-  mode="orig";
-  render();
+
+  switchYear(e.target.value);
+
 });
 
 load();
