@@ -16,9 +16,55 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif
 }
 
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:4px
+}
+
 h1{
-  margin:0 0 4px;
+  margin:0;
   font-size:22px
+}
+
+.searchArea{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-shrink:0
+}
+
+.nameSearch{
+  width:190px;
+  font-size:13px;
+  padding:7px 9px;
+  border:1px solid #ccc;
+  border-radius:7px;
+  background:#fff;
+  color:#333
+}
+
+.nameSearch:focus{
+  outline:none;
+  border-color:#888
+}
+
+.crossSearchLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  white-space:nowrap;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer
+}
+
+.crossSearchLabel input{
+  margin:0;
+  width:14px;
+  height:14px
 }
 
 .sub{
@@ -161,6 +207,18 @@ button.active{
   font-size:11px;
   color:var(--team-color,#666);
   font-weight:700
+}
+
+.crossYear{
+  display:inline-block;
+  margin-left:5px;
+  padding:2px 5px;
+  border-radius:4px;
+  background:#eef0f2;
+  color:#666;
+  font-size:10px;
+  font-weight:600;
+  vertical-align:1px
 }
 
 .name{
@@ -353,6 +411,19 @@ button.active{
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:10px
   }
+
+  .header{
+    flex-wrap:wrap
+  }
+
+  .searchArea{
+    width:100%
+  }
+
+  .nameSearch{
+    flex:1;
+    width:auto
+  }
 }
 
 @media(max-width:600px){
@@ -372,13 +443,48 @@ button.active{
     margin-left:-11px;
     margin-right:-11px
   }
+
+  .header{
+    display:block
+  }
+
+  .searchArea{
+    margin-top:8px;
+    flex-wrap:wrap
+  }
+
+  .nameSearch{
+    width:100%;
+    flex:none
+  }
 }
 </style>
 </head>
 
 <body>
 
-<h1>在籍選手データベース</h1>
+<div class="header">
+
+  <h1>在籍選手データベース</h1>
+
+  <div class="searchArea">
+
+    <input
+      type="search"
+      id="nameSearch"
+      class="nameSearch"
+      placeholder="選手名を検索…"
+      autocomplete="off"
+    >
+
+    <label class="crossSearchLabel">
+      <input type="checkbox" id="crossYearSearch">
+      全年度横断
+    </label>
+
+  </div>
+
+</div>
 
 <div class="sub" id="yearText">
   データを読み込んでいます…
@@ -675,6 +781,10 @@ let selectedGrowth="ALL";
 
 let sortMode="overall";
 let descending=true;
+
+/* 名前検索 */
+let searchName="";
+let crossYearSearch=false;
 
 function rankOf(v){
   if(v>=90)return"S";
@@ -1026,6 +1136,11 @@ function card(p){
       ?team.col
       :"#999";
 
+  let yearBadge=
+    p.__year
+      ?`<span class="crossYear">${p.__year}年度</span>`
+      :"";
+
   return`
 
   <div
@@ -1040,7 +1155,7 @@ function card(p){
       <div>
 
         <div class="team">
-          ${teamName}
+          ${teamName}${yearBadge}
         </div>
 
         <div class="name">
@@ -1217,61 +1332,126 @@ function roleMatches(p){
   return false;
 }
 
+function baseFilter(p){
+
+  if(selectedLeague!=="ALL"){
+
+    let team=TEAM_MAP[p.team];
+
+    if(!team||team.lg!==selectedLeague){
+      return false;
+    }
+
+  }
+
+  if(
+    selectedTeam!=="ALL"&&
+    selectedTeam!=="MY"&&
+    String(p.team)!==selectedTeam
+  ){
+    return false;
+  }
+
+  if(selectedTeam==="MY"){
+
+    if(String(p.team)!=="1"){
+      return false;
+    }
+
+  }
+
+  if(!positionMatches(p)){
+    return false;
+  }
+
+  if(!roleMatches(p)){
+    return false;
+  }
+
+  if(
+    selectedPot!=="ALL"&&
+    Number(p.pot)<Number(selectedPot)
+  ){
+    return false;
+  }
+
+  if(
+    selectedGrowth!=="ALL"&&
+    p.gt!==selectedGrowth
+  ){
+    return false;
+  }
+
+  return true;
+}
+
 function applyFilters(){
 
-  let arr=players.filter(p=>{
+  let arr;
 
-    if(selectedLeague!=="ALL"){
+  /*
+   * 通常検索：
+   * 現在選択中の年度だけ
+   */
+  if(!crossYearSearch){
 
-      let team=TEAM_MAP[p.team];
+    arr=players.filter(p=>{
 
-      if(!team||team.lg!==selectedLeague){
+      if(
+        searchName &&
+        !String(p.nm||"")
+          .toLocaleLowerCase()
+          .includes(searchName.toLocaleLowerCase())
+      ){
         return false;
+      }
+
+      return baseFilter(p);
+
+    });
+
+  }
+
+  /*
+   * 全年度横断検索：
+   * URLに保存されている全年度を対象
+   */
+  else{
+
+    arr=[];
+
+    for(let y of availableYears){
+
+      let list=yearData[y]||[];
+
+      for(let p of list){
+
+        if(
+          searchName &&
+          !String(p.nm||"")
+            .toLocaleLowerCase()
+            .includes(searchName.toLocaleLowerCase())
+        ){
+          continue;
+        }
+
+        if(!baseFilter(p)){
+          continue;
+        }
+
+        /*
+         * 元データを変更しないようコピーして
+         * 年度情報だけ付加
+         */
+        arr.push(
+          Object.assign({},p,{__year:y})
+        );
+
       }
 
     }
 
-    if(
-      selectedTeam!=="ALL"&&
-      selectedTeam!=="MY"&&
-      String(p.team)!==selectedTeam
-    ){
-      return false;
-    }
-
-    if(selectedTeam==="MY"){
-
-      if(String(p.team)!=="1"){
-        return false;
-      }
-
-    }
-
-    if(!positionMatches(p)){
-      return false;
-    }
-
-    if(!roleMatches(p)){
-      return false;
-    }
-
-    if(
-      selectedPot!=="ALL"&&
-      Number(p.pot)<Number(selectedPot)
-    ){
-      return false;
-    }
-
-    if(
-      selectedGrowth!=="ALL"&&
-      p.gt!==selectedGrowth
-    ){
-      return false;
-    }
-
-    return true;
-
-  });
+  }
 
   arr.sort((a,b)=>{
 
@@ -1322,8 +1502,13 @@ function render(){
 
   let arr=applyFilters();
 
+  let totalText=
+    crossYearSearch
+      ?`全${availableYears.length}年度`
+      :`全${players.length}人`;
+
   document.getElementById("count").textContent=
-    `表示：${arr.length}人 / 全${players.length}人`;
+    `表示：${arr.length}人 / ${totalText}`;
 
   document.getElementById("grid").innerHTML=
     arr.map(card).join("");
@@ -1481,6 +1666,32 @@ function setup(){
         descending
           ?"↓ 高い順"
           :"↑ 低い順";
+
+      render();
+
+    });
+
+  /*
+   * 選手名検索
+   */
+  document
+    .getElementById("nameSearch")
+    .addEventListener("input",e=>{
+
+      searchName=e.target.value.trim();
+
+      render();
+
+    });
+
+  /*
+   * 全年度横断検索
+   */
+  document
+    .getElementById("crossYearSearch")
+    .addEventListener("change",e=>{
+
+      crossYearSearch=e.target.checked;
 
       render();
 
