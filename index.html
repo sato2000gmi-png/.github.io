@@ -494,8 +494,6 @@ input[type="text"]{
 
 /* =========================================================
    特殊能力マスタ
-   ゲーム側の定義をそのまま使用
-   t: g = 良い能力 / b = 悪い能力
    ========================================================= */
 
 const ABILITIES = [
@@ -746,8 +744,11 @@ const filters={
   name:"",
   positions:new Set(),
   includeSubPos:true,
-  potential:"",
-  growth:"",
+
+  /* 複数選択 */
+  potential:new Set(),
+  growth:new Set(),
+
   role:"",
   excludeLowRole:false,
   draft:"",
@@ -1067,7 +1068,10 @@ function abilityHTMLForStat(x){
           ${ABILITY_NAME[k]||k}
         </span>
 
-        <span class="num">
+        <span
+          class="num"
+          style="color:${c}"
+        >
           ${v}
         </span>
 
@@ -1344,24 +1348,38 @@ function matchesPosition(x){
   return false;
 }
 
+
+/* =========================================================
+   潜在能力
+   複数選択対応
+   ========================================================= */
+
 function matchesPotential(x){
 
-  if(filters.potential===""){
+  if(filters.potential.size===0){
     return true;
   }
 
-  return Number(x.pot)===
-    Number(filters.potential);
+  return filters.potential.has(
+    Number(x.pot)
+  );
 }
+
+
+/* =========================================================
+   成長タイプ
+   複数選択対応
+   ========================================================= */
 
 function matchesGrowth(x){
 
-  if(filters.growth===""){
+  if(filters.growth.size===0){
     return true;
   }
 
-  return x.gt===filters.growth;
+  return filters.growth.has(x.gt);
 }
+
 
 function matchesRole(x){
 
@@ -1733,19 +1751,42 @@ function updatePositionButtons(){
     });
 }
 
+
+/* =========================================================
+   潜在能力ボタン状態
+   ========================================================= */
+
 function updatePotentialButtons(){
 
   document
     .querySelectorAll("#potentialButtons button")
     .forEach(button=>{
 
-      button.classList.toggle(
-        "active",
-        button.dataset.pot===
-        String(filters.potential)
-      );
+      const value=button.dataset.pot;
+
+      if(value===""){
+
+        button.classList.toggle(
+          "active",
+          filters.potential.size===0
+        );
+
+      }else{
+
+        button.classList.toggle(
+          "active",
+          filters.potential.has(
+            Number(value)
+          )
+        );
+      }
     });
 }
+
+
+/* =========================================================
+   成長タイプボタン状態
+   ========================================================= */
 
 function updateGrowthButtons(){
 
@@ -1753,13 +1794,25 @@ function updateGrowthButtons(){
     .querySelectorAll("#growthButtons button")
     .forEach(button=>{
 
-      button.classList.toggle(
-        "active",
-        button.dataset.growth===
-        filters.growth
-      );
+      const value=button.dataset.growth;
+
+      if(value===""){
+
+        button.classList.toggle(
+          "active",
+          filters.growth.size===0
+        );
+
+      }else{
+
+        button.classList.toggle(
+          "active",
+          filters.growth.has(value)
+        );
+      }
     });
 }
+
 
 function updateDraftButtons(){
 
@@ -1811,6 +1864,10 @@ function bindEvents(){
     });
 
 
+  /* =======================================================
+     潜在能力：複数選択
+     ======================================================= */
+
   document
     .getElementById("potentialButtons")
     .addEventListener("click",e=>{
@@ -1820,13 +1877,31 @@ function bindEvents(){
 
       if(!button)return;
 
-      filters.potential=
-        button.dataset.pot;
+      const value=button.dataset.pot;
+
+      if(value===""){
+
+        filters.potential.clear();
+
+      }else{
+
+        const n=Number(value);
+
+        if(filters.potential.has(n)){
+          filters.potential.delete(n);
+        }else{
+          filters.potential.add(n);
+        }
+      }
 
       updatePotentialButtons();
       applyFiltersAndRender();
     });
 
+
+  /* =======================================================
+     成長タイプ：複数選択
+     ======================================================= */
 
   document
     .getElementById("growthButtons")
@@ -1837,8 +1912,20 @@ function bindEvents(){
 
       if(!button)return;
 
-      filters.growth=
-        button.dataset.growth;
+      const value=button.dataset.growth;
+
+      if(value===""){
+
+        filters.growth.clear();
+
+      }else{
+
+        if(filters.growth.has(value)){
+          filters.growth.delete(value);
+        }else{
+          filters.growth.add(value);
+        }
+      }
 
       updateGrowthButtons();
       applyFiltersAndRender();
