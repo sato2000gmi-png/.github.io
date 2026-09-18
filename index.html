@@ -116,6 +116,7 @@ input[type="text"]{
   margin-left:7px;
   font-size:12px;
   white-space:nowrap;
+  vertical-align:middle;
 }
 
 .checkLine input{
@@ -128,11 +129,32 @@ input[type="text"]{
   gap:4px;
   margin-left:8px;
   white-space:nowrap;
+  vertical-align:middle;
 }
 
 .roleLine select{
   padding:3px 6px;
   font-size:12px;
+}
+
+/* ポジション欄の補助フィルターを同じ高さに揃える */
+.positionOptions{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  vertical-align:middle;
+}
+
+.positionOptions .checkLine{
+  margin-left:0;
+}
+
+.positionOptions .roleLine{
+  margin-left:0;
+}
+
+.positionOptions .roleLine .checkLine{
+  margin-left:0;
 }
 
 .sortLine{
@@ -172,12 +194,12 @@ input[type="text"]{
 .card h3{
   font:600 17px sans-serif;
   margin:0 0 5px;
-  padding-bottom:4px;
-  border-bottom:1px solid #ddd;
+  padding-bottom:0;
+  border-bottom:none;
 }
 
 .basic{
-  font-size:12px;
+  font-size:10px;
   line-height:1.5;
   white-space:nowrap;
 }
@@ -385,24 +407,29 @@ input[type="text"]{
   <span class="filterTitle">ポジション</span>
   <span id="positionButtons" class="filterButtons"></span>
 
-  <label class="checkLine">
-    <input id="includeSubPos" type="checkbox" checked>
-    サブポジも含める
-  </label>
-
-  <span class="roleLine">
-    <span>投手適性</span>
-    <select id="roleFilter">
-      <option value="">全て</option>
-      <option value="sp">先発</option>
-      <option value="rp">中継ぎ</option>
-      <option value="cl">抑え</option>
-    </select>
+  <span class="positionOptions">
 
     <label class="checkLine">
-      <input id="excludeLowRole" type="checkbox">
-      △以下を除外
+      <input id="includeSubPos" type="checkbox" checked>
+      サブポジも含める
     </label>
+
+    <span class="roleLine">
+      <span>投手適性</span>
+
+      <select id="roleFilter">
+        <option value="">全て</option>
+        <option value="sp">先発</option>
+        <option value="rp">中継ぎ</option>
+        <option value="cl">抑え</option>
+      </select>
+
+      <label class="checkLine">
+        <input id="excludeLowRole" type="checkbox">
+        △以下を除外
+      </label>
+    </span>
+
   </span>
 </div>
 
@@ -1153,19 +1180,6 @@ function render(arr){
       ?`<span class="crossYear">${currentYear}年度</span>`
       :"";
 
-    /*
-      カード構成
-
-      選手名
-      年齢　利き腕　No.
-      ─────────
-      潜在　成長　ポジション
-      能力値
-      適性
-      特殊能力
-      マーク
-    */
-
     s+=`
 
       <section class="card">
@@ -1588,11 +1602,6 @@ function switchYear(y){
     Array.isArray(years[y])
       ?years[y]
       :[];
-
-  /*
-    年度を変えても検索条件・
-    並べ替え条件は維持する。
-  */
 
   setupYears();
   applyFiltersAndRender();
@@ -2102,18 +2111,10 @@ async function load(){
     const obj=
       await decodeData(hash);
 
-    /*
-      新形式
-      {years:{"2026":[...],"2027":[...]}}
-    */
     if(obj.years){
 
       years=obj.years;
 
-    /*
-      旧形式
-      {y:2026,d:[...]}
-    */
     }else if(
       obj.y!=null &&
       obj.d
