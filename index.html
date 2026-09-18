@@ -21,61 +21,134 @@ header{
   z-index:10;
   background:#fff;
   border-bottom:1px solid #ddd;
-  padding:12px;
+  padding:10px 12px;
 }
 
 h1{
   font-size:20px;
-  margin:0 0 3px;
-}
-  
-/* ポジション別カラー */
-.pos-pitcher{
-  color:#d32f2f !important;
-  font-weight:700;
+  margin:0 0 2px;
 }
 
-.pos-catcher{
-  color:#1976d2 !important;
-  font-weight:700;
-}
-
-.pos-infield{
-  color:#d89b00 !important;
-  font-weight:700;
-}
-
-.pos-outfield{
-  color:#2e8b57 !important;
-  font-weight:700;
-}
 .subtitle{
   font-size:12px;
   color:#777;
-  margin:0 0 10px;
+  margin:0 0 8px;
+}
+
+.headerInfo{
+  font-size:12px;
+  color:#555;
+  margin-bottom:8px;
 }
 
 .controls{
   display:flex;
-  gap:6px;
+  gap:5px 8px;
   flex-wrap:wrap;
   align-items:center;
 }
 
-button,select{
+.controlGroup{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  flex-wrap:wrap;
+}
+
+label{
+  font-size:12px;
+}
+
+button,
+select,
+input[type="text"]{
   font-size:13px;
-  padding:7px 10px;
+  padding:5px 8px;
   border:1px solid #bbb;
-  border-radius:7px;
+  border-radius:6px;
   background:#fff;
+}
+
+button{
+  cursor:pointer;
 }
 
 button:active{
   background:#eee;
 }
 
+button.active{
+  background:#e9eef5;
+  border-color:#8a9aaa;
+  font-weight:600;
+}
+
+input[type="text"]{
+  width:240px;
+  max-width:100%;
+}
+
+.filterBlock{
+  margin-top:7px;
+  padding-top:7px;
+  border-top:1px solid #eee;
+}
+
+.filterTitle{
+  font-size:12px;
+  font-weight:700;
+  margin-right:5px;
+}
+
+.filterButtons{
+  display:inline-flex;
+  gap:4px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.filterButtons button{
+  padding:4px 8px;
+  font-size:12px;
+}
+
+.checkLine{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  margin-left:7px;
+  font-size:12px;
+}
+
+.checkLine input{
+  margin:0;
+}
+
+.roleLine{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  flex-wrap:wrap;
+}
+
+.roleLine select{
+  padding:4px 7px;
+  font-size:12px;
+}
+
+.sortLine{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.sortLine select{
+  min-width:110px;
+}
+
 #info{
-  margin-top:8px;
+  margin-top:7px;
   font-size:12px;
   color:#777;
 }
@@ -107,6 +180,12 @@ button:active{
 .basic{
   font-size:12px;
   line-height:1.5;
+}
+
+.playerNo{
+  color:#999;
+  font-size:10px;
+  white-space:nowrap;
 }
 
 .stats{
@@ -169,6 +248,77 @@ button:active{
   font-weight:600;
 }
 
+.cardTools{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:7px;
+  padding-top:6px;
+  border-top:1px solid #e5e5e5;
+  flex-wrap:wrap;
+}
+
+.markButton{
+  font-size:11px;
+  padding:3px 6px;
+}
+
+.markButton.other{
+  border-color:#d98a8a;
+  background:#fff2f2;
+}
+
+.markButton.self{
+  border-color:#7ca68a;
+  background:#f0faf3;
+}
+
+.markButton.favorite{
+  border-color:#d1aa43;
+  background:#fff9df;
+}
+
+.statusText{
+  font-size:11px;
+  color:#777;
+}
+
+.favoriteText{
+  font-size:11px;
+  color:#b38600;
+  font-weight:600;
+}
+
+.crossYear{
+  margin-left:5px;
+  padding:1px 4px;
+  border-radius:4px;
+  background:#eee;
+  color:#777;
+  font-size:10px;
+  font-weight:500;
+}
+
+.pos-pitcher{
+  color:#d32f2f !important;
+  font-weight:700;
+}
+
+.pos-catcher{
+  color:#1976d2 !important;
+  font-weight:700;
+}
+
+.pos-infield{
+  color:#d89b00 !important;
+  font-weight:700;
+}
+
+.pos-outfield{
+  color:#2e8b57 !important;
+  font-weight:700;
+}
+
 @media(max-width:700px){
   body{
     padding:0;
@@ -179,11 +329,19 @@ button:active{
     gap:14px 10px;
     padding:10px;
   }
+
+  input[type="text"]{
+    width:200px;
+  }
 }
 
 @media(max-width:430px){
   #cards{
     grid-template-columns:1fr;
+  }
+
+  input[type="text"]{
+    width:100%;
   }
 }
 </style>
@@ -192,20 +350,106 @@ button:active{
 <body>
 
 <header>
+
   <h1>ペナントメーカー 新人候補</h1>
   <p class="subtitle">新人候補スカウティングデータ</p>
 
-  <div class="controls">
-    <select id="year"></select>
+  <div class="headerInfo">
+    <span id="yearInfo">年度</span>　
+    <span id="totalInfo">全体：0人</span>　
+    <span id="matchInfo">該当：0人</span>
+  </div>
 
-    <button data-sort="orig">元の順番</button>
-    <button data-sort="pot">潜在能力順</button>
-    <button data-sort="now">現在能力順</button>
-    <button data-sort="pit">投手のみ</button>
-    <button data-sort="bat">野手のみ</button>
+  <div class="controls">
+
+    <div class="controlGroup">
+      <span>年度</span>
+      <select id="year"></select>
+    </div>
+
+  </div>
+
+  <div class="filterBlock">
+    <span class="filterTitle">名前</span>
+    <input id="nameSearch" type="text" placeholder="選手名を検索…">
+  </div>
+
+  <div class="filterBlock">
+    <span class="filterTitle">ポジション</span>
+    <span id="positionButtons" class="filterButtons"></span>
+
+    <label class="checkLine">
+      <input id="includeSubPos" type="checkbox" checked>
+      サブポジも含める
+    </label>
+
+    <span class="roleLine">
+      <span>投手適性</span>
+      <select id="roleFilter">
+        <option value="">全て</option>
+        <option value="sp">先発</option>
+        <option value="rp">中継ぎ</option>
+        <option value="cl">抑え</option>
+      </select>
+
+      <label class="checkLine">
+        <input id="excludeLowRole" type="checkbox">
+        △以下を除外
+      </label>
+    </span>
+  </div>
+
+  <div class="filterBlock">
+    <span class="filterTitle">潜在能力</span>
+    <span id="potentialButtons" class="filterButtons"></span>
+  </div>
+
+  <div class="filterBlock">
+    <span class="filterTitle">成長タイプ</span>
+    <span id="growthButtons" class="filterButtons"></span>
+  </div>
+
+  <div class="filterBlock">
+    <span class="filterTitle">指名状況</span>
+    <span id="draftButtons" class="filterButtons"></span>
+
+    <label class="checkLine">
+      <input id="hideDrafted" type="checkbox">
+      指名済みを非表示
+    </label>
+
+    <label class="checkLine">
+      <input id="favoriteOnly" type="checkbox">
+      注目のみ
+    </label>
+  </div>
+
+  <div class="filterBlock">
+    <span class="filterTitle">並べ替え</span>
+
+    <span class="sortLine">
+      <span>項目</span>
+      <select id="sortKey">
+        <option value="pot">潜在能力</option>
+        <option value="now">現在能力</option>
+        <option value="age">年齢</option>
+        <option value="sp">先発適性</option>
+        <option value="rp">中継ぎ適性</option>
+        <option value="cl">抑え適性</option>
+        <option value="name">名前</option>
+        <option value="orig">元の順番</option>
+      </select>
+
+      <span>順序</span>
+      <select id="sortOrder">
+        <option value="desc">高い順</option>
+        <option value="asc">低い順</option>
+      </select>
+    </span>
   </div>
 
   <div id="info">データを読み込み中…</div>
+
 </header>
 
 <div id="cards"></div>
@@ -236,15 +480,41 @@ const POS={
   SS:"遊撃",
   OF:"外野"
 };
-  
-function posClass(pos){
-  if(pos==="P") return "pos-pitcher";
-  if(pos==="C") return "pos-catcher";
-  if(["1B","2B","3B","SS"].includes(pos)) return "pos-infield";
-  if(pos==="OF") return "pos-outfield";
-  return "";
-}
-  
+
+const POSITION_LIST=[
+  ["P","投手"],
+  ["C","捕手"],
+  ["1B","一塁"],
+  ["2B","二塁"],
+  ["3B","三塁"],
+  ["SS","遊撃"],
+  ["OF","外野"]
+];
+
+const POTENTIAL_LIST=[
+  ["","全て"],
+  [5,"S"],
+  [4,"A"],
+  [3,"B"],
+  [2,"C"],
+  [1,"D"]
+];
+
+const GROWTH_LIST=[
+  ["","全て"],
+  ["long","持続"],
+  ["late","晩成"],
+  ["normal","普通"],
+  ["early","早熟"]
+];
+
+const DRAFT_LIST=[
+  ["","全て"],
+  ["none","未指名"],
+  ["other","他球団"],
+  ["self","自分"]
+];
+
 const ABILITY_NAME={
   mt:"ミート",
   pw:"パワー",
@@ -268,69 +538,14 @@ const RANK_COLOR={
   G:"#7d8aa5"
 };
 
-const GOOD={
-  avgHit:"アベレージヒッター",
-  powHit:"パワーヒッター",
-  wideAng:"広角打法",
-  chance3:"チャンス◎",
-  chance2:"チャンス○",
-  vsLeftB3:"対左投手◎",
-  vsAce:"対エース◎",
-  katame:"固め打ち",
-  shokyu:"初球攻撃",
-  nebari:"粘り打ち",
-  manrui:"満塁男",
-  sayonara:"サヨナラ男",
-  gyakkyo:"逆境◎",
-  kaimaku:"開幕男",
-  natsu:"夏男",
-  aki:"秋男",
-  daida:"代打の神様",
-  bunt:"バント職人",
-  shobu:"勝負強さ",
-
-  steal3:"盗塁◎",
-  baserun3:"走塁◎",
-  headsl:"ヘッドスライディング",
-
-  fldArt:"守備職人",
-  laser:"レーザービーム",
-  throw3:"送球◎",
-  lead3:"リード◎",
-  block3:"盗塁阻止◎",
-
-  nobi:"ノビ◎",
-  kire:"キレ◎",
-  omoi:"重い球",
-  vsPinch:"対ピンチ◎",
-  vsLeftP3:"対左打者◎",
-  tough:"打たれ強い",
-  quick:"クイック◎",
-  kensei:"牽制◎",
-  kSama:"奪三振",
-  kanto:"完投型",
-  tetsuwan:"鉄腕",
-  hikeshi:"火消し",
-  shiriagari:"尻上がり",
-  kachiun:"勝ち運",
-
-  ironBody:"ケガしにくい",
-  recover:"回復◎",
-
-  mood:"ムードメーカー",
-  ninki:"人気者",
-  toushi:"闘志",
-  vetAji:"ベテランの味",
-  bigstage:"大舞台◎",
-  omatsuri:"お祭り男",
-
-  gapHit:"二塁打製造機",
-  vsRightB3:"対右投手◎",
-  soku:"快足",
-  badball:"悪球打ち",
-  leadoff:"切り込み隊長",
-
+/*
+  特殊能力名。
+  既知のものは日本語化し、データに存在する未知の能力は
+  IDそのものを表示するので、古いデータでも表示不能にはしない。
+*/
+const ABILITY_NAME_SPECIAL={
   gekitetsu:"激鉄",
+  ironBody:"ケガしにくい",
   groundball:"ゴロ投手",
   noWalk:"精密機械",
   lateStopper:"守護神",
@@ -341,35 +556,166 @@ const GOOD={
   second:"ローテの柱"
 };
 
-const BAD={
-  sanshin:"三振癖",
-  heisatsu:"併殺癖",
-  chanceX:"チャンス×",
-  vsLeftBX:"対左投手×",
-  murake:"ムラっ気",
-  slowB:"スロースターター",
-
-  stealX:"盗塁×",
-  throwX:"送球難",
-  errorPr:"エラー癖",
-
-  ippatsu:"一発病",
-  yonkyu:"四球癖",
-  slowP:"スロースターター",
-  makeun:"負け運",
-  tanki:"短気",
-  fragGlass:"打たれ弱い",
-
-  glassBody:"ケガしやすい",
-  tofu:"豆腐メンタル"
-};
+const DRAFT_KEY="pennant_draft_marks_v1";
+const FAVORITE_KEY="pennant_favorite_marks_v1";
 
 let years={};
 let current=[];
 let currentYear="";
-let mode="orig";
+
+/* 検索条件 */
+const filters={
+  name:"",
+  positions:new Set(),
+  includeSubPos:true,
+  potential:"",
+  growth:"",
+  role:"",
+  excludeLowRole:false,
+  draft:"",
+  hideDrafted:false,
+  favoriteOnly:false
+};
+
+/* 並べ替え */
+let sortKey="pot";
+let sortOrder="desc";
+
+/* 手動マーク */
+let draftMarks={};
+let favoriteMarks={};
+
+function loadMarks(){
+
+  try{
+    draftMarks=JSON.parse(
+      localStorage.getItem(DRAFT_KEY)||"{}"
+    );
+  }catch(e){
+    draftMarks={};
+  }
+
+  try{
+    favoriteMarks=JSON.parse(
+      localStorage.getItem(FAVORITE_KEY)||"{}"
+    );
+  }catch(e){
+    favoriteMarks={};
+  }
+}
+
+function saveDraftMarks(){
+
+  try{
+    localStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify(draftMarks)
+    );
+  }catch(e){}
+}
+
+function saveFavoriteMarks(){
+
+  try{
+    localStorage.setItem(
+      FAVORITE_KEY,
+      JSON.stringify(favoriteMarks)
+    );
+  }catch(e){}
+}
+
+/*
+  選手を特定するキー。
+  IDがある場合は年度＋ID。
+  古いデータでIDがない場合は年度＋名前を使う。
+*/
+function playerKey(x){
+
+  const id=x && x.id
+    ? String(x.id)
+    : "";
+
+  const name=x && x.nm
+    ? String(x.nm)
+    : "";
+
+  return String(currentYear)+"|"+(id||name);
+}
+
+function draftStatus(x){
+
+  return draftMarks[playerKey(x)]||"none";
+}
+
+function isFavorite(x){
+
+  return !!favoriteMarks[playerKey(x)];
+}
+
+function setDraftStatus(x,status){
+
+  const key=playerKey(x);
+
+  if(status==="none"){
+    delete draftMarks[key];
+  }else{
+    draftMarks[key]=status;
+  }
+
+  saveDraftMarks();
+  applyFiltersAndRender();
+}
+
+function toggleFavorite(x){
+
+  const key=playerKey(x);
+
+  if(favoriteMarks[key]){
+    delete favoriteMarks[key];
+  }else{
+    favoriteMarks[key]=true;
+  }
+
+  saveFavoriteMarks();
+  applyFiltersAndRender();
+}
+
+function nextDraftStatus(x){
+
+  const now=draftStatus(x);
+
+  if(now==="none"){
+    setDraftStatus(x,"other");
+  }else if(now==="other"){
+    setDraftStatus(x,"self");
+  }else{
+    setDraftStatus(x,"none");
+  }
+}
+
+function posClass(pos){
+
+  if(pos==="P"){
+    return "pos-pitcher";
+  }
+
+  if(pos==="C"){
+    return "pos-catcher";
+  }
+
+  if(["1B","2B","3B","SS"].includes(pos)){
+    return "pos-infield";
+  }
+
+  if(pos==="OF"){
+    return "pos-outfield";
+  }
+
+  return "";
+}
 
 function rank(v){
+
   v=Number(v)||0;
 
   if(v>=90)return"S";
@@ -379,19 +725,30 @@ function rank(v){
   if(v>=50)return"D";
   if(v>=40)return"E";
   if(v>=30)return"F";
+
   return"G";
 }
 
 function bar(v){
-  v=Math.max(0,Math.min(100,Number(v)||0));
 
-  const n=Math.round(v/5);
+  v=Math.max(
+    0,
+    Math.min(
+      99,
+      Number(v)||0
+    )
+  );
 
-  return "█".repeat(n)+"░".repeat(20-n);
+  const blocks=Math.round(v/10);
+
+  return "■".repeat(blocks)+"□".repeat(10-blocks);
 }
 
 function total(x){
-  const z=x.t==="B"?x.ab:x.ap;
+
+  const z=x.t==="B"
+    ? x.ab
+    : x.ap;
 
   let t=0;
 
@@ -403,32 +760,49 @@ function total(x){
 }
 
 function apt(v){
+
   v=Number(v)||0;
 
   if(v===3)return"◎";
   if(v===2)return"○";
   if(v===1)return"△";
+
   return"—";
 }
 
 function aptColor(v){
-  return Number(v)>0?"#222":"#888";
+
+  return Number(v)>0
+    ? "#222"
+    : "#888";
 }
 
 function defenseHTML(x){
 
-  const order=["C","1B","2B","3B","SS","OF"];
+  const order=[
+    "C",
+    "1B",
+    "2B",
+    "3B",
+    "SS",
+    "OF"
+  ];
 
   return order
     .filter(k=>(x.df&&x.df[k])>0)
     .map(k=>{
+
       const v=x.df[k];
 
       return `
-        <span class="apt" style="color:${aptColor(v)}">
+        <span
+          class="apt"
+          style="color:${aptColor(v)}"
+        >
           ${(POS[k]||k)}${apt(v)}
         </span>
       `;
+
     })
     .join("　");
 }
@@ -438,69 +812,145 @@ function roleHTML(x){
   const q=x.rl||{};
 
   return `
-    <span class="apt" style="color:${aptColor(q.sp||0)}">
-      先${apt(q.sp||0)}
-    </span>
-   　
-    <span class="apt" style="color:${aptColor(q.rp||0)}">
-      中${apt(q.rp||0)}
-    </span>
-   　
-    <span class="apt" style="color:${aptColor(q.cl||0)}">
-      抑${apt(q.cl||0)}
-    </span>
+    <span
+      class="apt"
+      style="color:${aptColor(q.sp||0)}"
+    >先${apt(q.sp||0)}</span>　
+
+    <span
+      class="apt"
+      style="color:${aptColor(q.rp||0)}"
+    >中${apt(q.rp||0)}</span>　
+
+    <span
+      class="apt"
+      style="color:${aptColor(q.cl||0)}"
+    >抑${apt(q.cl||0)}</span>
   `;
+}
+
+function specialName(v){
+
+  if(v==null){
+    return"";
+  }
+
+  const key=String(v);
+
+  return ABILITY_NAME_SPECIAL[key]||key;
 }
 
 function abilityHTML(x){
 
-  const sa=Array.isArray(x.sa)?x.sa:[];
+  const sa=Array.isArray(x.sa)
+    ? x.sa
+    : [];
 
   if(!sa.length){
-    return '<span class="none">なし</span>';
+    return`<span class="none">なし</span>`;
   }
 
-  return sa.map(id=>{
-
-    const q=GOOD[id];
-
-    if(q){
-      return `<span class="ab" style="color:#dc2626">${q}</span>`;
-    }
-
-    const b=BAD[id];
-
-    if(b){
-      return `<span class="ab" style="color:#2563eb">${b}</span>`;
-    }
-
-    return `<span class="ab">${id}</span>`;
-
-  }).join("　");
+  return sa
+    .map(v=>`
+      <span class="ab">${specialName(v)}</span>
+    `)
+    .join("　");
 }
 
 function abilityHTMLForStat(x){
 
-  const z=x.t==="B"?x.ab:x.ap;
+  const z=x.t==="B"
+    ? x.ab||{}
+    : x.ap||{};
 
-  if(!z)return"";
+  const keys=x.t==="B"
+    ? ["mt","pw","sp","am","fd"]
+    : ["vl","ct","st","br"];
 
-  return Object.keys(z).map(k=>{
+  return keys.map(k=>{
 
     const v=Number(z[k])||0;
-    const q=rank(v);
-    const name=ABILITY_NAME[k]||k;
+    const g=rank(v);
+
+    const c=RANK_COLOR[g]||"#777";
 
     return `
       <div class="statrow">
-        <span class="name">${name}</span>
+        <span class="name">${ABILITY_NAME[k]||k}</span>
         <span class="num">${v}</span>
-        <b class="grade" style="color:${RANK_COLOR[q]}">[${q}]</b>
-        <span class="bar" style="color:${RANK_COLOR[q]}">${bar(v)}</span>
+        <span
+          class="grade"
+          style="color:${c}"
+        >${g}</span>
+        <span
+          class="bar"
+          style="color:${c}"
+        >${bar(v)}</span>
       </div>
     `;
 
   }).join("");
+}
+
+function playerNoHTML(x){
+
+  if(!x.id){
+    return"";
+  }
+
+  const id=String(x.id)
+    .replace(/^p/,"");
+
+  return `
+    <span class="playerNo">
+      No.${id}
+    </span>
+  `;
+}
+
+function draftText(x){
+
+  const s=draftStatus(x);
+
+  if(s==="other"){
+    return"他球団指名済み";
+  }
+
+  if(s==="self"){
+    return"自分が指名";
+  }
+
+  return"未指名";
+}
+
+function draftButtonClass(x){
+
+  const s=draftStatus(x);
+
+  if(s==="other"){
+    return"markButton other";
+  }
+
+  if(s==="self"){
+    return"markButton self";
+  }
+
+  return"markButton";
+}
+
+function draftButtonText(x){
+
+  const s=draftStatus(x);
+
+  if(s==="other"){
+    return"他球団";
+  }
+
+  if(s==="self"){
+    return"自分";
+  }
+
+  return"未指名";
 }
 
 function render(arr){
@@ -510,22 +960,42 @@ function render(arr){
   arr.forEach((x,i)=>{
 
     const potential=POT_RANK[x.pot]||"?";
-    const potentialColor=RANK_COLOR[potential]||"#777";
+    const potentialColor=
+      RANK_COLOR[potential]||"#777";
+
+    const favorite=isFavorite(x);
+
+    const yearBadge=
+      Object.keys(years).length>1
+      ? `<span class="crossYear">${currentYear}年度</span>`
+      : "";
 
     s+=`
+
       <section class="card">
 
-        <h3>${i+1}. ${x.nm||"名前不明"}</h3>
+        <h3>
+          ${i+1}. ${x.nm||"名前不明"}
+          ${yearBadge}
+        </h3>
 
         <div class="basic">
+
           ${x.age??"?"}歳　
-<span class="${posClass(x.pos)}">${POS[x.pos]||x.pos||"?"}</span>　
+
+          ${playerNoHTML(x)}　
+
+          <span class="${posClass(x.pos)}">
+            ${POS[x.pos]||x.pos||"?"}
+          </span>　
+
           潜在
           <b style="color:${potentialColor}">
             [${potential}]
-          </b>
-         　
+          </b>　
+
           ${GROWTH[x.gt]||x.gt||""}
+
         </div>
 
         <div class="stats">
@@ -534,16 +1004,20 @@ function render(arr){
 
         ${
           x.t==="B"
-          ?
-          `<div class="extra">
-             <b>守備適性</b>　
-             ${defenseHTML(x)}
-           </div>`
-          :
-          `<div class="extra">
-             <b>起用適性</b>　
-             ${roleHTML(x)}
-           </div>`
+
+          ? `
+            <div class="extra">
+              <b>守備適性</b>　
+              ${defenseHTML(x)}
+            </div>
+          `
+
+          : `
+            <div class="extra">
+              <b>起用適性</b>　
+              ${roleHTML(x)}
+            </div>
+          `
         }
 
         <div class="extra">
@@ -551,48 +1025,380 @@ function render(arr){
           ${abilityHTML(x)}
         </div>
 
+        <div class="cardTools">
+
+          <button
+            class="${draftButtonClass(x)}"
+            data-action="draft"
+            data-key="${escapeAttr(playerKey(x))}"
+          >
+            指名：${draftButtonText(x)}
+          </button>
+
+          <span class="statusText">
+            ${draftText(x)}
+          </span>
+
+          <button
+            class="${favorite ? "markButton favorite":"markButton"}"
+            data-action="favorite"
+            data-key="${escapeAttr(playerKey(x))}"
+          >
+            ${favorite ? "★ 注目":"☆ 注目"}
+          </button>
+
+        </div>
+
       </section>
+
     `;
   });
 
   document.getElementById("cards").innerHTML=s;
 
+  document.getElementById("yearInfo").textContent=
+    currentYear+"年度";
+
+  document.getElementById("totalInfo").textContent=
+    "全体："+current.length+"人";
+
+  document.getElementById("matchInfo").textContent=
+    "該当："+arr.length+"人";
+
   document.getElementById("info").textContent=
-    `${currentYear}年度　${arr.length}人`;
+    arr.length
+    ? ""
+    : "条件に一致する選手はいません";
 }
 
-function sortAndRender(){
+function escapeAttr(v){
 
-  let arr=[...current];
+  return String(v)
+    .replace(/&/g,"&amp;")
+    .replace(/"/g,"&quot;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;");
+}
 
-  if(mode==="pot"){
-    arr.sort((x,y)=>
-      (y.pot||0)-(x.pot||0) ||
-      total(y)-total(x)
+/*
+  名前検索
+*/
+function matchesName(x){
+
+  const q=filters.name
+    .trim()
+    .toLowerCase();
+
+  if(!q){
+    return true;
+  }
+
+  return String(x.nm||"")
+    .toLowerCase()
+    .includes(q);
+}
+
+/*
+  ポジション検索
+*/
+function matchesPosition(x){
+
+  if(!filters.positions.size){
+    return true;
+  }
+
+  const pos=x.pos;
+
+  if(filters.positions.has(pos)){
+    return true;
+  }
+
+  /*
+    野手の場合のみサブポジを検索対象にする。
+    dfが1以上なら適性あり。
+  */
+  if(
+    filters.includeSubPos &&
+    x.t==="B" &&
+    x.df
+  ){
+
+    for(const p of filters.positions){
+
+      if(p==="P"){
+        continue;
+      }
+
+      if((Number(x.df[p])||0)>0){
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+/*
+  潜在能力
+*/
+function matchesPotential(x){
+
+  if(filters.potential===""){
+    return true;
+  }
+
+  return Number(x.pot)===Number(filters.potential);
+}
+
+/*
+  成長タイプ
+*/
+function matchesGrowth(x){
+
+  if(filters.growth===""){
+    return true;
+  }
+
+  return x.gt===filters.growth;
+}
+
+/*
+  投手適性
+*/
+function matchesRole(x){
+
+  if(!filters.role){
+    /*
+      「△以下を除外」だけ指定した場合は、
+      3種類すべての投手適性が△以下の投手を除外。
+    */
+    if(filters.excludeLowRole && x.t==="P"){
+
+      const q=x.rl||{};
+
+      const maxRole=Math.max(
+        Number(q.sp)||0,
+        Number(q.rp)||0,
+        Number(q.cl)||0
+      );
+
+      return maxRole>=2;
+    }
+
+    return true;
+  }
+
+  /*
+    投手適性フィルターを指定した場合、
+    野手は対象外。
+  */
+  if(x.t!=="P"){
+    return false;
+  }
+
+  const q=x.rl||{};
+  const v=Number(q[filters.role])||0;
+
+  if(filters.excludeLowRole){
+    return v>=2;
+  }
+
+  return v>0;
+}
+
+/*
+  指名状況
+*/
+function matchesDraft(x){
+
+  const s=draftStatus(x);
+
+  if(filters.draft===""){
+    return true;
+  }
+
+  return s===filters.draft;
+}
+
+/*
+  指名済み非表示
+*/
+function matchesHideDrafted(x){
+
+  if(!filters.hideDrafted){
+    return true;
+  }
+
+  return draftStatus(x)==="none";
+}
+
+/*
+  注目のみ
+*/
+function matchesFavorite(x){
+
+  if(!filters.favoriteOnly){
+    return true;
+  }
+
+  return isFavorite(x);
+}
+
+function filterPlayers(arr){
+
+  return arr.filter(x=>{
+
+    if(!matchesName(x)){
+      return false;
+    }
+
+    if(!matchesPosition(x)){
+      return false;
+    }
+
+    if(!matchesPotential(x)){
+      return false;
+    }
+
+    if(!matchesGrowth(x)){
+      return false;
+    }
+
+    if(!matchesRole(x)){
+      return false;
+    }
+
+    if(!matchesDraft(x)){
+      return false;
+    }
+
+    if(!matchesHideDrafted(x)){
+      return false;
+    }
+
+    if(!matchesFavorite(x)){
+      return false;
+    }
+
+    return true;
+  });
+}
+
+/*
+  名前の「あいうえお順」
+*/
+function compareName(a,b){
+
+  return String(a.nm||"")
+    .localeCompare(
+      String(b.nm||""),
+      "ja",
+      {
+        numeric:true,
+        sensitivity:"base"
+      }
     );
+}
+
+function roleValue(x,key){
+
+  return Number(
+    (x.rl||{})[key]
+  )||0;
+}
+
+function compareSort(a,b){
+
+  if(sortKey==="orig"){
+    return 0;
   }
 
-  if(mode==="now"){
-    arr.sort((x,y)=>
-      total(y)-total(x) ||
-      (y.pot||0)-(x.pot||0)
-    );
+  if(sortKey==="name"){
+
+    const n=compareName(a,b);
+
+    return sortOrder==="asc"
+      ? n
+      : -n;
   }
 
-  if(mode==="pit"){
-    arr=arr.filter(x=>x.t==="P");
+  let av=0;
+  let bv=0;
+
+  if(sortKey==="pot"){
+    av=Number(a.pot)||0;
+    bv=Number(b.pot)||0;
   }
 
-  if(mode==="bat"){
-    arr=arr.filter(x=>x.t==="B");
+  else if(sortKey==="now"){
+    av=total(a);
+    bv=total(b);
   }
 
-  render(arr);
+  else if(sortKey==="age"){
+    av=Number(a.age)||0;
+    bv=Number(b.age)||0;
+  }
+
+  else if(
+    sortKey==="sp"||
+    sortKey==="rp"||
+    sortKey==="cl"
+  ){
+
+    av=roleValue(a,sortKey);
+    bv=roleValue(b,sortKey);
+  }
+
+  let result=bv-av;
+
+  if(sortOrder==="asc"){
+    result=-result;
+  }
+
+  /*
+    同値の場合の第2ソート。
+    表示順が毎回バラバラになるのを防ぐ。
+  */
+  if(result===0){
+
+    const potDiff=
+      (Number(b.pot)||0)-
+      (Number(a.pot)||0);
+
+    if(potDiff!==0){
+      return potDiff;
+    }
+
+    return compareName(a,b);
+  }
+
+  return result;
+}
+
+function sortPlayers(arr){
+
+  const result=[...arr];
+
+  if(sortKey==="orig"){
+    return result;
+  }
+
+  return result.sort(compareSort);
+}
+
+function applyFiltersAndRender(){
+
+  const filtered=filterPlayers(current);
+  const sorted=sortPlayers(filtered);
+
+  render(sorted);
 }
 
 function setupYears(){
 
-  const select=document.getElementById("year");
+  const select=
+    document.getElementById("year");
 
   select.innerHTML="";
 
@@ -600,7 +1406,8 @@ function setupYears(){
     .sort((a,b)=>Number(b)-Number(a))
     .forEach(y=>{
 
-      const o=document.createElement("option");
+      const o=
+        document.createElement("option");
 
       o.value=y;
       o.textContent=y+"年度";
@@ -608,152 +1415,628 @@ function setupYears(){
       select.appendChild(o);
     });
 
-  if(currentYear && years[currentYear]){
+  if(
+    currentYear &&
+    years[currentYear]
+  ){
     select.value=currentYear;
   }
 }
 
 function switchYear(y){
 
-  if(!years[y])return;
+  if(!years[y]){
+    return;
+  }
 
   currentYear=y;
-  current=years[y];
-  mode="orig";
+  current=Array.isArray(years[y])
+    ? years[y]
+    : [];
 
+  /*
+    年度変更時も検索条件・並べ替え条件は維持。
+  */
   setupYears();
-  sortAndRender();
+  applyFiltersAndRender();
+}
+
+function makeButtons(){
+
+  /*
+    ポジション
+  */
+  const posBox=
+    document.getElementById("positionButtons");
+
+  posBox.innerHTML="";
+
+  const allButton=
+    document.createElement("button");
+
+  allButton.textContent="全て";
+  allButton.dataset.pos="";
+  allButton.className="active";
+
+  posBox.appendChild(allButton);
+
+  POSITION_LIST.forEach(([key,label])=>{
+
+    const button=
+      document.createElement("button");
+
+    button.textContent=label;
+    button.dataset.pos=key;
+
+    posBox.appendChild(button);
+  });
+
+  /*
+    潜在能力
+  */
+  const potBox=
+    document.getElementById("potentialButtons");
+
+  potBox.innerHTML="";
+
+  POTENTIAL_LIST.forEach(([value,label])=>{
+
+    const button=
+      document.createElement("button");
+
+    button.textContent=label;
+    button.dataset.pot=value;
+
+    if(value===""){
+      button.className="active";
+    }
+
+    potBox.appendChild(button);
+  });
+
+  /*
+    成長タイプ
+  */
+  const growthBox=
+    document.getElementById("growthButtons");
+
+  growthBox.innerHTML="";
+
+  GROWTH_LIST.forEach(([value,label])=>{
+
+    const button=
+      document.createElement("button");
+
+    button.textContent=label;
+    button.dataset.growth=value;
+
+    if(value===""){
+      button.className="active";
+    }
+
+    growthBox.appendChild(button);
+  });
+
+  /*
+    指名状況
+  */
+  const draftBox=
+    document.getElementById("draftButtons");
+
+  draftBox.innerHTML="";
+
+  DRAFT_LIST.forEach(([value,label])=>{
+
+    const button=
+      document.createElement("button");
+
+    button.textContent=label;
+    button.dataset.draft=value;
+
+    if(value===""){
+      button.className="active";
+    }
+
+    draftBox.appendChild(button);
+  });
+}
+
+function updatePositionButtons(){
+
+  document
+    .querySelectorAll("#positionButtons button")
+    .forEach(button=>{
+
+      const pos=button.dataset.pos;
+
+      if(pos===""){
+        button.classList.toggle(
+          "active",
+          filters.positions.size===0
+        );
+      }else{
+        button.classList.toggle(
+          "active",
+          filters.positions.has(pos)
+        );
+      }
+    });
+}
+
+function updatePotentialButtons(){
+
+  document
+    .querySelectorAll("#potentialButtons button")
+    .forEach(button=>{
+
+      button.classList.toggle(
+        "active",
+        button.dataset.pot===String(filters.potential)
+      );
+    });
+}
+
+function updateGrowthButtons(){
+
+  document
+    .querySelectorAll("#growthButtons button")
+    .forEach(button=>{
+
+      button.classList.toggle(
+        "active",
+        button.dataset.growth===filters.growth
+      );
+    });
+}
+
+function updateDraftButtons(){
+
+  document
+    .querySelectorAll("#draftButtons button")
+    .forEach(button=>{
+
+      button.classList.toggle(
+        "active",
+        button.dataset.draft===filters.draft
+      );
+    });
+}
+
+function bindEvents(){
+
+  /*
+    ポジション
+  */
+  document
+    .getElementById("positionButtons")
+    .addEventListener("click",e=>{
+
+      const button=
+        e.target.closest("button");
+
+      if(!button){
+        return;
+      }
+
+      const pos=button.dataset.pos;
+
+      if(pos===""){
+
+        filters.positions.clear();
+
+      }else{
+
+        if(filters.positions.has(pos)){
+          filters.positions.delete(pos);
+        }else{
+          filters.positions.add(pos);
+        }
+      }
+
+      updatePositionButtons();
+      applyFiltersAndRender();
+    });
+
+  /*
+    潜在能力
+  */
+  document
+    .getElementById("potentialButtons")
+    .addEventListener("click",e=>{
+
+      const button=
+        e.target.closest("button");
+
+      if(!button){
+        return;
+      }
+
+      filters.potential=
+        button.dataset.pot;
+
+      updatePotentialButtons();
+      applyFiltersAndRender();
+    });
+
+  /*
+    成長タイプ
+  */
+  document
+    .getElementById("growthButtons")
+    .addEventListener("click",e=>{
+
+      const button=
+        e.target.closest("button");
+
+      if(!button){
+        return;
+      }
+
+      filters.growth=
+        button.dataset.growth;
+
+      updateGrowthButtons();
+      applyFiltersAndRender();
+    });
+
+  /*
+    指名状況
+  */
+  document
+    .getElementById("draftButtons")
+    .addEventListener("click",e=>{
+
+      const button=
+        e.target.closest("button");
+
+      if(!button){
+        return;
+      }
+
+      filters.draft=
+        button.dataset.draft;
+
+      updateDraftButtons();
+      applyFiltersAndRender();
+    });
+
+  /*
+    名前
+  */
+  let timer=null;
+
+  document
+    .getElementById("nameSearch")
+    .addEventListener("input",e=>{
+
+      filters.name=e.target.value;
+
+      clearTimeout(timer);
+
+      timer=setTimeout(()=>{
+        applyFiltersAndRender();
+      },100);
+    });
+
+  /*
+    サブポジ
+  */
+  document
+    .getElementById("includeSubPos")
+    .addEventListener("change",e=>{
+
+      filters.includeSubPos=
+        e.target.checked;
+
+      applyFiltersAndRender();
+    });
+
+  /*
+    投手適性
+  */
+  document
+    .getElementById("roleFilter")
+    .addEventListener("change",e=>{
+
+      filters.role=e.target.value;
+
+      applyFiltersAndRender();
+    });
+
+  /*
+    △以下除外
+  */
+  document
+    .getElementById("excludeLowRole")
+    .addEventListener("change",e=>{
+
+      filters.excludeLowRole=
+        e.target.checked;
+
+      applyFiltersAndRender();
+    });
+
+  /*
+    指名済み非表示
+  */
+  document
+    .getElementById("hideDrafted")
+    .addEventListener("change",e=>{
+
+      filters.hideDrafted=
+        e.target.checked;
+
+      applyFiltersAndRender();
+    });
+
+  /*
+    注目のみ
+  */
+  document
+    .getElementById("favoriteOnly")
+    .addEventListener("change",e=>{
+
+      filters.favoriteOnly=
+        e.target.checked;
+
+      applyFiltersAndRender();
+    });
+
+  /*
+    並べ替え項目
+  */
+  document
+    .getElementById("sortKey")
+    .addEventListener("change",e=>{
+
+      sortKey=e.target.value;
+
+      updateSortOrderUI();
+      applyFiltersAndRender();
+    });
+
+  /*
+    並べ替え順
+  */
+  document
+    .getElementById("sortOrder")
+    .addEventListener("change",e=>{
+
+      sortOrder=e.target.value;
+
+      applyFiltersAndRender();
+    });
+
+  /*
+    年度
+  */
+  document
+    .getElementById("year")
+    .addEventListener("change",e=>{
+
+      switchYear(e.target.value);
+    });
+
+  /*
+    カード上のボタン
+  */
+  document
+    .getElementById("cards")
+    .addEventListener("click",e=>{
+
+      const button=
+        e.target.closest("button[data-action]");
+
+      if(!button){
+        return;
+      }
+
+      const key=button.dataset.key;
+      const action=button.dataset.action;
+
+      const player=
+        current.find(x=>playerKey(x)===key);
+
+      if(!player){
+        return;
+      }
+
+      if(action==="draft"){
+        nextDraftStatus(player);
+      }
+
+      if(action==="favorite"){
+        toggleFavorite(player);
+      }
+    });
+}
+
+function updateSortOrderUI(){
+
+  const select=
+    document.getElementById("sortOrder");
+
+  const key=
+    document.getElementById("sortKey").value;
+
+  if(key==="name"){
+
+    select.innerHTML=`
+      <option value="asc">あいうえお順</option>
+      <option value="desc">逆順</option>
+    `;
+
+    /*
+      名前に切り替えた瞬間は
+      あいうえお順をデフォルトにする。
+    */
+    sortOrder="asc";
+    select.value="asc";
+
+  }else if(key==="orig"){
+
+    select.innerHTML=`
+      <option value="desc">そのまま</option>
+    `;
+
+    sortOrder="desc";
+    select.disabled=true;
+
+    return;
+
+  }else{
+
+    select.innerHTML=`
+      <option value="desc">高い順</option>
+      <option value="asc">低い順</option>
+    `;
+
+    select.disabled=false;
+    select.value=sortOrder;
+  }
+
+  select.disabled=false;
 }
 
 async function decodeData(hash){
 
-  hash=hash.replace(/^#/,"");
+  let s=
+    hash
+      .replace(/-/g,"+")
+      .replace(/_/g,"/");
 
-  hash=hash.replace(/-/g,"+").replace(/_/g,"/");
-
-  while(hash.length%4){
-    hash+="=";
+  while(s.length%4){
+    s+="=";
   }
 
-  const binary=atob(hash);
+  const binary=
+    atob(s);
 
-  const bytes=new Uint8Array(binary.length);
+  const bytes=
+    Uint8Array.from(
+      binary,
+      c=>c.charCodeAt(0)
+    );
 
-  for(let i=0;i<binary.length;i++){
-    bytes[i]=binary.charCodeAt(i);
-  }
+  const ds=
+    new DecompressionStream("deflate");
 
-  const ds=new DecompressionStream("deflate");
+  const stream=
+    new Blob([bytes])
+      .stream()
+      .pipeThrough(ds);
 
-  const writer=ds.writable.getWriter();
+  const buffer=
+    await new Response(stream)
+      .arrayBuffer();
 
-  writer.write(bytes);
-  writer.close();
+  const text=
+    new TextDecoder()
+      .decode(buffer);
 
-  const reader=ds.readable.getReader();
-
-  const chunks=[];
-  let x;
-
-  while(!(x=await reader.read()).done){
-    chunks.push(x.value);
-  }
-
-  const blob=new Blob(chunks);
-
-  return JSON.parse(await blob.text());
+  return JSON.parse(text);
 }
 
 async function load(){
 
-  const hash=location.hash.slice(1);
+  loadMarks();
+  makeButtons();
+  bindEvents();
+  updateSortOrderUI();
+
+  const hash=
+    location.hash.slice(1);
 
   if(!hash){
 
     document.getElementById("info").textContent=
-      "URLに新人候補データがありません。";
+      "URLに新人候補データがありません";
 
     return;
   }
 
   try{
 
-    const obj=await decodeData(hash);
+    const obj=
+      await decodeData(hash);
 
     /*
-      新形式:
+      新形式：
       {
         years:{
           "2026":[...],
           "2027":[...]
         }
       }
-
-      旧形式:
-      {
-        y:2026,
-        d:[...]
-      }
-
-      の両方に対応
     */
-
     if(obj.years){
 
       years=obj.years;
 
-    }else if(obj.y && obj.d){
+    /*
+      旧形式：
+      {
+        y:2026,
+        d:[...]
+      }
+    */
+    }else if(
+      obj.y!=null &&
+      obj.d
+    ){
 
       years[String(obj.y)]=obj.d;
 
     }else{
 
-      throw new Error("データ形式が不正です");
-
+      throw new Error(
+        "データ形式が不正です"
+      );
     }
 
-    const ys=Object.keys(years)
-      .sort((a,b)=>Number(b)-Number(a));
+    const ys=
+      Object.keys(years)
+        .sort(
+          (a,b)=>Number(b)-Number(a)
+        );
 
     if(!ys.length){
-      throw new Error("年度データなし");
+
+      throw new Error(
+        "年度データがありません"
+      );
     }
 
     currentYear=ys[0];
-    current=years[currentYear];
+
+    current=
+      Array.isArray(years[currentYear])
+      ? years[currentYear]
+      : [];
 
     setupYears();
-    sortAndRender();
+
+    applyFiltersAndRender();
 
   }catch(e){
 
     console.error(e);
 
     document.getElementById("info").textContent=
-      "URLデータを読み込めませんでした。";
+      "データの読み込みに失敗しました";
 
+    document.getElementById("cards").innerHTML=`
+      <div style="
+        grid-column:1/-1;
+        padding:20px;
+        color:#777;
+      ">
+        データを読み込めませんでした。<br>
+        URLが途中で切れていないか確認してください。
+      </div>
+    `;
   }
 }
-
-document.querySelectorAll("button[data-sort]")
-.forEach(button=>{
-
-  button.addEventListener("click",()=>{
-
-    mode=button.dataset.sort;
-
-    sortAndRender();
-
-  });
-
-});
-
-document.getElementById("year")
-.addEventListener("change",e=>{
-
-  switchYear(e.target.value);
-
-});
 
 load();
 
