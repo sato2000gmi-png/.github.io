@@ -52,19 +52,16 @@ h1{
   display:flex;
   align-items:center;
   gap:4px;
-  flex-wrap:wrap;
 }
 
 button,
 select,
 input[type="text"]{
   font-size:12px;
-  line-height:1.3;
-  padding:5px 8px;
+  padding:4px 7px;
   border:1px solid #bbb;
   border-radius:6px;
   background:#fff;
-  font-family:inherit;
 }
 
 button{
@@ -98,19 +95,17 @@ input[type="text"]{
   font-size:12px;
   font-weight:700;
   margin-right:5px;
-  vertical-align:middle;
 }
 
 .filterButtons{
   display:inline-flex;
-  gap:4px;
+  gap:3px;
   flex-wrap:wrap;
   align-items:center;
-  vertical-align:middle;
 }
 
 .filterButtons button{
-  padding:4px 8px;
+  padding:3px 7px;
   font-size:12px;
 }
 
@@ -118,46 +113,37 @@ input[type="text"]{
   display:inline-flex;
   align-items:center;
   gap:3px;
-  margin-left:8px;
+  margin-left:7px;
   font-size:12px;
-  line-height:1.3;
-  vertical-align:middle;
   white-space:nowrap;
 }
 
 .checkLine input{
-  width:13px;
-  height:13px;
   margin:0;
 }
 
 .roleLine{
   display:inline-flex;
   align-items:center;
-  gap:5px;
+  gap:4px;
   margin-left:8px;
-  font-size:12px;
-  line-height:1.3;
-  vertical-align:middle;
-  flex-wrap:wrap;
+  white-space:nowrap;
 }
 
 .roleLine select{
-  padding:4px 7px;
+  padding:3px 6px;
   font-size:12px;
 }
 
 .sortLine{
   display:inline-flex;
   align-items:center;
-  gap:6px;
+  gap:5px;
   flex-wrap:wrap;
-  font-size:12px;
 }
 
 .sortLine select{
-  min-width:110px;
-  font-size:12px;
+  min-width:105px;
 }
 
 #info{
@@ -186,16 +172,13 @@ input[type="text"]{
 .card h3{
   font:600 15px sans-serif;
   margin:0 0 5px;
-  border-bottom:1px solid #ddd;
   padding-bottom:4px;
+  border-bottom:1px solid #ddd;
 }
 
 .basic{
   font-size:12px;
-  line-height:1.65;
-}
-
-.basicLine{
+  line-height:1.5;
   white-space:nowrap;
 }
 
@@ -205,13 +188,20 @@ input[type="text"]{
   white-space:nowrap;
 }
 
-.potentialLine{
+.cardDivider{
+  margin:6px 0 5px;
+  border-top:1px solid #ddd;
+}
+
+.cardInfo{
+  font-size:12px;
+  line-height:1.6;
   white-space:nowrap;
 }
 
 .stats{
   margin-top:6px;
-  padding-top:4px;
+  padding-top:5px;
   border-top:1px solid #eee;
   white-space:nowrap;
   font-family:monospace;
@@ -225,7 +215,7 @@ input[type="text"]{
   height:20px;
 }
 
-.name{
+.statName{
   display:inline-block;
   width:42px;
 }
@@ -259,7 +249,6 @@ input[type="text"]{
 
 .ab{
   font-weight:600;
-  white-space:nowrap;
 }
 
 .ab-good{
@@ -276,7 +265,36 @@ input[type="text"]{
 
 .apt{
   font-weight:600;
-  white-space:nowrap;
+}
+
+.crossYear{
+  margin-left:5px;
+  padding:1px 4px;
+  border-radius:4px;
+  background:#eee;
+  color:#777;
+  font-size:10px;
+  font-weight:500;
+}
+
+.pos-pitcher{
+  color:#d32f2f !important;
+  font-weight:700;
+}
+
+.pos-catcher{
+  color:#1976d2 !important;
+  font-weight:700;
+}
+
+.pos-infield{
+  color:#d89b00 !important;
+  font-weight:700;
+}
+
+.pos-outfield{
+  color:#2e8b57 !important;
+  font-weight:700;
 }
 
 .cardTools{
@@ -314,41 +332,7 @@ input[type="text"]{
   color:#777;
 }
 
-.crossYear{
-  margin-left:5px;
-  padding:1px 4px;
-  border-radius:4px;
-  background:#eee;
-  color:#777;
-  font-size:10px;
-  font-weight:500;
-}
-
-.pos-pitcher{
-  color:#d32f2f !important;
-  font-weight:700;
-}
-
-.pos-catcher{
-  color:#1976d2 !important;
-  font-weight:700;
-}
-
-.pos-infield{
-  color:#d89b00 !important;
-  font-weight:700;
-}
-
-.pos-outfield{
-  color:#2e8b57 !important;
-  font-weight:700;
-}
-
 @media(max-width:700px){
-  body{
-    padding:0;
-  }
-
   #cards{
     grid-template-columns:repeat(2,1fr);
     gap:14px 10px;
@@ -376,105 +360,104 @@ input[type="text"]{
 
 <header>
 
-  <h1>ペナントメーカー 新人候補</h1>
-  <p class="subtitle">新人候補スカウティングデータ</p>
+<h1>ペナントメーカー 新人候補</h1>
+<p class="subtitle">新人候補スカウティングデータ</p>
 
-  <div class="headerInfo">
-    <span id="yearInfo">年度</span>　
-    <span id="totalInfo">全体：0人</span>　
-    <span id="matchInfo">該当：0人</span>
+<div class="headerInfo">
+  <span id="yearInfo">年度</span>　
+  <span id="totalInfo">全体：0人</span>　
+  <span id="matchInfo">該当：0人</span>
+</div>
+
+<div class="controls">
+  <div class="controlGroup">
+    <span>年度</span>
+    <select id="year"></select>
   </div>
+</div>
 
-  <div class="controls">
-    <div class="controlGroup">
-      <span>年度</span>
-      <select id="year"></select>
-    </div>
-  </div>
+<div class="filterBlock">
+  <span class="filterTitle">名前</span>
+  <input id="nameSearch" type="text" placeholder="選手名を検索…">
+</div>
 
-  <div class="filterBlock">
-    <span class="filterTitle">名前</span>
-    <input id="nameSearch" type="text" placeholder="選手名を検索…">
-  </div>
+<div class="filterBlock">
+  <span class="filterTitle">ポジション</span>
+  <span id="positionButtons" class="filterButtons"></span>
 
-  <div class="filterBlock">
-    <span class="filterTitle">ポジション</span>
-    <span id="positionButtons" class="filterButtons"></span>
+  <label class="checkLine">
+    <input id="includeSubPos" type="checkbox" checked>
+    サブポジも含める
+  </label>
+
+  <span class="roleLine">
+    <span>投手適性</span>
+    <select id="roleFilter">
+      <option value="">全て</option>
+      <option value="sp">先発</option>
+      <option value="rp">中継ぎ</option>
+      <option value="cl">抑え</option>
+    </select>
 
     <label class="checkLine">
-      <input id="includeSubPos" type="checkbox" checked>
-      サブポジも含める
+      <input id="excludeLowRole" type="checkbox">
+      △以下を除外
     </label>
+  </span>
+</div>
 
-    <span class="roleLine">
-      <span>投手適性</span>
+<div class="filterBlock">
+  <span class="filterTitle">潜在能力</span>
+  <span id="potentialButtons" class="filterButtons"></span>
+</div>
 
-      <select id="roleFilter">
-        <option value="">全て</option>
-        <option value="sp">先発</option>
-        <option value="rp">中継ぎ</option>
-        <option value="cl">抑え</option>
-      </select>
+<div class="filterBlock">
+  <span class="filterTitle">成長タイプ</span>
+  <span id="growthButtons" class="filterButtons"></span>
+</div>
 
-      <label class="checkLine">
-        <input id="excludeLowRole" type="checkbox">
-        △以下を除外
-      </label>
-    </span>
-  </div>
+<div class="filterBlock">
+  <span class="filterTitle">指名状況</span>
+  <span id="draftButtons" class="filterButtons"></span>
 
-  <div class="filterBlock">
-    <span class="filterTitle">潜在能力</span>
-    <span id="potentialButtons" class="filterButtons"></span>
-  </div>
+  <label class="checkLine">
+    <input id="hideDrafted" type="checkbox">
+    指名済みを非表示
+  </label>
 
-  <div class="filterBlock">
-    <span class="filterTitle">成長タイプ</span>
-    <span id="growthButtons" class="filterButtons"></span>
-  </div>
+  <label class="checkLine">
+    <input id="favoriteOnly" type="checkbox">
+    注目のみ
+  </label>
+</div>
 
-  <div class="filterBlock">
-    <span class="filterTitle">指名状況</span>
-    <span id="draftButtons" class="filterButtons"></span>
+<div class="filterBlock">
+  <span class="filterTitle">並べ替え</span>
 
-    <label class="checkLine">
-      <input id="hideDrafted" type="checkbox">
-      指名済みを非表示
-    </label>
+  <span class="sortLine">
+    <span>項目</span>
 
-    <label class="checkLine">
-      <input id="favoriteOnly" type="checkbox">
-      注目のみ
-    </label>
-  </div>
+    <select id="sortKey">
+      <option value="pot">潜在能力</option>
+      <option value="now">現在能力</option>
+      <option value="age">年齢</option>
+      <option value="sp">先発適性</option>
+      <option value="rp">中継ぎ適性</option>
+      <option value="cl">抑え適性</option>
+      <option value="name">名前</option>
+      <option value="orig">元の順番</option>
+    </select>
 
-  <div class="filterBlock">
-    <span class="filterTitle">並べ替え</span>
+    <span>順序</span>
 
-    <span class="sortLine">
-      <span>項目</span>
+    <select id="sortOrder">
+      <option value="desc">高い順</option>
+      <option value="asc">低い順</option>
+    </select>
+  </span>
+</div>
 
-      <select id="sortKey">
-        <option value="pot">潜在能力</option>
-        <option value="now">現在能力</option>
-        <option value="age">年齢</option>
-        <option value="sp">先発適性</option>
-        <option value="rp">中継ぎ適性</option>
-        <option value="cl">抑え適性</option>
-        <option value="name">名前</option>
-        <option value="orig">元の順番</option>
-      </select>
-
-      <span>順序</span>
-
-      <select id="sortOrder">
-        <option value="desc">高い順</option>
-        <option value="asc">低い順</option>
-      </select>
-    </span>
-  </div>
-
-  <div id="info">データを読み込み中…</div>
+<div id="info">データを読み込み中…</div>
 
 </header>
 
@@ -483,8 +466,113 @@ input[type="text"]{
 <script>
 
 /* =========================================================
+   特殊能力マスタ
+   ゲーム側の定義をそのまま使用
+   t: g = 良い能力 / b = 悪い能力
+   ========================================================= */
+
+const ABILITIES = [
+
+  {id:"avgHit",n:"アベレージヒッター",t:"g"},
+  {id:"powHit",n:"パワーヒッター",t:"g"},
+  {id:"wideAng",n:"広角打法",t:"g"},
+  {id:"chance3",n:"チャンス◎",t:"g"},
+  {id:"chance2",n:"チャンス○",t:"g"},
+  {id:"vsLeftB3",n:"対左投手◎",t:"g"},
+  {id:"vsAce",n:"対エース◎",t:"g"},
+  {id:"katame",n:"固め打ち",t:"g"},
+  {id:"shokyu",n:"初球攻撃",t:"g"},
+  {id:"nebari",n:"粘り打ち",t:"g"},
+  {id:"manrui",n:"満塁男",t:"g"},
+  {id:"sayonara",n:"サヨナラ男",t:"g"},
+  {id:"gyakkyo",n:"逆境◎",t:"g"},
+  {id:"kaimaku",n:"開幕男",t:"g"},
+  {id:"natsu",n:"夏男",t:"g"},
+  {id:"aki",n:"秋男",t:"g"},
+  {id:"daida",n:"代打の神様",t:"g"},
+  {id:"bunt",n:"バント職人",t:"g"},
+  {id:"shobu",n:"勝負強さ",t:"g"},
+
+  {id:"sanshin",n:"三振癖",t:"b"},
+  {id:"heisatsu",n:"併殺癖",t:"b"},
+  {id:"chanceX",n:"チャンス×",t:"b"},
+  {id:"vsLeftBX",n:"対左投手×",t:"b"},
+  {id:"murake",n:"ムラっ気",t:"b"},
+  {id:"slowB",n:"スロースターター",t:"b"},
+
+  {id:"steal3",n:"盗塁◎",t:"g"},
+  {id:"baserun3",n:"走塁◎",t:"g"},
+  {id:"headsl",n:"ヘッドスライディング",t:"g"},
+  {id:"stealX",n:"盗塁×",t:"b"},
+
+  {id:"fldArt",n:"守備職人",t:"g"},
+  {id:"laser",n:"レーザービーム",t:"g"},
+  {id:"throw3",n:"送球◎",t:"g"},
+  {id:"lead3",n:"リード◎",t:"g"},
+  {id:"block3",n:"盗塁阻止◎",t:"g"},
+  {id:"throwX",n:"送球難",t:"b"},
+  {id:"errorPr",n:"エラー癖",t:"b"},
+
+  {id:"nobi",n:"ノビ◎",t:"g"},
+  {id:"kire",n:"キレ◎",t:"g"},
+  {id:"omoi",n:"重い球",t:"g"},
+  {id:"vsPinch",n:"対ピンチ◎",t:"g"},
+  {id:"vsLeftP3",n:"対左打者◎",t:"g"},
+  {id:"tough",n:"打たれ強い",t:"g"},
+  {id:"quick",n:"クイック◎",t:"g"},
+  {id:"kensei",n:"牽制◎",t:"g"},
+  {id:"kSama",n:"奪三振",t:"g"},
+  {id:"kanto",n:"完投型",t:"g"},
+  {id:"tetsuwan",n:"鉄腕",t:"g"},
+  {id:"hikeshi",n:"火消し",t:"g"},
+  {id:"shiriagari",n:"尻上がり",t:"g"},
+  {id:"kachiun",n:"勝ち運",t:"g"},
+
+  {id:"ippatsu",n:"一発病",t:"b"},
+  {id:"yonkyu",n:"四球癖",t:"b"},
+  {id:"slowP",n:"スロースターター",t:"b"},
+  {id:"makeun",n:"負け運",t:"b"},
+  {id:"tanki",n:"短気",t:"b"},
+  {id:"fragGlass",n:"打たれ弱い",t:"b"},
+
+  {id:"ironBody",n:"ケガしにくい",t:"g"},
+  {id:"glassBody",n:"ケガしやすい",t:"b"},
+  {id:"recover",n:"回復◎",t:"g"},
+  {id:"mood",n:"ムードメーカー",t:"g"},
+  {id:"ninki",n:"人気者",t:"g"},
+  {id:"toushi",n:"闘志",t:"g"},
+  {id:"vetAji",n:"ベテランの味",t:"g"},
+  {id:"bigstage",n:"大舞台◎",t:"g"},
+  {id:"omatsuri",n:"お祭り男",t:"g"},
+  {id:"tofu",n:"豆腐メンタル",t:"b"},
+
+  {id:"gapHit",n:"二塁打製造機",t:"g"},
+  {id:"vsRightB3",n:"対右投手◎",t:"g"},
+  {id:"soku",n:"快足",t:"g"},
+  {id:"badball",n:"悪球打ち",t:"g"},
+  {id:"leadoff",n:"切り込み隊長",t:"g"},
+  {id:"gekitetsu",n:"激鉄",t:"g"},
+  {id:"groundball",n:"ゴロ投手",t:"g"},
+  {id:"noWalk",n:"精密機械",t:"g"},
+  {id:"lateStopper",n:"守護神",t:"g"},
+  {id:"vsRightP3",n:"対右打者◎",t:"g"},
+  {id:"lucky",n:"強運",t:"g"},
+  {id:"cleanup",n:"クリーンナップ",t:"g"},
+  {id:"lowerStar",n:"下位の主役",t:"g"},
+  {id:"second",n:"ローテの柱",t:"g"}
+
+];
+
+const ABILITY_MAP={};
+
+ABILITIES.forEach(a=>{
+  ABILITY_MAP[a.id]=a;
+});
+
+
+/* =========================================================
    基本データ
-========================================================= */
+   ========================================================= */
 
 const POT_RANK={
   5:"S",
@@ -557,123 +645,6 @@ const ABILITY_NAME={
   br:"変化球"
 };
 
-
-/* =========================================================
-   特殊能力マスタ
-   ゲーム側の ABILITIES をそのまま反映
-   t: g=良、b=悪
-========================================================= */
-
-const ABILITIES=[
-
-  /* ----- 打撃系・良 ----- */
-  {id:"avgHit",n:"アベレージヒッター",t:"g"},
-  {id:"powHit",n:"パワーヒッター",t:"g"},
-  {id:"wideAng",n:"広角打法",t:"g"},
-  {id:"chance3",n:"チャンス◎",t:"g"},
-  {id:"chance2",n:"チャンス○",t:"g"},
-  {id:"vsLeftB3",n:"対左投手◎",t:"g"},
-  {id:"vsAce",n:"対エース◎",t:"g"},
-  {id:"katame",n:"固め打ち",t:"g"},
-  {id:"shokyu",n:"初球攻撃",t:"g"},
-  {id:"nebari",n:"粘り打ち",t:"g"},
-  {id:"manrui",n:"満塁男",t:"g"},
-  {id:"sayonara",n:"サヨナラ男",t:"g"},
-  {id:"gyakkyo",n:"逆境◎",t:"g"},
-  {id:"kaimaku",n:"開幕男",t:"g"},
-  {id:"natsu",n:"夏男",t:"g"},
-  {id:"aki",n:"秋男",t:"g"},
-  {id:"daida",n:"代打の神様",t:"g"},
-  {id:"bunt",n:"バント職人",t:"g"},
-  {id:"shobu",n:"勝負強さ",t:"g"},
-
-  /* ----- 打撃系・悪 ----- */
-  {id:"sanshin",n:"三振癖",t:"b"},
-  {id:"heisatsu",n:"併殺癖",t:"b"},
-  {id:"chanceX",n:"チャンス×",t:"b"},
-  {id:"vsLeftBX",n:"対左投手×",t:"b"},
-  {id:"murake",n:"ムラっ気",t:"b"},
-  {id:"slowB",n:"スロースターター",t:"b"},
-
-  /* ----- 走塁系 ----- */
-  {id:"steal3",n:"盗塁◎",t:"g"},
-  {id:"baserun3",n:"走塁◎",t:"g"},
-  {id:"headsl",n:"ヘッドスライディング",t:"g"},
-  {id:"stealX",n:"盗塁×",t:"b"},
-
-  /* ----- 守備系 ----- */
-  {id:"fldArt",n:"守備職人",t:"g"},
-  {id:"laser",n:"レーザービーム",t:"g"},
-  {id:"throw3",n:"送球◎",t:"g"},
-  {id:"lead3",n:"リード◎",t:"g"},
-  {id:"block3",n:"盗塁阻止◎",t:"g"},
-  {id:"throwX",n:"送球難",t:"b"},
-  {id:"errorPr",n:"エラー癖",t:"b"},
-
-  /* ----- 投手系・良 ----- */
-  {id:"nobi",n:"ノビ◎",t:"g"},
-  {id:"kire",n:"キレ◎",t:"g"},
-  {id:"omoi",n:"重い球",t:"g"},
-  {id:"vsPinch",n:"対ピンチ◎",t:"g"},
-  {id:"vsLeftP3",n:"対左打者◎",t:"g"},
-  {id:"tough",n:"打たれ強い",t:"g"},
-  {id:"quick",n:"クイック◎",t:"g"},
-  {id:"kensei",n:"牽制◎",t:"g"},
-  {id:"kSama",n:"奪三振",t:"g"},
-  {id:"kanto",n:"完投型",t:"g"},
-  {id:"tetsuwan",n:"鉄腕",t:"g"},
-  {id:"hikeshi",n:"火消し",t:"g"},
-  {id:"shiriagari",n:"尻上がり",t:"g"},
-  {id:"kachiun",n:"勝ち運",t:"g"},
-
-  /* ----- 投手系・悪 ----- */
-  {id:"ippatsu",n:"一発病",t:"b"},
-  {id:"yonkyu",n:"四球癖",t:"b"},
-  {id:"slowP",n:"スロースターター",t:"b"},
-  {id:"makeun",n:"負け運",t:"b"},
-  {id:"tanki",n:"短気",t:"b"},
-  {id:"fragGlass",n:"打たれ弱い",t:"b"},
-
-  /* ----- 体質・メンタル ----- */
-  {id:"ironBody",n:"ケガしにくい",t:"g"},
-  {id:"glassBody",n:"ケガしやすい",t:"b"},
-  {id:"recover",n:"回復◎",t:"g"},
-  {id:"mood",n:"ムードメーカー",t:"g"},
-  {id:"ninki",n:"人気者",t:"g"},
-  {id:"toushi",n:"闘志",t:"g"},
-  {id:"vetAji",n:"ベテランの味",t:"g"},
-  {id:"bigstage",n:"大舞台◎",t:"g"},
-  {id:"omatsuri",n:"お祭り男",t:"g"},
-  {id:"tofu",n:"豆腐メンタル",t:"b"},
-
-  /* ----- 追加特殊能力 ----- */
-  {id:"gapHit",n:"二塁打製造機",t:"g"},
-  {id:"vsRightB3",n:"対右投手◎",t:"g"},
-  {id:"soku",n:"快足",t:"g"},
-  {id:"badball",n:"悪球打ち",t:"g"},
-  {id:"leadoff",n:"切り込み隊長",t:"g"},
-  {id:"gekitetsu",n:"激鉄",t:"g"},
-  {id:"groundball",n:"ゴロ投手",t:"g"},
-  {id:"noWalk",n:"精密機械",t:"g"},
-  {id:"lateStopper",n:"守護神",t:"g"},
-  {id:"vsRightP3",n:"対右打者◎",t:"g"},
-  {id:"lucky",n:"強運",t:"g"},
-  {id:"cleanup",n:"クリーンナップ",t:"g"},
-  {id:"lowerStar",n:"下位の主役",t:"g"},
-  {id:"second",n:"ローテの柱",t:"g"}
-];
-
-const ABILITY_MAP={};
-
-for(const a of ABILITIES){
-  ABILITY_MAP[a.id]=a;
-}
-
-
-/* =========================================================
-   表示色
-========================================================= */
-
 const RANK_COLOR={
   S:"#ff5fa2",
   A:"#f43f5e",
@@ -687,39 +658,14 @@ const RANK_COLOR={
 
 
 /* =========================================================
-   手動マーク保存
-========================================================= */
+   手動マーク
+   ========================================================= */
 
 const DRAFT_KEY="pennant_draft_marks_v1";
 const FAVORITE_KEY="pennant_favorite_marks_v1";
 
-let years={};
-let current=[];
-let currentYear="";
-
-const filters={
-  name:"",
-  positions:new Set(),
-  includeSubPos:true,
-  potential:"",
-  growth:"",
-  role:"",
-  excludeLowRole:false,
-  draft:"",
-  hideDrafted:false,
-  favoriteOnly:false
-};
-
-let sortKey="pot";
-let sortOrder="desc";
-
 let draftMarks={};
 let favoriteMarks={};
-
-
-/* =========================================================
-   localStorage
-========================================================= */
 
 function loadMarks(){
 
@@ -762,8 +708,33 @@ function saveFavoriteMarks(){
 
 
 /* =========================================================
+   状態
+   ========================================================= */
+
+let years={};
+let current=[];
+let currentYear="";
+
+const filters={
+  name:"",
+  positions:new Set(),
+  includeSubPos:true,
+  potential:"",
+  growth:"",
+  role:"",
+  excludeLowRole:false,
+  draft:"",
+  hideDrafted:false,
+  favoriteOnly:false
+};
+
+let sortKey="pot";
+let sortOrder="desc";
+
+
+/* =========================================================
    選手キー
-========================================================= */
+   ========================================================= */
 
 function playerKey(x){
 
@@ -779,19 +750,12 @@ function playerKey(x){
 }
 
 function draftStatus(x){
-
   return draftMarks[playerKey(x)]||"none";
 }
 
 function isFavorite(x){
-
   return !!favoriteMarks[playerKey(x)];
 }
-
-
-/* =========================================================
-   指名マーク
-========================================================= */
 
 function setDraftStatus(x,status){
 
@@ -836,8 +800,8 @@ function nextDraftStatus(x){
 
 
 /* =========================================================
-   基本表示
-========================================================= */
+   表示関数
+   ========================================================= */
 
 function posClass(pos){
 
@@ -882,8 +846,7 @@ function bar(v){
 
   const blocks=Math.round(v/10);
 
-  return"■".repeat(blocks)+
-    "□".repeat(10-blocks);
+  return"■".repeat(blocks)+"□".repeat(10-blocks);
 }
 
 function total(x){
@@ -901,11 +864,6 @@ function total(x){
   return t;
 }
 
-
-/* =========================================================
-   投手・野手適性
-========================================================= */
-
 function apt(v){
 
   v=Number(v)||0;
@@ -920,9 +878,37 @@ function apt(v){
 function aptColor(v){
 
   return Number(v)>0
-    ?"#222"
-    :"#888";
+    ? "#222"
+    : "#888";
 }
+
+
+/* =========================================================
+   利き腕
+   ========================================================= */
+
+function handHTML(x){
+
+  const throwHand=
+    x.th==="L"
+      ?"左投"
+      :"右投";
+
+  let batHand="右打";
+
+  if(x.bt==="L"){
+    batHand="左打";
+  }else if(x.bt==="S"){
+    batHand="両打";
+  }
+
+  return throwHand+batHand;
+}
+
+
+/* =========================================================
+   適性
+   ========================================================= */
 
 function defenseHTML(x){
 
@@ -935,11 +921,13 @@ function defenseHTML(x){
     "OF"
   ];
 
-  const arr=order
-    .filter(k=>(x.df&&x.df[k])>0)
+  const df=x.df||{};
+
+  const html=order
+    .filter(k=>(Number(df[k])||0)>0)
     .map(k=>{
 
-      const v=x.df[k];
+      const v=Number(df[k])||0;
 
       return`
         <span
@@ -947,11 +935,11 @@ function defenseHTML(x){
           style="color:${aptColor(v)}"
         >${POS[k]||k}${apt(v)}</span>
       `;
-    });
 
-  return arr.length
-    ?arr.join("　")
-    :`<span class="none">なし</span>`;
+    })
+    .join("　");
+
+  return html||`<span class="none">なし</span>`;
 }
 
 function roleHTML(x){
@@ -979,29 +967,20 @@ function roleHTML(x){
 
 /* =========================================================
    特殊能力
-========================================================= */
+   ========================================================= */
 
-function specialName(v){
+function specialName(id){
 
-  if(v==null){
-    return"";
-  }
-
-  const key=String(v);
-  const a=ABILITY_MAP[key];
+  const a=ABILITY_MAP[String(id)];
 
   return a
     ? a.n
-    : key;
+    : String(id);
 }
 
-function specialClass(v){
+function specialClass(id){
 
-  if(v==null){
-    return"";
-  }
-
-  const a=ABILITY_MAP[String(v)];
+  const a=ABILITY_MAP[String(id)];
 
   if(!a){
     return"";
@@ -1015,40 +994,38 @@ function specialClass(v){
 function abilityHTML(x){
 
   const sa=Array.isArray(x.sa)
-    ?x.sa
-    :[];
+    ? x.sa
+    : [];
 
   if(!sa.length){
     return`<span class="none">なし</span>`;
   }
 
-  return sa
-    .map(v=>{
+  return sa.map(id=>{
 
-      return`
-        <span class="ab ${specialClass(v)}">
-          ${specialName(v)}
-        </span>
-      `;
+    return`
+      <span class="ab ${specialClass(id)}">
+        ${specialName(id)}
+      </span>
+    `;
 
-    })
-    .join("　");
+  }).join("　");
 }
 
 
 /* =========================================================
-   能力値表示
-========================================================= */
+   能力値
+   ========================================================= */
 
 function abilityHTMLForStat(x){
 
   const z=x.t==="B"
-    ?x.ab||{}
-    :x.ap||{};
+    ? x.ab||{}
+    : x.ap||{};
 
   const keys=x.t==="B"
-    ?["mt","pw","sp","am","fd"]
-    :["vl","ct","st","br"];
+    ? ["mt","pw","sp","am","fd"]
+    : ["vl","ct","st","br"];
 
   return keys.map(k=>{
 
@@ -1059,7 +1036,7 @@ function abilityHTMLForStat(x){
     return`
       <div class="statrow">
 
-        <span class="name">
+        <span class="statName">
           ${ABILITY_NAME[k]||k}
         </span>
 
@@ -1085,25 +1062,8 @@ function abilityHTMLForStat(x){
 
 
 /* =========================================================
-   投打表示
-========================================================= */
-
-function handednessHTML(x){
-
-  const throwHand=
-    x.th==="L"
-      ?"左"
-      :"右";
-
-  const batHand=
-    x.bt==="L"
-      ?"左"
-      :x.bt==="S"
-        ?"両"
-        :"右";
-
-  return`${throwHand}投${batHand}打`;
-}
+   No.
+   ========================================================= */
 
 function playerNoHTML(x){
 
@@ -1111,12 +1071,9 @@ function playerNoHTML(x){
     return"";
   }
 
-  const id=String(x.id)
-    .replace(/^p/,"");
-
   return`
     <span class="playerNo">
-      No.${id}
+      No.${String(x.id).replace(/^p/,"")}
     </span>
   `;
 }
@@ -1124,7 +1081,7 @@ function playerNoHTML(x){
 
 /* =========================================================
    指名表示
-========================================================= */
+   ========================================================= */
 
 function draftText(x){
 
@@ -1174,7 +1131,7 @@ function draftButtonText(x){
 
 /* =========================================================
    カード
-========================================================= */
+   ========================================================= */
 
 function render(arr){
 
@@ -1193,8 +1150,21 @@ function render(arr){
 
     const yearBadge=
       Object.keys(years).length>1
-        ?`<span class="crossYear">${currentYear}年度</span>`
-        :"";
+      ?`<span class="crossYear">${currentYear}年度</span>`
+      :"";
+
+    /*
+      カード構成
+
+      選手名
+      年齢　利き腕　No.
+      ─────────
+      潜在　成長　ポジション
+      能力値
+      適性
+      特殊能力
+      マーク
+    */
 
     s+=`
 
@@ -1206,23 +1176,25 @@ function render(arr){
         </h3>
 
         <div class="basic">
+          ${x.age??"?"}歳　
+          ${handHTML(x)}　
+          ${playerNoHTML(x)}
+        </div>
 
-          <div class="basicLine">
-            ${x.age??"?"}歳　
-            ${handednessHTML(x)}　
-            ${playerNoHTML(x)}
-          </div>
+        <div class="cardDivider"></div>
 
-          <div class="potentialLine">
-            潜在
-            <b style="color:${potentialColor}">
-              [${potential}]
-            </b>　
-            ${GROWTH[x.gt]||x.gt||""}　
-            <span class="${posClass(x.pos)}">
-              ${POS[x.pos]||x.pos||"?"}
-            </span>
-          </div>
+        <div class="cardInfo">
+
+          潜在
+          <b style="color:${potentialColor}">
+            [${potential}]
+          </b>　
+
+          ${GROWTH[x.gt]||x.gt||""}　
+
+          <span class="${posClass(x.pos)}">
+            ${POS[x.pos]||x.pos||"?"}
+          </span>
 
         </div>
 
@@ -1278,7 +1250,6 @@ function render(arr){
         </div>
 
       </section>
-
     `;
   });
 
@@ -1310,14 +1281,13 @@ function escapeAttr(v){
 
 
 /* =========================================================
-   検索
-========================================================= */
+   フィルター
+   ========================================================= */
 
 function matchesName(x){
 
-  const q=filters.name
-    .trim()
-    .toLowerCase();
+  const q=
+    filters.name.trim().toLowerCase();
 
   if(!q){
     return true;
@@ -1334,21 +1304,16 @@ function matchesPosition(x){
     return true;
   }
 
-  /*
-    主ポジション
-  */
   if(filters.positions.has(x.pos)){
     return true;
   }
 
-  /*
-    サブポジション
-  */
   if(
     filters.includeSubPos &&
-    x.t==="B" &&
-    x.df
+    x.t==="B"
   ){
+
+    const df=x.df||{};
 
     for(const p of filters.positions){
 
@@ -1356,7 +1321,7 @@ function matchesPosition(x){
         continue;
       }
 
-      if((Number(x.df[p])||0)>0){
+      if((Number(df[p])||0)>0){
         return true;
       }
     }
@@ -1386,9 +1351,6 @@ function matchesGrowth(x){
 
 function matchesRole(x){
 
-  /*
-    投手適性を指定していない場合
-  */
   if(!filters.role){
 
     if(
@@ -1410,9 +1372,6 @@ function matchesRole(x){
     return true;
   }
 
-  /*
-    投手適性を指定した場合は投手のみ
-  */
   if(x.t!=="P"){
     return false;
   }
@@ -1459,37 +1418,14 @@ function filterPlayers(arr){
 
   return arr.filter(x=>{
 
-    if(!matchesName(x)){
-      return false;
-    }
-
-    if(!matchesPosition(x)){
-      return false;
-    }
-
-    if(!matchesPotential(x)){
-      return false;
-    }
-
-    if(!matchesGrowth(x)){
-      return false;
-    }
-
-    if(!matchesRole(x)){
-      return false;
-    }
-
-    if(!matchesDraft(x)){
-      return false;
-    }
-
-    if(!matchesHideDrafted(x)){
-      return false;
-    }
-
-    if(!matchesFavorite(x)){
-      return false;
-    }
+    if(!matchesName(x))return false;
+    if(!matchesPosition(x))return false;
+    if(!matchesPotential(x))return false;
+    if(!matchesGrowth(x))return false;
+    if(!matchesRole(x))return false;
+    if(!matchesDraft(x))return false;
+    if(!matchesHideDrafted(x))return false;
+    if(!matchesFavorite(x))return false;
 
     return true;
   });
@@ -1498,7 +1434,7 @@ function filterPlayers(arr){
 
 /* =========================================================
    並べ替え
-========================================================= */
+   ========================================================= */
 
 function compareName(a,b){
 
@@ -1569,9 +1505,6 @@ function compareSort(a,b){
     result=-result;
   }
 
-  /*
-    同値なら潜在能力
-  */
   if(result===0){
 
     const potDiff=
@@ -1582,9 +1515,6 @@ function compareSort(a,b){
       return potDiff;
     }
 
-    /*
-      最後は名前
-    */
     return compareName(a,b);
   }
 
@@ -1616,7 +1546,7 @@ function applyFiltersAndRender(){
 
 /* =========================================================
    年度
-========================================================= */
+   ========================================================= */
 
 function setupYears(){
 
@@ -1660,16 +1590,18 @@ function switchYear(y){
       :[];
 
   /*
-    検索条件は維持
+    年度を変えても検索条件・
+    並べ替え条件は維持する。
   */
+
   setupYears();
   applyFiltersAndRender();
 }
 
 
 /* =========================================================
-   フィルターボタン生成
-========================================================= */
+   ボタン生成
+   ========================================================= */
 
 function makeButtons(){
 
@@ -1678,14 +1610,14 @@ function makeButtons(){
 
   posBox.innerHTML="";
 
-  const allButton=
+  const allPos=
     document.createElement("button");
 
-  allButton.textContent="全て";
-  allButton.dataset.pos="";
-  allButton.className="active";
+  allPos.textContent="全て";
+  allPos.dataset.pos="";
+  allPos.className="active";
 
-  posBox.appendChild(allButton);
+  posBox.appendChild(allPos);
 
   POSITION_LIST.forEach(([key,label])=>{
 
@@ -1762,6 +1694,11 @@ function makeButtons(){
   });
 }
 
+
+/* =========================================================
+   ボタン状態
+   ========================================================= */
+
 function updatePositionButtons(){
 
   document
@@ -1796,7 +1733,7 @@ function updatePotentialButtons(){
       button.classList.toggle(
         "active",
         button.dataset.pot===
-          String(filters.potential)
+        String(filters.potential)
       );
     });
 }
@@ -1810,7 +1747,7 @@ function updateGrowthButtons(){
       button.classList.toggle(
         "active",
         button.dataset.growth===
-          filters.growth
+        filters.growth
       );
     });
 }
@@ -1824,7 +1761,7 @@ function updateDraftButtons(){
       button.classList.toggle(
         "active",
         button.dataset.draft===
-          filters.draft
+        filters.draft
       );
     });
 }
@@ -1832,13 +1769,10 @@ function updateDraftButtons(){
 
 /* =========================================================
    イベント
-========================================================= */
+   ========================================================= */
 
 function bindEvents(){
 
-  /*
-    ポジション
-  */
   document
     .getElementById("positionButtons")
     .addEventListener("click",e=>{
@@ -1846,9 +1780,7 @@ function bindEvents(){
       const button=
         e.target.closest("button");
 
-      if(!button){
-        return;
-      }
+      if(!button)return;
 
       const pos=button.dataset.pos;
 
@@ -1870,9 +1802,6 @@ function bindEvents(){
     });
 
 
-  /*
-    潜在能力
-  */
   document
     .getElementById("potentialButtons")
     .addEventListener("click",e=>{
@@ -1880,9 +1809,7 @@ function bindEvents(){
       const button=
         e.target.closest("button");
 
-      if(!button){
-        return;
-      }
+      if(!button)return;
 
       filters.potential=
         button.dataset.pot;
@@ -1892,9 +1819,6 @@ function bindEvents(){
     });
 
 
-  /*
-    成長タイプ
-  */
   document
     .getElementById("growthButtons")
     .addEventListener("click",e=>{
@@ -1902,9 +1826,7 @@ function bindEvents(){
       const button=
         e.target.closest("button");
 
-      if(!button){
-        return;
-      }
+      if(!button)return;
 
       filters.growth=
         button.dataset.growth;
@@ -1914,9 +1836,6 @@ function bindEvents(){
     });
 
 
-  /*
-    指名状況
-  */
   document
     .getElementById("draftButtons")
     .addEventListener("click",e=>{
@@ -1924,9 +1843,7 @@ function bindEvents(){
       const button=
         e.target.closest("button");
 
-      if(!button){
-        return;
-      }
+      if(!button)return;
 
       filters.draft=
         button.dataset.draft;
@@ -1936,9 +1853,6 @@ function bindEvents(){
     });
 
 
-  /*
-    名前
-  */
   let timer=null;
 
   document
@@ -1955,9 +1869,6 @@ function bindEvents(){
     });
 
 
-  /*
-    サブポジ
-  */
   document
     .getElementById("includeSubPos")
     .addEventListener("change",e=>{
@@ -1969,9 +1880,6 @@ function bindEvents(){
     });
 
 
-  /*
-    投手適性
-  */
   document
     .getElementById("roleFilter")
     .addEventListener("change",e=>{
@@ -1982,9 +1890,6 @@ function bindEvents(){
     });
 
 
-  /*
-    △以下除外
-  */
   document
     .getElementById("excludeLowRole")
     .addEventListener("change",e=>{
@@ -1996,9 +1901,6 @@ function bindEvents(){
     });
 
 
-  /*
-    指名済み非表示
-  */
   document
     .getElementById("hideDrafted")
     .addEventListener("change",e=>{
@@ -2010,9 +1912,6 @@ function bindEvents(){
     });
 
 
-  /*
-    注目のみ
-  */
   document
     .getElementById("favoriteOnly")
     .addEventListener("change",e=>{
@@ -2024,9 +1923,6 @@ function bindEvents(){
     });
 
 
-  /*
-    並べ替え項目
-  */
   document
     .getElementById("sortKey")
     .addEventListener("change",e=>{
@@ -2038,9 +1934,6 @@ function bindEvents(){
     });
 
 
-  /*
-    並べ替え順
-  */
   document
     .getElementById("sortOrder")
     .addEventListener("change",e=>{
@@ -2051,9 +1944,6 @@ function bindEvents(){
     });
 
 
-  /*
-    年度
-  */
   document
     .getElementById("year")
     .addEventListener("change",e=>{
@@ -2062,31 +1952,29 @@ function bindEvents(){
     });
 
 
-  /*
-    カードの手動マーク
-  */
   document
     .getElementById("cards")
     .addEventListener("click",e=>{
 
       const button=
-        e.target.closest("button[data-action]");
+        e.target.closest(
+          "button[data-action]"
+        );
 
-      if(!button){
-        return;
-      }
+      if(!button)return;
 
-      const key=button.dataset.key;
-      const action=button.dataset.action;
+      const key=
+        button.dataset.key;
+
+      const action=
+        button.dataset.action;
 
       const player=
         current.find(
           x=>playerKey(x)===key
         );
 
-      if(!player){
-        return;
-      }
+      if(!player)return;
 
       if(action==="draft"){
         nextDraftStatus(player);
@@ -2101,7 +1989,7 @@ function bindEvents(){
 
 /* =========================================================
    並べ替えUI
-========================================================= */
+   ========================================================= */
 
 function updateSortOrderUI(){
 
@@ -2146,7 +2034,7 @@ function updateSortOrderUI(){
 
 /* =========================================================
    URLデータ解凍
-========================================================= */
+   ========================================================= */
 
 async function decodeData(hash){
 
@@ -2189,7 +2077,7 @@ async function decodeData(hash){
 
 /* =========================================================
    読み込み
-========================================================= */
+   ========================================================= */
 
 async function load(){
 
@@ -2216,12 +2104,7 @@ async function load(){
 
     /*
       新形式
-      {
-        years:{
-          "2026":[...],
-          "2027":[...]
-        }
-      }
+      {years:{"2026":[...],"2027":[...]}}
     */
     if(obj.years){
 
@@ -2229,10 +2112,7 @@ async function load(){
 
     /*
       旧形式
-      {
-        y:2026,
-        d:[...]
-      }
+      {y:2026,d:[...]}
     */
     }else if(
       obj.y!=null &&
@@ -2279,18 +2159,14 @@ async function load(){
       "データの読み込みに失敗しました";
 
     document.getElementById("cards").innerHTML=`
-
       <div style="
         grid-column:1/-1;
         padding:20px;
         color:#777;
       ">
-
         データを読み込めませんでした。<br>
         URLが途中で切れていないか確認してください。
-
       </div>
-
     `;
   }
 }
