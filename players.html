@@ -143,7 +143,6 @@ button.active{
   font-weight:700;
   margin-right:2px
 }
-/* 潜在・成長ボタン */
 .multiFilterArea{
   display:flex;
   flex-wrap:wrap;
@@ -233,7 +232,6 @@ button.active{
   margin-top:4px;
   padding-right:76px
 }
-/* ポジションバッジ */
 .posBadge{
   position:absolute;
   right:0;
@@ -249,23 +247,10 @@ button.active{
   border:2px solid transparent;
   box-shadow:0 1px 3px rgba(0,0,0,.12)
 }
-/* ポジション色 */
-.pos-pitcher{
-  background:#f04452;
-  border-color:#f04452
-}
-.pos-catcher{
-  background:#00a6a8;
-  border-color:#00a6a8
-}
-.pos-infield{
-  background:#e09a00;
-  border-color:#e09a00
-}
-.pos-outfield{
-  background:#35a853;
-  border-color:#35a853
-}
+.pos-pitcher{background:#f04452;border-color:#f04452}
+.pos-catcher{background:#00a6a8;border-color:#00a6a8}
+.pos-infield{background:#e09a00;border-color:#e09a00}
+.pos-outfield{background:#35a853;border-color:#35a853}
 .summary{
   display:flex;
   gap:5px;
@@ -307,22 +292,10 @@ button.active{
   font-weight:700;
   text-align:center
 }
-.rank-S{color:#e83f91}
-.rank-A{color:#ed485f}
-.rank-B{color:#ee7835}
-.rank-C{color:#cda515}
-.rank-D{color:#68ae3e}
-.rank-E{color:#239fbd}
-.rank-F{color:#657f98}
-.rank-G{color:#596b7f}
-.bar-S{background:#f38fbe}
-.bar-A{background:#f18391}
-.bar-B{background:#f3a06c}
-.bar-C{background:#e4cb67}
-.bar-D{background:#9bcf76}
-.bar-E{background:#6fc4d8}
-.bar-F{background:#93a7ba}
-.bar-G{background:#8494a6}
+.rank-S{color:#e83f91}.rank-A{color:#ed485f}.rank-B{color:#ee7835}.rank-C{color:#cda515}
+.rank-D{color:#68ae3e}.rank-E{color:#239fbd}.rank-F{color:#657f98}.rank-G{color:#596b7f}
+.bar-S{background:#f38fbe}.bar-A{background:#f18391}.bar-B{background:#f3a06c}.bar-C{background:#e4cb67}
+.bar-D{background:#9bcf76}.bar-E{background:#6fc4d8}.bar-F{background:#93a7ba}.bar-G{background:#8494a6}
 .info{
   border-top:1px solid #eee;
   margin-top:8px;
@@ -370,7 +343,6 @@ button.active{
 .normalAbility{
   color:#555
 }
-/* もっと見る */
 .moreArea{
   display:none;
   justify-content:center;
@@ -400,168 +372,152 @@ button.active{
   border-radius:10px
 }
 @media(max-width:1050px){
-  .grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px
-  }
-  .header{
-    flex-wrap:wrap
-  }
-  .searchArea{
-    width:100%
-  }
-  .nameSearch{
-    flex:1;
-    width:auto
-  }
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .header{flex-wrap:wrap}
+  .searchArea{width:100%}
+  .nameSearch{flex:1;width:auto}
 }
 @media(max-width:600px){
-  body{
-    padding:9px
-  }
-  .grid{
-    grid-template-columns:1fr
-  }
-  .card{
-    padding:0 11px 11px
-  }
-  .teamLine{
-    margin-left:-11px;
-    margin-right:-11px
-  }
-  .header{
-    display:block
-  }
-  .searchArea{
-    margin-top:8px;
-    flex-wrap:wrap
-  }
-  .nameSearch{
-    width:100%;
-    flex:none
-  }
+  body{padding:9px}
+  .grid{grid-template-columns:1fr}
+  .card{padding:0 11px 11px}
+  .teamLine{margin-left:-11px;margin-right:-11px}
+  .header{display:block}
+  .searchArea{margin-top:8px;flex-wrap:wrap}
+  .nameSearch{width:100%;flex:none}
 }
 </style>
 </head>
 <body>
+
 <div class="header">
   <h1>在籍選手データベース</h1>
   <div class="searchArea">
-<input
-  type="search"
-  id="nameSearch"
-  class="nameSearch"
-  placeholder="選手名を検索…"
-  autocomplete="off"
->
-<label class="crossSearchLabel">
-  <input type="checkbox" id="crossYearSearch">
-  全年度横断
-</label>
+    <input type="search" id="nameSearch" class="nameSearch" placeholder="選手名を検索…" autocomplete="off">
+    <label class="crossSearchLabel">
+      <input type="checkbox" id="crossYearSearch">
+      全年度横断
+    </label>
   </div>
 </div>
-<div class="sub" id="yearText">
-  データを読み込んでいます…
-</div>
+
+<div class="sub" id="yearText">データを読み込んでいます…</div>
+
 <div class="panel">
-  <!-- リーグ・球団 -->
   <div class="controls filterRow">
-<label>
-  リーグ
-  <select id="leagueFilter">
-    <option value="ALL">全部</option>
-    <option value="C">セ・リーグ</option>
-    <option value="P">パ・リーグ</option>
-  </select>
-</label>
-<label>
-  球団
-  <select id="teamFilter"></select>
-</label>
+    <label>リーグ
+      <select id="leagueFilter">
+        <option value="ALL">全部</option>
+        <option value="C">セ・リーグ</option>
+        <option value="P">パ・リーグ</option>
+      </select>
+    </label>
+    <label>球団
+      <select id="teamFilter"></select>
+    </label>
   </div>
-  <!-- ポジション -->
+
   <div class="controls filterRow positionControls">
-<div class="posTitle">
-  ポジション
-</div>
-<button class="posBtn active" data-pos="ALL">全部</button>
-<button class="posBtn" data-pos="C">捕手</button>
-<button class="posBtn" data-pos="1B">一塁</button>
-<button class="posBtn" data-pos="2B">二塁</button>
-<button class="posBtn" data-pos="3B">三塁</button>
-<button class="posBtn" data-pos="SS">遊撃</button>
-<button class="posBtn" data-pos="OF">外野</button>
-<button class="posBtn" data-pos="P">投手</button>
+    <div class="posTitle">ポジション</div>
+    <button class="posBtn active" data-pos="ALL">全部</button>
+    <button class="posBtn" data-pos="C">捕手</button>
+    <button class="posBtn" data-pos="1B">一塁</button>
+    <button class="posBtn" data-pos="2B">二塁</button>
+    <button class="posBtn" data-pos="3B">三塁</button>
+    <button class="posBtn" data-pos="SS">遊撃</button>
+    <button class="posBtn" data-pos="OF">外野</button>
+    <button class="posBtn" data-pos="P">投手</button>
   </div>
-  <!-- 野手・投手の追加条件 -->
+
   <div class="roleArea filterRow">
-<span class="roleLabel">野手なら</span>
-<label class="checkLabel">
-  <input type="checkbox" id="includeSub">
-  サブポジションも含める
-</label>
-<span class="roleLabel" style="margin-left:14px">
-  投手なら
-</span>
-<label class="checkLabel">
-  <input type="checkbox" class="roleCheck" data-role="sp">
-  先発
-</label>
-<label class="checkLabel">
-  <input type="checkbox" class="roleCheck" data-role="rp">
-  中継ぎ
-</label>
-<label class="checkLabel">
-  <input type="checkbox" class="roleCheck" data-role="cl">
-  抑え
-</label>
-<label class="checkLabel">
-  <input type="checkbox" id="excludeLowRole">
-  △適性を除外
-</label>
+    <span class="roleLabel">野手なら</span>
+    <label class="checkLabel">
+      <input type="checkbox" id="includeSub">
+      サブポジションも含める
+    </label>
+
+    <span class="roleLabel" style="margin-left:14px">投手なら</span>
+
+    <label class="checkLabel">
+      <input type="checkbox" class="roleCheck" data-role="sp">
+      先発
+    </label>
+    <label class="checkLabel">
+      <input type="checkbox" class="roleCheck" data-role="rp">
+      中継ぎ
+    </label>
+    <label class="checkLabel">
+      <input type="checkbox" class="roleCheck" data-role="cl">
+      抑え
+    </label>
+    <label class="checkLabel">
+      <input type="checkbox" id="excludeLowRole">
+      △適性を除外
+    </label>
   </div>
-  <!-- 潜在・成長・並び順 -->
+
   <div class="controls filterRow sortControls">
-<div class="multiFilterArea">
-  <span class="multiFilterLabel">潜在</span>
-  <span class="multiFilterButtons" id="potButtons">
-    <button class="potBtn active" data-pot="ALL">全部</button>
-    <button class="potBtn" data-pot="5">S</button>
-    <button class="potBtn" data-pot="4">A</button>
-    <button class="potBtn" data-pot="3">B</button>
-    <button class="potBtn" data-pot="2">C</button>
-    <button class="potBtn" data-pot="1">D</button>
-  </span>
-</div>
-<div class="multiFilterArea">
-  <span class="multiFilterLabel">成長</span>
-  <span class="multiFilterButtons" id="growthButtons">
-    <button class="growthBtn active" data-growth="ALL">全部</button>
-    <button class="growthBtn" data-growth="early">早熟</button>
-    <button class="growthBtn" data-growth="normal">普通</button>
-    <button class="growthBtn" data-growth="late">晩成</button>
-    <button class="growthBtn" data-growth="long">持続</button>
-  </span>
-</div>
-<label>
-  並び順
-  <select id="sortFilter">
-    <option value="overall">総合値</option>
-    <option value="pot">潜在</option>
-    <option value="age">年齢</option>
-    <option value="name">名前</option>
-    <option value="peakGap">現在→ピーク</option>
-  </select>
-</label>
-<button id="orderBtn">↓ 高い順</button>
+    <div class="multiFilterArea">
+      <span class="multiFilterLabel">潜在</span>
+      <span class="multiFilterButtons" id="potButtons">
+        <button class="potBtn active" data-pot="ALL">全部</button>
+        <button class="potBtn" data-pot="5">S</button>
+        <button class="potBtn" data-pot="4">A</button>
+        <button class="potBtn" data-pot="3">B</button>
+        <button class="potBtn" data-pot="2">C</button>
+        <button class="potBtn" data-pot="1">D</button>
+      </span>
+    </div>
+
+    <div class="multiFilterArea">
+      <span class="multiFilterLabel">成長</span>
+      <span class="multiFilterButtons" id="growthButtons">
+        <button class="growthBtn active" data-growth="ALL">全部</button>
+        <button class="growthBtn" data-growth="early">早熟</button>
+        <button class="growthBtn" data-growth="normal">普通</button>
+        <button class="growthBtn" data-growth="late">晩成</button>
+        <button class="growthBtn" data-growth="long">持続</button>
+      </span>
+    </div>
+
+    <label>並び順
+      <select id="sortFilter">
+        <option value="overall">総合値</option>
+        <option value="pot">潜在</option>
+        <option value="age">年齢</option>
+        <option value="name">名前</option>
+        <option value="peakGap">現在→ピーク</option>
+      </select>
+    </label>
+
+    <button id="orderBtn">↓ 高い順</button>
   </div>
+
   <div class="count" id="count"></div>
 </div>
+
 <div class="grid" id="grid"></div>
+
 <div class="moreArea" id="moreArea">
   <button class="moreBtn" id="moreBtn">もっと見る</button>
 </div>
+
 <script>
+/* =========================================================
+   GitHub設定
+   ========================================================= */
+
+const GITHUB_API_BASE=
+  "https://api.github.com/repos/sato2000gmi-png/.github.io/contents/data/players";
+
+const GITHUB_RAW_BASE=
+  "https://raw.githubusercontent.com/sato2000gmi-png/.github.io/main/data/players";
+
+
+/* =========================================================
+   球団・表示設定
+   ========================================================= */
+
 const TEAM_MAP={
   0:{nm:"東京クラウンズ",sh:"東京",ab:"TKC",lg:"C",col:"#d4a017"},
   1:{nm:"横浜DeNAベイスターズ",sh:"横浜",ab:"YKS",lg:"C",col:"#1d6fd6"},
@@ -576,6 +532,7 @@ const TEAM_MAP={
   10:{nm:"神戸ブレイカーズ",sh:"神戸",ab:"KBB",lg:"P",col:"#059669"},
   11:{nm:"福岡ブレイズ",sh:"福岡",ab:"FKB",lg:"P",col:"#ea580c"}
 };
+
 const POS_NAMES={
   P:"投手",
   C:"捕手",
@@ -585,6 +542,7 @@ const POS_NAMES={
   SS:"遊撃",
   OF:"外野"
 };
+
 const POT_NAMES={
   5:"S",
   4:"A",
@@ -592,12 +550,14 @@ const POT_NAMES={
   2:"C",
   1:"D"
 };
+
 const GROWTH_NAMES={
   early:"早熟",
   normal:"普通",
   late:"晩成",
   long:"持続"
 };
+
 const ABILITY_NAMES={
   avgHit:"アベレージヒッター",
   powHit:"パワーヒッター",
@@ -680,6 +640,7 @@ const ABILITY_NAMES={
   glassBody:"ケガしやすい",
   tofu:"豆腐メンタル"
 };
+
 const GOOD_ABILITIES=new Set([
   "avgHit","powHit","wideAng","chance3","chance2",
   "vsLeftB3","vsAce","katame","shokyu","nebari",
@@ -694,34 +655,54 @@ const GOOD_ABILITIES=new Set([
   "groundball","noWalk","lateStopper","vsRightP3",
   "lucky","cleanup","lowerStar","second"
 ]);
+
 const BAD_ABILITIES=new Set([
   "sanshin","heisatsu","chanceX","vsLeftBX","murake",
   "slowB","stealX","throwX","errorPr","ippatsu",
   "yonkyu","slowP","makeun","tanki","fragGlass",
   "glassBody","tofu"
 ]);
+
+
+/* =========================================================
+   データ・状態
+   ========================================================= */
+
 let players=[];
 let yearData={};
 let availableYears=[];
+
+/* GitHubに存在する年度 */
+let githubYears=[];
+
+/* GitHubから実際に読み込んだ年度 */
+let githubLoadedYears=new Set();
+
+/* 読み込み中Promiseのキャッシュ */
+let loadingPromises={};
+
 let selectedLeague="ALL";
 let selectedTeam="MY";
 let selectedPositions=new Set(["ALL"]);
 let includeSub=false;
 let selectedRoles=new Set();
 let excludeLowRole=false;
-/* 潜在・成長は複数選択 */
 let selectedPots=new Set();
 let selectedGrowths=new Set();
 let sortMode="overall";
 let descending=true;
-/* 名前検索 */
 let searchName="";
 let crossYearSearch=false;
-/* 表示件数 */
+
 const RENDER_STEP=150;
 let renderLimit=RENDER_STEP;
-/* 検索入力の遅延処理 */
 let searchTimer=null;
+
+
+/* =========================================================
+   基本処理
+   ========================================================= */
+
 function rankOf(v){
   if(v>=90)return"S";
   if(v>=80)return"A";
@@ -732,6 +713,7 @@ function rankOf(v){
   if(v>=30)return"F";
   return"G";
 }
+
 function overallOf(p){
   if(p.t==="B"){
     return(
@@ -742,6 +724,7 @@ function overallOf(p){
       p.ab.fd
     )/5;
   }
+
   return(
     p.ap.vl+
     p.ap.ct+
@@ -749,17 +732,20 @@ function overallOf(p){
     p.ap.br
   )/4;
 }
+
 function pitchValue(p){
   return(
-    p.ap.vl*0.30+
-    p.ap.ct*0.30+
-    p.ap.st*0.16+
-    p.ap.br*0.24
+    p.ap.vl*.30+
+    p.ap.ct*.30+
+    p.ap.st*.16+
+    p.ap.br*.24
   );
 }
+
 function positionClass(pos){
   if(pos==="P")return"pos-pitcher";
   if(pos==="C")return"pos-catcher";
+
   if(
     pos==="1B"||
     pos==="2B"||
@@ -768,61 +754,66 @@ function positionClass(pos){
   ){
     return"pos-infield";
   }
+
   if(pos==="OF")return"pos-outfield";
   return"";
 }
+
 function positionBadge(pos){
-  return`
-    <span class="posBadge ${positionClass(pos)}">
-      ${POS_NAMES[pos]||pos}
-    </span>
-  `;
+  return`<span class="posBadge ${positionClass(pos)}">${POS_NAMES[pos]||pos}</span>`;
 }
+
 function abilityText(p){
-  if(!p.sa||!p.sa.length){
-    return"なし";
-  }
+  if(!p.sa||!p.sa.length)return"なし";
+
   return p.sa.map(x=>{
     const name=ABILITY_NAMES[x]||x;
+
     if(GOOD_ABILITIES.has(x)){
       return`<span class="good">${name}</span>`;
     }
+
     if(BAD_ABILITIES.has(x)){
       return`<span class="bad">${name}</span>`;
     }
+
     return`<span class="normalAbility">${name}</span>`;
   }).join("、");
 }
+
 function phaseOf(p){
   let peakS,peakE;
+
   if(p.gt==="early"){
     peakS=23;
     peakE=27;
-  }
-  else if(p.gt==="normal"){
+  }else if(p.gt==="normal"){
     peakS=26;
     peakE=30;
-  }
-  else if(p.gt==="late"){
+  }else if(p.gt==="late"){
     peakS=29;
     peakE=33;
-  }
-  else{
+  }else{
     peakS=25;
     peakE=33;
   }
+
   if(p.age<peakS)return"成長期";
   if(p.age<=peakE)return"ピーク";
   return"衰退期";
 }
+
 function rankClass(v){
   return"rank-"+rankOf(v);
 }
+
 function barClass(v){
   return"bar-"+rankOf(v);
 }
+
 function statRows(p){
   let arr=[];
+
   if(p.t==="B"){
     arr=[
       ["ミート",p.ab.mt],
@@ -839,52 +830,46 @@ function statRows(p){
       ["変化",p.ap.br]
     ];
   }
+
   return arr.map(x=>{
     let v=Number(x[1])||0;
     let r=rankOf(v);
-    return`
-      <div class="stat">
-        <span>${x[0]}</span>
-        <span class="${rankClass(v)}">${v}</span>
-        <div class="bar">
-          <i
-            class="${barClass(v)}"
-            style="width:${Math.min(v,99)}%"
-          ></i>
-        </div>
-        <span class="rank ${rankClass(v)}">
-          ${r}
-        </span>
+
+    return`<div class="stat">
+      <span>${x[0]}</span>
+      <span class="${rankClass(v)}">${v}</span>
+      <div class="bar">
+        <i class="${barClass(v)}" style="width:${Math.min(v,99)}%"></i>
       </div>
-    `;
+      <span class="rank ${rankClass(v)}">${r}</span>
+    </div>`;
   }).join("");
 }
+
 function peakText(p){
-  if(!p.peak){
-    return"不明";
-  }
+  if(!p.peak)return"不明";
+
   if(p.t==="B"){
-    return`
-      <span class="peakStats">
-        <span class="peakStat"><b>ミート</b>${p.peak.mt}</span>　
-        <span class="peakStat"><b>パワー</b>${p.peak.pw}</span>　
-        <span class="peakStat"><b>走力</b>${p.peak.sp}</span>　
-        <span class="peakStat"><b>肩</b>${p.peak.am}</span>　
-        <span class="peakStat"><b>守備</b>${p.peak.fd}</span>
-      </span>
-    `;
+    return`<span class="peakStats">
+      <span class="peakStat"><b>ミート</b>${p.peak.mt}</span>　
+      <span class="peakStat"><b>パワー</b>${p.peak.pw}</span>　
+      <span class="peakStat"><b>走力</b>${p.peak.sp}</span>　
+      <span class="peakStat"><b>肩</b>${p.peak.am}</span>　
+      <span class="peakStat"><b>守備</b>${p.peak.fd}</span>
+    </span>`;
   }
-  return`
-    <span class="peakStats">
-      <span class="peakStat"><b>球速</b>${p.peak.vl}</span>　
-      <span class="peakStat"><b>制球</b>${p.peak.ct}</span>　
-      <span class="peakStat"><b>スタミナ</b>${p.peak.st}</span>　
-      <span class="peakStat"><b>変化球</b>${p.peak.br}</span>
-    </span>
-  `;
+
+  return`<span class="peakStats">
+    <span class="peakStat"><b>球速</b>${p.peak.vl}</span>　
+    <span class="peakStat"><b>制球</b>${p.peak.ct}</span>　
+    <span class="peakStat"><b>スタミナ</b>${p.peak.st}</span>　
+    <span class="peakStat"><b>変化球</b>${p.peak.br}</span>
+  </span>`;
 }
+
 function peakGap(p){
   if(!p.peak)return 0;
+
   if(p.t==="B"){
     return(
       (p.peak.mt-p.ab.mt)+
@@ -894,6 +879,7 @@ function peakGap(p){
       (p.peak.fd-p.ab.fd)
     );
   }
+
   return(
     (p.peak.vl-p.ap.vl)+
     (p.peak.ct-p.ap.ct)+
@@ -901,75 +887,47 @@ function peakGap(p){
     (p.peak.br-p.ap.br)
   );
 }
+
 function defenseText(p){
-  if(p.t==="P"||!p.df){
-    return"—";
-  }
+  if(p.t==="P"||!p.df)return"—";
+
   let a=[];
+
   for(let k in p.df){
     if(p.df[k]>0){
       let lv=p.df[k];
-      let mark=
-        lv>=3?"◎":
-        lv===2?"○":
-        "△";
-      a.push(
-        (POS_NAMES[k]||k)+mark
-      );
+      let mark=lv>=3?"◎":lv===2?"○":"△";
+      a.push((POS_NAMES[k]||k)+mark);
     }
   }
+
   return a.length?a.join("、"):"—";
 }
+
 function roleText(p){
-  if(p.t!=="P"||!p.rl){
-    return"—";
-  }
+  if(p.t!=="P"||!p.rl)return"—";
+
   let a=[];
+
   if(p.rl.sp>0){
-    a.push(
-      "先発"+
-      (
-        p.rl.sp>=3
-          ?"◎"
-          :p.rl.sp===2
-            ?"○"
-            :"△"
-      )
-    );
+    a.push("先発"+(p.rl.sp>=3?"◎":p.rl.sp===2?"○":"△"));
   }
+
   if(p.rl.rp>0){
-    a.push(
-      "中継ぎ"+
-      (
-        p.rl.rp>=3
-          ?"◎"
-          :p.rl.rp===2
-            ?"○"
-            :"△"
-      )
-    );
+    a.push("中継ぎ"+(p.rl.rp>=3?"◎":p.rl.rp===2?"○":"△"));
   }
+
   if(p.rl.cl>0){
-    a.push(
-      "抑え"+
-      (
-        p.rl.cl>=3
-          ?"◎"
-          :p.rl.cl===2
-            ?"○"
-            :"△"
-      )
-    );
+    a.push("抑え"+(p.rl.cl>=3?"◎":p.rl.cl===2?"○":"△"));
   }
+
   return a.length?a.join("、"):"—";
 }
+
 function draftText(p){
-  if(!p.drft){
-    return"—";
-  }
-  if(!p.drft.y){
-    return"未ドラフト";
-  }
+  if(!p.drft)return"—";
+  if(!p.drft.y)return"未ドラフト";
+
   let src={
     HS:"高卒",
     UNI:"大卒",
@@ -978,164 +936,142 @@ function draftText(p){
     FRI:"自由契約",
     FOR:"外国人"
   }[p.drft.src]||p.drft.src||"";
+
   return`${p.drft.y}年 ${p.drft.rd}位 ${src}`;
 }
+
+
+/* =========================================================
+   カード
+   ========================================================= */
+
 function card(p){
   let overall=overallOf(p);
   let team=TEAM_MAP[p.team];
-  let teamName=
-    team
-      ?team.nm
-      :"球団"+p.team;
-  let teamColor=
-    team
-      ?team.col
-      :"#999";
-  let yearBadge=
-    p.__year
-      ?`<span class="crossYear">${p.__year}年度</span>`
-      :"";
-  let playerId=
-    p.id
-      ?`<span class="playerId">No.${p.id.replace(/^p/,"")}</span>`
-      :"";
-  return`
-  <div
-    class="card"
-    style="--team-color:${teamColor}"
-  >
+  let teamName=team?team.nm:"球団"+p.team;
+  let teamColor=team?team.col:"#999";
+
+  let yearBadge=p.__year
+    ?`<span class="crossYear">${p.__year}年度</span>`
+    :"";
+
+  let playerId=p.id
+    ?`<span class="playerId">No.${p.id.replace(/^p/,"")}</span>`
+    :"";
+
+  return`<div class="card" style="--team-color:${teamColor}">
     <div class="teamLine"></div>
+
     <div class="cardHead">
       <div>
-        <div class="team">
-          ${teamName}${yearBadge}
-        </div>
-        <div class="name">
-          ${p.nm}
-        </div>
+        <div class="team">${teamName}${yearBadge}</div>
+        <div class="name">${p.nm}</div>
+
         <div class="basic">
           <span>${p.age}歳</span>
-          <span>
-            ${p.th==="L"?"左":"右"}投${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
-          </span>
+          <span>${p.th==="L"?"左":"右"}投${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打</span>
           ${playerId}
         </div>
       </div>
+
       ${positionBadge(p.pos)}
     </div>
+
     <div class="summary">
-      <span class="badge">
-        総合 ${overall.toFixed(1)}
-      </span>
-      ${
-        p.t==="P"
-          ?`
-            <span class="badge">
-              地力 ${pitchValue(p).toFixed(1)}
-            </span>
-          `
-          :""
-      }
-      <span class="badge">
-        潜在 ${POT_NAMES[p.pot]||"?"}
-      </span>
-      <span class="badge">
-        ${GROWTH_NAMES[p.gt]||p.gt}
-      </span>
+      <span class="badge">総合 ${overall.toFixed(1)}</span>
+      ${p.t==="P"
+        ?`<span class="badge">地力 ${pitchValue(p).toFixed(1)}</span>`
+        :""}
+      <span class="badge">潜在 ${POT_NAMES[p.pot]||"?"}</span>
+      <span class="badge">${GROWTH_NAMES[p.gt]||p.gt}</span>
     </div>
-    <div class="statTitle">
-      現在能力
-    </div>
+
+    <div class="statTitle">現在能力</div>
     ${statRows(p)}
+
     <div class="info growthInfo">
-      <div>
-        <b>成長：</b>${phaseOf(p)}
-      </div>
-      <div class="peakLine">
-        <b>ピーク：</b>${peakText(p)}
-      </div>
+      <div><b>成長：</b>${phaseOf(p)}</div>
+      <div class="peakLine"><b>ピーク：</b>${peakText(p)}</div>
     </div>
+
     <div class="info">
-      <b>
-        ${p.t==="P"?"投手役割":"守備適性"}：
-      </b>
-      ${
-        p.t==="P"
-          ?roleText(p)
-          :defenseText(p)
-      }
+      <b>${p.t==="P"?"投手役割":"守備適性"}：</b>
+      ${p.t==="P"?roleText(p):defenseText(p)}
     </div>
+
     <div class="info abilities">
-      <b>特殊能力：</b>
-      ${abilityText(p)}
+      <b>特殊能力：</b>${abilityText(p)}
     </div>
+
     <div class="info">
-      <b>ドラフト：</b>
-      ${draftText(p)}
-      <b>　　在籍：</b>
-      ${p.years||0}年
+      <b>ドラフト：</b>${draftText(p)}
+      <b>　　在籍：</b>${p.years||0}年
     </div>
-  </div>
-  `;
+  </div>`;
 }
+
+
+/* =========================================================
+   フィルター
+   ========================================================= */
+
 function positionMatches(p){
-  if(selectedPositions.has("ALL")){
-    return true;
-  }
+  if(selectedPositions.has("ALL"))return true;
+
   for(let pos of selectedPositions){
+
     if(pos==="P"){
-      if(p.t==="P"){
-        return true;
-      }
+      if(p.t==="P")return true;
       continue;
     }
-    if(p.t!=="B"){
-      continue;
-    }
-    if(p.pos===pos){
-      return true;
-    }
+
+    if(p.t!=="B")continue;
+
+    if(p.pos===pos)return true;
+
     if(
-      includeSub &&
-      p.df &&
+      includeSub&&
+      p.df&&
       Number(p.df[pos]||0)>0
     ){
       return true;
     }
   }
+
   return false;
 }
+
 function roleMatches(p){
   if(p.t!=="P"){
     return selectedRoles.size===0;
   }
-  if(selectedRoles.size===0){
-    return true;
-  }
-  if(!p.rl){
-    return false;
-  }
+
+  if(selectedRoles.size===0)return true;
+  if(!p.rl)return false;
+
   for(let role of selectedRoles){
     let lv=Number(p.rl[role]||0);
+
     if(excludeLowRole){
-      if(lv>=2){
-        return true;
-      }
+      if(lv>=2)return true;
     }else{
-      if(lv>0){
-        return true;
-      }
+      if(lv>0)return true;
     }
   }
+
   return false;
 }
+
 function baseFilter(p){
+
   if(selectedLeague!=="ALL"){
     let team=TEAM_MAP[p.team];
+
     if(!team||team.lg!==selectedLeague){
       return false;
     }
   }
+
   if(
     selectedTeam!=="ALL"&&
     selectedTeam!=="MY"&&
@@ -1143,462 +1079,1098 @@ function baseFilter(p){
   ){
     return false;
   }
-  if(selectedTeam==="MY"){
-    if(String(p.team)!=="1"){
-      return false;
-    }
-  }
-  if(!positionMatches(p)){
-    return false;
-  }
-  if(!roleMatches(p)){
-    return false;
-  }
-  /* 潜在：複数選択 */
+
   if(
-    selectedPots.size>0 &&
+    selectedTeam==="MY"&&
+    String(p.team)!=="1"
+  ){
+    return false;
+  }
+
+  if(!positionMatches(p))return false;
+  if(!roleMatches(p))return false;
+
+  if(
+    selectedPots.size>0&&
     !selectedPots.has(Number(p.pot))
   ){
     return false;
   }
-  /* 成長：複数選択 */
+
   if(
-    selectedGrowths.size>0 &&
+    selectedGrowths.size>0&&
     !selectedGrowths.has(p.gt)
   ){
     return false;
   }
+
   return true;
 }
+
 function nameMatches(p){
-  if(!searchName){
-    return true;
-  }
+  if(!searchName)return true;
+
   return String(p.nm||"")
     .toLocaleLowerCase()
-    .includes(
-      searchName.toLocaleLowerCase()
-    );
+    .includes(searchName.toLocaleLowerCase());
 }
+
+
+/* =========================================================
+   検索結果作成
+   ========================================================= */
+
 function applyFilters(){
-  /*
-   * 全年度横断で名前が空欄の場合は、
-   * 大量の年度データをカード化しない。
-   */
-  if(crossYearSearch && !searchName){
+
+  if(crossYearSearch&&!searchName){
     return [];
   }
+
   let arr=[];
-  /*
-   * 通常検索
-   */
+
   if(!crossYearSearch){
+
     for(let p of players){
-      if(!nameMatches(p)){
-        continue;
-      }
-      if(!baseFilter(p)){
-        continue;
-      }
+
+      if(!nameMatches(p))continue;
+      if(!baseFilter(p))continue;
+
       arr.push(p);
     }
-  }
-  /*
-   * 全年度横断検索
-   */
-  else{
+
+  }else{
+
     for(let y of availableYears){
+
       let list=yearData[y]||[];
+
       for(let p of list){
-        if(!nameMatches(p)){
-          continue;
-        }
-        if(!baseFilter(p)){
-          continue;
-        }
+
+        if(!nameMatches(p))continue;
+        if(!baseFilter(p))continue;
+
         arr.push(
           Object.assign({},p,{__year:y})
         );
       }
     }
   }
+
   arr.sort((a,b)=>{
+
     let x,y;
+
     if(sortMode==="overall"){
       x=overallOf(a);
       y=overallOf(b);
-    }
-    else if(sortMode==="pot"){
+
+    }else if(sortMode==="pot"){
       x=a.pot;
       y=b.pot;
-    }
-    else if(sortMode==="age"){
+
+    }else if(sortMode==="age"){
       x=a.age;
       y=b.age;
-    }
-    else if(sortMode==="name"){
+
+    }else if(sortMode==="name"){
+
       let result=
-        String(a.nm||"").localeCompare(
+        String(a.nm||"")
+        .localeCompare(
           String(b.nm||""),
           "ja"
         );
+
       if(result!==0){
-        return descending
-          ?-result
-          :result;
+        return descending?-result:result;
       }
+
       return descending
         ?String(b.id||"").localeCompare(String(a.id||""))
         :String(a.id||"").localeCompare(String(b.id||""));
-    }
-    else{
+
+    }else{
+
       x=peakGap(a);
       y=peakGap(b);
     }
+
     if(x!==y){
-      return descending
-        ?y-x
-        :x-y;
+      return descending?y-x:x-y;
     }
-    return String(a.id||"").localeCompare(
-      String(b.id||"")
-    );
+
+    return String(a.id||"")
+      .localeCompare(String(b.id||""));
   });
+
   return arr;
 }
+
+
+/* =========================================================
+   表示
+   ========================================================= */
+
 function render(){
-  let grid=
-    document.getElementById("grid");
-  let moreArea=
-    document.getElementById("moreArea");
-  if(crossYearSearch && !searchName){
+
+  let grid=document.getElementById("grid");
+  let moreArea=document.getElementById("moreArea");
+
+  if(crossYearSearch&&!searchName){
+
     document.getElementById("count").textContent=
       "全年度横断検索：選手名を入力してください";
+
     grid.innerHTML=
       `<div class="searchNotice">
         選手名を入力すると、保存されている全年度から検索します。
       </div>`;
+
     moreArea.classList.remove("show");
     return;
   }
+
   let arr=applyFilters();
+
   let totalText=
     crossYearSearch
       ?`全${availableYears.length}年度`
       :`全${players.length}人`;
+
   let visible=
     arr.slice(0,renderLimit);
+
   document.getElementById("count").textContent=
     arr.length>visible.length
       ?`表示：${visible.length}人 / 検索結果 ${arr.length}人 / ${totalText}`
       :`表示：${arr.length}人 / ${totalText}`;
+
   grid.innerHTML=
     visible.map(card).join("");
+
   if(arr.length>visible.length){
+
     moreArea.classList.add("show");
+
     document.getElementById("moreBtn").textContent=
       `もっと見る（残り${arr.length-visible.length}人）`;
+
   }else{
+
     moreArea.classList.remove("show");
   }
 }
+
 function resetAndRender(){
   renderLimit=RENDER_STEP;
   render();
 }
+
+
+/* =========================================================
+   GitHubデータ読み込み
+   ========================================================= */
+
+/*
+ * GitHubの data/players/ フォルダを見て、
+ * YYYY.json.gz の年度だけ自動取得する。
+ */
+async function fetchGitHubYears(){
+
+  let res=await fetch(
+    GITHUB_API_BASE+"?ref=main&per_page=100",
+    {
+      cache:"no-store"
+    }
+  );
+
+  if(!res.ok){
+    throw new Error(
+      "GitHub年度一覧取得失敗：HTTP "+res.status
+    );
+  }
+
+  let files=await res.json();
+
+  githubYears=
+    files
+      .filter(x=>
+        x.type==="file"&&
+        /^\d{4}\.json\.gz$/.test(x.name)
+      )
+      .map(x=>
+        x.name.replace(/\.json\.gz$/,"")
+      )
+      .sort((a,b)=>Number(b)-Number(a));
+}
+
+
+/*
+ * GitHubから特定年度のgzipファイルを取得。
+ *
+ * GitHubに同じ年度が存在する場合は、
+ * 旧URLのデータよりGitHub側を優先する。
+ */
+async function fetchYearFromGitHub(year){
+
+  year=String(year);
+
+  if(githubLoadedYears.has(year)){
+    return yearData[year]||[];
+  }
+
+  if(loadingPromises[year]){
+    return loadingPromises[year];
+  }
+
+  loadingPromises[year]=
+    (async()=>{
+
+      let url=
+        GITHUB_RAW_BASE+
+        "/"+
+        encodeURIComponent(year)+
+        ".json.gz";
+
+      let res=await fetch(
+        url,
+        {
+          cache:"no-cache"
+        }
+      );
+
+      if(!res.ok){
+        throw new Error(
+          `${year}年度データ取得失敗：HTTP ${res.status}`
+        );
+      }
+
+      let compressed=
+        new Uint8Array(
+          await res.arrayBuffer()
+        );
+
+      let ds=
+        new DecompressionStream("gzip");
+
+      let writer=
+        ds.writable.getWriter();
+
+      let reader=
+        ds.readable.getReader();
+
+      writer.write(compressed);
+      writer.close();
+
+      let chunks=[];
+      let x;
+
+      while(!(x=await reader.read()).done){
+        chunks.push(x.value);
+      }
+
+      let total=
+        chunks.reduce(
+          (n,a)=>n+a.length,
+          0
+        );
+
+      let out=
+        new Uint8Array(total);
+
+      let off=0;
+
+      for(let c of chunks){
+        out.set(c,off);
+        off+=c.length;
+      }
+
+      let text=
+        new TextDecoder().decode(out);
+
+      let data=
+        JSON.parse(text);
+
+      if(!Array.isArray(data.players)){
+        throw new Error(
+          `${year}年度データの形式が正しくありません`
+        );
+      }
+
+      yearData[year]=data.players;
+
+      githubLoadedYears.add(year);
+
+      return yearData[year];
+
+    })();
+
+  try{
+
+    return await loadingPromises[year];
+
+  }finally{
+
+    delete loadingPromises[year];
+  }
+}
+
+
+/*
+ * 指定年度を読み込む。
+ *
+ * GitHubにその年度が存在するならGitHubを優先。
+ * GitHubに存在しない年度なら旧URLデータを使用。
+ */
+async function ensureYearLoaded(year){
+
+  year=String(year);
+
+  if(githubYears.includes(year)){
+    return await fetchYearFromGitHub(year);
+  }
+
+  if(
+    Object.prototype.hasOwnProperty.call(
+      yearData,
+      year
+    )
+  ){
+    return yearData[year];
+  }
+
+  throw new Error(
+    `${year}年度のデータが見つかりません`
+  );
+}
+
+
+/*
+ * 全年度横断検索用。
+ * 普通にページを開いたときは実行しない。
+ */
+async function ensureAllYearsLoaded(){
+
+  await Promise.all(
+    availableYears.map(
+      year=>ensureYearLoaded(year)
+    )
+  );
+}
+
+
+/* =========================================================
+   旧URLデータ読み込み
+   ========================================================= */
+
+/*
+ * 以前作っていた
+ *
+ * players.html#圧縮データ
+ *
+ * の形式を引き続き読み込めるようにする。
+ */
+async function decodeLegacyHash(){
+
+  let hash=location.hash.slice(1);
+
+  if(!hash){
+    return null;
+  }
+
+  hash=
+    hash
+      .replace(/-/g,"+")
+      .replace(/_/g,"/");
+
+  while(hash.length%4){
+    hash+="=";
+  }
+
+  let bin=atob(hash);
+
+  let u=
+    new Uint8Array(bin.length);
+
+  for(
+    let i=0;
+    i<bin.length;
+    i++
+  ){
+    u[i]=bin.charCodeAt(i);
+  }
+
+  let ds=
+    new DecompressionStream("deflate");
+
+  let writer=
+    ds.writable.getWriter();
+
+  let reader=
+    ds.readable.getReader();
+
+  writer.write(u);
+  writer.close();
+
+  let chunks=[];
+  let x;
+
+  while(!(x=await reader.read()).done){
+    chunks.push(x.value);
+  }
+
+  let total=
+    chunks.reduce(
+      (n,a)=>n+a.length,
+      0
+    );
+
+  let out=
+    new Uint8Array(total);
+
+  let off=0;
+
+  for(let c of chunks){
+    out.set(c,off);
+    off+=c.length;
+  }
+
+  let text=
+    new TextDecoder().decode(out);
+
+  return JSON.parse(text);
+}
+
+
+/*
+ * GitHub年度と旧URL年度を合体。
+ */
+function rebuildAvailableYears(){
+
+  let set=new Set([
+    ...githubYears,
+    ...Object.keys(yearData)
+  ]);
+
+  availableYears=
+    [...set]
+      .sort((a,b)=>Number(b)-Number(a));
+}
+
+
+/* =========================================================
+   年度表示
+   ========================================================= */
+
+function updateYearText(year){
+
+  document.getElementById("yearText").innerHTML=
+    `${year}年度　
+      <select class="yearSelect" id="yearFilter">
+        ${availableYears.map(y=>
+          `<option value="${y}"
+            ${String(y)===String(year)?"selected":""}>
+            ${y}年度
+          </option>`
+        ).join("")}
+      </select>
+     　在籍選手 ${players.length}人`;
+
+  document
+    .getElementById("yearFilter")
+    .addEventListener(
+      "change",
+      e=>{
+        selectYear(e.target.value);
+      }
+    );
+}
+
+
+/*
+ * 年度を切り替える。
+ *
+ * ここで初めて、その年度のGitHubファイルを取得する。
+ */
+async function selectYear(year){
+
+  year=String(year);
+
+  let previousPlayers=players;
+
+  document.getElementById("yearText").textContent=
+    `${year}年度　データを読み込んでいます…`;
+
+  try{
+
+    let list=
+      await ensureYearLoaded(year);
+
+    players=list;
+
+    updateYearText(year);
+
+    resetAndRender();
+
+  }catch(e){
+
+    console.error(e);
+
+    players=previousPlayers;
+
+    updateYearText(
+      availableYears[0]||year
+    );
+
+    alert(
+      `${year}年度のデータを読み込めませんでした。\n\n`+
+      e.message
+    );
+  }
+}
+
+
+/* =========================================================
+   全年度横断検索
+   ========================================================= */
+
+async function refreshCrossYearSearch(){
+
+  renderLimit=RENDER_STEP;
+
+  if(!crossYearSearch||!searchName){
+
+    render();
+    return;
+  }
+
+  let grid=
+    document.getElementById("grid");
+
+  let moreArea=
+    document.getElementById("moreArea");
+
+  document.getElementById("count").textContent=
+    "全年度のデータを読み込んでいます…";
+
+  grid.innerHTML=
+    `<div class="searchNotice">
+      全年度のデータを読み込んでいます…
+    </div>`;
+
+  moreArea.classList.remove("show");
+
+  try{
+
+    await ensureAllYearsLoaded();
+
+    render();
+
+  }catch(e){
+
+    console.error(e);
+
+    document.getElementById("count").textContent=
+      "全年度データの読み込みに失敗しました";
+
+    grid.innerHTML=
+      `<div class="searchNotice">
+        全年度のデータを読み込めませんでした。<br>
+        ${e.message}
+      </div>`;
+
+  }
+}
+
+
+/* =========================================================
+   UI初期化
+   ========================================================= */
+
 function setup(){
+
   let sel=
     document.getElementById("teamFilter");
+
   sel.innerHTML=
-    `<option value="MY">自球団（横浜）</option>`+
-    `<option value="ALL">全12球団</option>`+
+    `<option value="MY">自球団（横浜）</option>
+     <option value="ALL">全12球団</option>`+
     Object.keys(TEAM_MAP)
-      .map(
-        i=>
-          `<option value="${i}">
-            ${TEAM_MAP[i].nm}
-          </option>`
+      .map(i=>
+        `<option value="${i}">
+          ${TEAM_MAP[i].nm}
+        </option>`
       )
       .join("");
-  sel.addEventListener("change",()=>{
-    selectedTeam=sel.value;
-    resetAndRender();
-  });
+
+  sel.addEventListener(
+    "change",
+    ()=>{
+      selectedTeam=sel.value;
+      resetAndRender();
+    }
+  );
+
+
   document
     .getElementById("leagueFilter")
-    .addEventListener("change",e=>{
-      selectedLeague=e.target.value;
-      resetAndRender();
-    });
+    .addEventListener(
+      "change",
+      e=>{
+        selectedLeague=e.target.value;
+        resetAndRender();
+      }
+    );
+
+
   document
     .querySelectorAll(".posBtn")
     .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        let pos=btn.dataset.pos;
-        if(pos==="ALL"){
-          selectedPositions=new Set(["ALL"]);
-        }else{
-          if(selectedPositions.has("ALL")){
-            selectedPositions.delete("ALL");
-          }
-          if(selectedPositions.has(pos)){
-            selectedPositions.delete(pos);
+
+      btn.addEventListener(
+        "click",
+        ()=>{
+
+          let pos=btn.dataset.pos;
+
+          if(pos==="ALL"){
+
+            selectedPositions=
+              new Set(["ALL"]);
+
           }else{
-            selectedPositions.add(pos);
+
+            if(selectedPositions.has("ALL")){
+              selectedPositions.delete("ALL");
+            }
+
+            if(selectedPositions.has(pos)){
+              selectedPositions.delete(pos);
+            }else{
+              selectedPositions.add(pos);
+            }
+
+            if(selectedPositions.size===0){
+              selectedPositions.add("ALL");
+            }
           }
-          if(selectedPositions.size===0){
-            selectedPositions.add("ALL");
-          }
+
+          document
+            .querySelectorAll(".posBtn")
+            .forEach(x=>{
+              x.classList.toggle(
+                "active",
+                selectedPositions.has(
+                  x.dataset.pos
+                )
+              );
+            });
+
+          resetAndRender();
         }
-        document
-          .querySelectorAll(".posBtn")
-          .forEach(x=>{
-            x.classList.toggle(
-              "active",
-              selectedPositions.has(x.dataset.pos)
-            );
-          });
-        resetAndRender();
-      });
+      );
     });
+
+
   document
     .getElementById("includeSub")
-    .addEventListener("change",e=>{
-      includeSub=e.target.checked;
-      resetAndRender();
-    });
+    .addEventListener(
+      "change",
+      e=>{
+        includeSub=e.target.checked;
+        resetAndRender();
+      }
+    );
+
+
   document
     .querySelectorAll(".roleCheck")
     .forEach(box=>{
-      box.addEventListener("change",()=>{
-        selectedRoles=new Set(
-          [...document.querySelectorAll(".roleCheck:checked")]
-            .map(x=>x.dataset.role)
-        );
-        resetAndRender();
-      });
+
+      box.addEventListener(
+        "change",
+        ()=>{
+          selectedRoles=
+            new Set(
+              [
+                ...document
+                  .querySelectorAll(
+                    ".roleCheck:checked"
+                  )
+              ].map(
+                x=>x.dataset.role
+              )
+            );
+
+          resetAndRender();
+        }
+      );
     });
+
+
   document
     .getElementById("excludeLowRole")
-    .addEventListener("change",e=>{
-      excludeLowRole=e.target.checked;
-      resetAndRender();
-    });
-  /*
-   * 潜在：複数選択
-   */
+    .addEventListener(
+      "change",
+      e=>{
+        excludeLowRole=e.target.checked;
+        resetAndRender();
+      }
+    );
+
+
   document
     .querySelectorAll(".potBtn")
     .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        let pot=btn.dataset.pot;
-        if(pot==="ALL"){
-          selectedPots.clear();
-        }else{
-          if(selectedPots.has(Number(pot))){
-            selectedPots.delete(Number(pot));
+
+      btn.addEventListener(
+        "click",
+        ()=>{
+
+          let pot=btn.dataset.pot;
+
+          if(pot==="ALL"){
+
+            selectedPots.clear();
+
           }else{
-            selectedPots.add(Number(pot));
+
+            if(
+              selectedPots.has(
+                Number(pot)
+              )
+            ){
+              selectedPots.delete(
+                Number(pot)
+              );
+            }else{
+              selectedPots.add(
+                Number(pot)
+              );
+            }
           }
+
+          document
+            .querySelectorAll(".potBtn")
+            .forEach(x=>{
+              x.classList.toggle(
+                "active",
+                x.dataset.pot==="ALL"
+                  ?selectedPots.size===0
+                  :selectedPots.has(
+                    Number(x.dataset.pot)
+                  )
+              );
+            });
+
+          resetAndRender();
         }
-        document
-          .querySelectorAll(".potBtn")
-          .forEach(x=>{
-            x.classList.toggle(
-              "active",
-              x.dataset.pot==="ALL"
-                ?selectedPots.size===0
-                :selectedPots.has(Number(x.dataset.pot))
-            );
-          });
-        resetAndRender();
-      });
+      );
     });
-  /*
-   * 成長：複数選択
-   */
+
+
   document
     .querySelectorAll(".growthBtn")
     .forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        let growth=btn.dataset.growth;
-        if(growth==="ALL"){
-          selectedGrowths.clear();
-        }else{
-          if(selectedGrowths.has(growth)){
-            selectedGrowths.delete(growth);
+
+      btn.addEventListener(
+        "click",
+        ()=>{
+
+          let growth=btn.dataset.growth;
+
+          if(growth==="ALL"){
+
+            selectedGrowths.clear();
+
           }else{
-            selectedGrowths.add(growth);
+
+            if(
+              selectedGrowths.has(growth)
+            ){
+              selectedGrowths.delete(growth);
+            }else{
+              selectedGrowths.add(growth);
+            }
           }
+
+          document
+            .querySelectorAll(".growthBtn")
+            .forEach(x=>{
+              x.classList.toggle(
+                "active",
+                x.dataset.growth==="ALL"
+                  ?selectedGrowths.size===0
+                  :selectedGrowths.has(
+                    x.dataset.growth
+                  )
+              );
+            });
+
+          resetAndRender();
         }
-        document
-          .querySelectorAll(".growthBtn")
-          .forEach(x=>{
-            x.classList.toggle(
-              "active",
-              x.dataset.growth==="ALL"
-                ?selectedGrowths.size===0
-                :selectedGrowths.has(x.dataset.growth)
-            );
-          });
-        resetAndRender();
-      });
+      );
     });
+
+
   document
     .getElementById("sortFilter")
-    .addEventListener("change",e=>{
-      sortMode=e.target.value;
-      resetAndRender();
-    });
+    .addEventListener(
+      "change",
+      e=>{
+        sortMode=e.target.value;
+        resetAndRender();
+      }
+    );
+
+
   document
     .getElementById("orderBtn")
-    .addEventListener("click",e=>{
-      descending=!descending;
-      e.target.textContent=
-        descending
-          ?"↓ 高い順"
-          :"↑ 低い順";
-      resetAndRender();
-    });
+    .addEventListener(
+      "click",
+      e=>{
+        descending=!descending;
+
+        e.target.textContent=
+          descending
+            ?"↓ 高い順"
+            :"↑ 低い順";
+
+        resetAndRender();
+      }
+    );
+
+
   /*
-   * 選手名検索
+   * 名前検索
    */
   document
     .getElementById("nameSearch")
-    .addEventListener("input",e=>{
-      searchName=e.target.value.trim();
-      clearTimeout(searchTimer);
-      searchTimer=setTimeout(()=>{
-        resetAndRender();
-      },100);
-    });
+    .addEventListener(
+      "input",
+      e=>{
+
+        searchName=
+          e.target.value.trim();
+
+        clearTimeout(searchTimer);
+
+        searchTimer=
+          setTimeout(
+            ()=>{
+
+              if(crossYearSearch){
+                refreshCrossYearSearch();
+              }else{
+                resetAndRender();
+              }
+
+            },
+            150
+          );
+      }
+    );
+
+
   /*
-   * 全年度横断検索
+   * 全年度横断
    */
   document
     .getElementById("crossYearSearch")
-    .addEventListener("change",e=>{
-      crossYearSearch=e.target.checked;
-      resetAndRender();
-    });
+    .addEventListener(
+      "change",
+      e=>{
+
+        crossYearSearch=
+          e.target.checked;
+
+        if(crossYearSearch){
+          refreshCrossYearSearch();
+        }else{
+          resetAndRender();
+        }
+      }
+    );
+
+
   /*
    * もっと見る
    */
   document
     .getElementById("moreBtn")
-    .addEventListener("click",()=>{
-      renderLimit+=RENDER_STEP;
-      render();
-    });
+    .addEventListener(
+      "click",
+      ()=>{
+        renderLimit+=RENDER_STEP;
+        render();
+      }
+    );
 }
-function updateYearText(year){
-  document.getElementById("yearText").innerHTML=
-    `${year}年度　<select class="yearSelect" id="yearFilter">${
-      availableYears
-        .map(y=>
-          `<option value="${y}" ${String(y)===String(year)?"selected":""}>${y}年度</option>`
-        )
-        .join("")
-    }</select>　在籍選手 ${players.length}人`;
-  document
-    .getElementById("yearFilter")
-    .addEventListener("change",e=>{
-      const y=e.target.value;
-      players=yearData[y]||[];
-      updateYearText(y);
-      resetAndRender();
-    });
-}
+
+
+/* =========================================================
+   初期ロード
+   ========================================================= */
+
 async function loadData(){
+
+  /*
+   * UIイベントは最初に一度だけ登録。
+   */
+  setup();
+
+  /*
+   * まず旧URLのデータを読む。
+   *
+   * 失敗してもGitHub側の読み込みは続行する。
+   */
   let hash=location.hash.slice(1);
-  if(!hash){
-    document.getElementById("yearText").textContent=
-      "URLデータがありません。ゲームから作成したURLを開いてください。";
+
+  if(hash){
+
+    try{
+
+      let data=
+        await decodeLegacyHash();
+
+      if(data.years){
+
+        for(let y of Object.keys(data.years)){
+          yearData[String(y)]=
+            data.years[y];
+        }
+
+      }else if(data.players){
+
+        let y=
+          String(data.year||"?");
+
+        yearData[y]=
+          data.players;
+
+      }else{
+
+        throw new Error(
+          "対応していない旧URLデータ形式です"
+        );
+      }
+
+    }catch(e){
+
+      console.error(
+        "旧URLデータ読み込み失敗",
+        e
+      );
+
+      /*
+       * GitHubだけで動く可能性があるので、
+       * ここでは停止しない。
+       */
+    }
+  }
+
+
+  /*
+   * GitHubの年度一覧を取得。
+   */
+  let githubError=null;
+
+  try{
+
+    await fetchGitHubYears();
+
+  }catch(e){
+
+    console.error(e);
+
+    githubError=e;
+
+    githubYears=[];
+  }
+
+
+  /*
+   * 旧URLとGitHubの年度を統合。
+   */
+  rebuildAvailableYears();
+
+
+  /*
+   * どちらにも年度がない場合。
+   */
+  if(!availableYears.length){
+
+    if(githubError){
+
+      document.getElementById("yearText").textContent=
+        "GitHubから年度データを取得できませんでした。";
+
+    }else{
+
+      document.getElementById("yearText").textContent=
+        "保存されている年度データがありません。";
+    }
+
+    document.getElementById("count").textContent=
+      "データなし";
+
     return;
   }
+
+
+  /*
+   * 最新年度だけ最初に読み込む。
+   *
+   * ここでは全年度を読み込まない。
+   */
+  let firstYear=
+    availableYears[0];
+
   try{
-    hash=
-      hash
-        .replace(/-/g,"+")
-        .replace(/_/g,"/");
-    while(hash.length%4){
-      hash+="=";
-    }
-    let bin=atob(hash);
-    let u=
-      new Uint8Array(bin.length);
-    for(let i=0;i<bin.length;i++){
-      u[i]=bin.charCodeAt(i);
-    }
-    let ds=
-      new DecompressionStream("deflate");
-    let w=
-      ds.writable.getWriter();
-    let r=
-      ds.readable.getReader();
-    w.write(u);
-    w.close();
-    let chunks=[];
-    let x;
-    while(!(x=await r.read()).done){
-      chunks.push(x.value);
-    }
-    let total=
-      chunks.reduce(
-        (n,a)=>n+a.length,
-        0
-      );
-    let out=
-      new Uint8Array(total);
-    let off=0;
-    for(let c of chunks){
-      out.set(c,off);
-      off+=c.length;
-    }
-    let text=
-      new TextDecoder().decode(out);
-    let data=
-      JSON.parse(text);
-    /*
-     * 新形式
-     */
-    if(data.years){
-      yearData=data.years;
-      availableYears=
-        Object.keys(yearData)
-          .sort((a,b)=>Number(b)-Number(a));
-    }
-    /*
-     * 旧形式
-     */
-    else if(data.players){
-      yearData={
-        [String(data.year||"?")]:data.players
-      };
-      availableYears=
-        Object.keys(yearData);
-    }
-    else{
-      throw new Error("対応していないデータ形式です");
-    }
-    if(!availableYears.length){
-      throw new Error("年度データがありません");
-    }
-    const firstYear=availableYears[0];
-    players=
-      yearData[firstYear]||[];
-    setup();
+
+    let list=
+      await ensureYearLoaded(firstYear);
+
+    players=list;
+
     updateYearText(firstYear);
+
     render();
+
   }catch(e){
+
     console.error(e);
-    document
-      .getElementById("yearText")
-      .textContent=
-        "データの読み込みに失敗しました。";
+
+    /*
+     * 最新年度のGitHub読み込みに失敗した場合、
+     * 旧URL側に同年度が残っていればそれを使用。
+     */
+    if(
+      Object.prototype.hasOwnProperty.call(
+        yearData,
+        firstYear
+      )
+    ){
+
+      players=
+        yearData[firstYear];
+
+      updateYearText(firstYear);
+      render();
+
+    }else{
+
+      document.getElementById("yearText").textContent=
+        `${firstYear}年度データの読み込みに失敗しました。`;
+
+      document.getElementById("count").textContent=
+        e.message;
+    }
   }
 }
+
 loadData();
 </script>
+
 </body>
 </html>
