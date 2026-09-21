@@ -2430,20 +2430,6 @@ function detailCurrentAbility(p){
       :""
     }
 
-    ${p.subG&&Object.keys(p.subG).length
-      ?`<div class="info">
-          <b>サブ成長値（subG）</b>
-          <div class="internalNote">
-            ゲーム内部で使用されている補助的な成長値と考えられます。
-            現時点では各キーの正確な意味までは確定していないため、値をそのまま表示しています。
-          </div>
-          <div style="margin-top:5px">${objectText(p.subG)}</div>
-        </div>`
-      :""
-    }
-  `;
-}
-
 function detailCareerTable(p,hist){
 
   hist=(hist||[])
