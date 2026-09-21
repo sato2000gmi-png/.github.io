@@ -1157,6 +1157,18 @@ function fmtNum(v,digits=2){
   return v===null||v===undefined?"—":Number(v).toFixed(digits);
 }
 
+function fmtOps(v){
+  if(v===null||v===undefined)return"—";
+
+  let s=Number(v).toFixed(3);
+
+  if(Number(v)<1){
+    s=s.replace(/^0/,"");
+  }
+
+  return s;
+}
+
 function seasonSummary(p,s,y){
   if(!s)return"";
 
@@ -1167,12 +1179,12 @@ function seasonSummary(p,s,y){
     return`
       <div class="seasonSummaryYear">${y}年</div>
       <div class="seasonSummaryStats">
-        ${Number(s.G)||0}試合　
-        ${fmtAvg(avg)}　
-        ${Number(s.HR)||0}本　
-        ${Number(s.RBI)||0}打点　
-        ${Number(s.SB)||0}盗塁　
-        OPS ${fmtNum(ops,3)}
+        ${Number(s.G)||0}試合
+        ${fmtAvg(avg)}
+        ${Number(s.HR)||0}本
+        ${Number(s.RBI)||0}打点
+        ${Number(s.SB)||0}盗塁
+        OPS ${fmtOps(ops)}
       </div>
     `;
   }
@@ -1183,13 +1195,13 @@ function seasonSummary(p,s,y){
   return`
     <div class="seasonSummaryYear">${y}年</div>
     <div class="seasonSummaryStats">
-      ${Number(s.G)||0}試合　
-      ${inningsText(s.IPo)}回　
-      防御率 ${fmtNum(erav,2)}　
-      ${Number(s.W)||0}勝${Number(s.L)||0}敗　
-      ${Number(s.GS)||0}先発　
-      ${Number(s.HLD)||0}H　
-      ${Number(s.SV)||0}S　
+      ${Number(s.G)||0}試合
+      ${inningsText(s.IPo)}回
+      防御率 ${fmtNum(erav,2)}
+      ${Number(s.W)||0}勝${Number(s.L)||0}敗
+      ${Number(s.GS)||0}先発
+      ${Number(s.HLD)||0}H
+      ${Number(s.SV)||0}S
       WHIP ${fmtNum(whipv,3)}
     </div>
   `;
@@ -1198,11 +1210,25 @@ function seasonSummary(p,s,y){
 function getSeasonStats(p,year){
   year=Number(year);
 
+  // まず確定済みの年度成績を優先
   if(Array.isArray(p.hist)){
     let h=p.hist.find(x=>Number(x.y)===year);
-    if(h&&h.s)return h.s;
+
+    if(h&&h.s){
+      return h.s;
+    }
   }
 
+  // 現在選択している年度の現役選手なら、
+  // まだhistに入っていない年度途中の成績をcsから取得
+  if(
+    Number(year)===Number(selectedYear)&&
+    p.cs
+  ){
+    return p.cs;
+  }
+
+  // 全年度横断検索時の年度途中データ
   if(
     p.__year&&
     Number(p.__year)===year&&
@@ -2438,10 +2464,10 @@ function detailCareerTable(p,hist){
         ?"current"
         :"";
 
-    let teamName=
-      TEAM_MAP[h.tm]?.nm||
-      TEAM_MAP[h.tm]?.sh||
-      (h.tm!==undefined?`球団${h.tm}`:"—");
+let teamName=
+  TEAM_MAP[h.tm]?.sh||
+  TEAM_MAP[h.tm]?.nm||
+  (h.tm!==undefined?`球団${h.tm}`:"—");
 
     if(p.t==="B"){
 
@@ -2463,7 +2489,7 @@ function detailCareerTable(p,hist){
           <td>${s.BB||0}</td>
           <td>${s.SO||0}</td>
           <td>${fmtAvg(battingAverage(s))}</td>
-          <td>${fmtNum(opsApprox(s),3)}</td>
+	  <td>${fmtOps(opsApprox(s))}</td>
         </tr>`;
     }
 
@@ -2558,7 +2584,7 @@ function detailTotalTable(p,totals){
               <td>${totals.BB||0}</td>
               <td>${totals.SO||0}</td>
               <td>${fmtAvg(battingAverage(totals))}</td>
-              <td>${fmtNum(opsApprox(totals),3)}</td>
+              <td>${fmtOps(opsApprox(totals))}</td>
             </tr>
           </tbody>
         </table>
@@ -2836,13 +2862,6 @@ async function renderDetail(id,params){
       <div class="detailSection">
         <h2>特殊能力・育成情報</h2>
         ${detailAbilityBlock(p)}
-
-        ${p.sa&&p.sa.length
-          ?`<div class="info detailAbility">
-              <b>特殊能力：</b>${abilityText(p)}
-            </div>`
-          :""
-        }
       </div>
 
       <div class="detailSection">
