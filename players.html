@@ -2430,6 +2430,16 @@ function detailCurrentAbility(p){
       :""
     }
 
+    ${p.t==="P"
+      ?`<div class="info">
+          <b>投手起用適性の詳細：</b>
+          ${roleDetailText(p)}
+        </div>`
+      :""
+    }
+  `;
+}
+
 function detailCareerTable(p,hist){
 
   hist=(hist||[])
@@ -2988,11 +2998,11 @@ async function renderDetail(id,params){
           )}
         </div>
 
-      ${p.subG && Object.keys(p.subG).length
+    ${p.subG && Object.keys(p.subG).length
   ? `
     <div class="info">
       <b>サブポジション実戦経験</b>
-      <div class="muted">
+      <div class="internalNote">
         本来の守備位置以外での実戦経験。40回に達すると、そのポジションの守備適性が1段階上昇します。
       </div>
       <div class="subPosExp">
