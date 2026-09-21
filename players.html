@@ -280,6 +280,13 @@ button.active{
   line-height:1.55;
   color:#444
 }
+.seasonSummaryYear{
+  font-weight:700;
+  margin-bottom:1px
+}
+.seasonSummaryStats{
+  white-space:normal
+}
 .statTitle{
   font-size:12px;
   font-weight:700;
@@ -548,6 +555,34 @@ button.active{
   color:#777;
   background:#fff;
   border-radius:10px
+}
+.internalNote{
+  color:#777;
+  font-size:11px;
+  line-height:1.6;
+  margin-top:7px
+}
+.codeValue{
+  color:#666;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px
+}
+.emptyValue{
+  color:#999
+}
+.detailMiniTable{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px
+}
+.detailMiniTable th,
+.detailMiniTable td{
+  padding:5px 6px;
+  border-bottom:1px solid #eee;
+  text-align:left
+}
+.detailMiniTable th{
+  background:#f5f5f5
 }
 
 @media(max-width:1050px){
@@ -963,16 +998,45 @@ function defenseText(p){
   return a.length?a.join("、"):"—";
 }
 
+function roleMark(v){
+  v=Number(v)||0;
+  if(v>=3)return"◎";
+  if(v===2)return"○";
+  if(v===1)return"△";
+  return"—";
+}
+
 function roleText(p){
   if(p.t!=="P"||!p.rl)return"—";
 
   let a=[];
 
-  if(p.rl.sp>0)a.push("先発"+(p.rl.sp>=3?"◎":p.rl.sp===2?"○":"△"));
-  if(p.rl.rp>0)a.push("中継ぎ"+(p.rl.rp>=3?"◎":p.rl.rp===2?"○":"△"));
-  if(p.rl.cl>0)a.push("抑え"+(p.rl.cl>=3?"◎":p.rl.cl===2?"○":"△"));
+  if(Number(p.rl.sp)>0)a.push("先発"+roleMark(p.rl.sp));
+  if(Number(p.rl.rp)>0)a.push("中継ぎ"+roleMark(p.rl.rp));
+  if(Number(p.rl.cl)>0)a.push("抑え"+roleMark(p.rl.cl));
 
   return a.length?a.join("、"):"—";
+}
+
+function roleDetailText(p){
+  if(p.t!=="P"||!p.rl){
+    return"—";
+  }
+
+  return`
+    <div class="detailMiniTable">
+      <table class="detailMiniTable">
+        <thead>
+          <tr><th>起用法</th><th>適性</th><th>内部値</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>先発</td><td>${roleMark(p.rl.sp)}</td><td>${p.rl.sp??0}</td></tr>
+          <tr><td>中継ぎ</td><td>${roleMark(p.rl.rp)}</td><td>${p.rl.rp??0}</td></tr>
+          <tr><td>抑え</td><td>${roleMark(p.rl.cl)}</td><td>${p.rl.cl??0}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 
@@ -1101,13 +1165,15 @@ function seasonSummary(p,s,y){
     let ops=opsApprox(s);
 
     return`
-      <b>${y}年</b>　
-      ${Number(s.G)||0}試合　
-      ${fmtAvg(avg)}　
-      ${Number(s.HR)||0}本　
-      ${Number(s.RBI)||0}打点　
-      ${Number(s.SB)||0}盗塁　
-      OPS ${fmtNum(ops,3)}
+      <div class="seasonSummaryYear">${y}年</div>
+      <div class="seasonSummaryStats">
+        ${Number(s.G)||0}試合　
+        ${fmtAvg(avg)}　
+        ${Number(s.HR)||0}本　
+        ${Number(s.RBI)||0}打点　
+        ${Number(s.SB)||0}盗塁　
+        OPS ${fmtNum(ops,3)}
+      </div>
     `;
   }
 
@@ -1115,15 +1181,17 @@ function seasonSummary(p,s,y){
   let whipv=whip(s);
 
   return`
-    <b>${y}年</b>　
-    ${Number(s.G)||0}試合　
-    ${inningsText(s.IPo)}回　
-    防御率 ${fmtNum(erav,2)}　
-    ${Number(s.W)||0}勝${Number(s.L)||0}敗　
-    ${Number(s.GS)||0}先発　
-    ${Number(s.HLD)||0}H　
-    ${Number(s.SV)||0}S　
-    WHIP ${fmtNum(whipv,3)}
+    <div class="seasonSummaryYear">${y}年</div>
+    <div class="seasonSummaryStats">
+      ${Number(s.G)||0}試合　
+      ${inningsText(s.IPo)}回　
+      防御率 ${fmtNum(erav,2)}　
+      ${Number(s.W)||0}勝${Number(s.L)||0}敗　
+      ${Number(s.GS)||0}先発　
+      ${Number(s.HLD)||0}H　
+      ${Number(s.SV)||0}S　
+      WHIP ${fmtNum(whipv,3)}
+    </div>
   `;
 }
 
@@ -1180,6 +1248,173 @@ function careerTotalsFromHist(p){
 
 
 /* =========================================================
+   URL・検索状態
+   ========================================================= */
+
+function normalizeSearchText(s){
+  return String(s||"")
+    .normalize("NFKC")
+    .toLocaleLowerCase()
+    .replace(/[\s\u3000]+/g,"");
+}
+
+function searchTokens(){
+  return String(searchName||"")
+    .normalize("NFKC")
+    .trim()
+    .split(/[\s\u3000]+/)
+    .filter(Boolean)
+    .map(x=>x.toLocaleLowerCase());
+}
+
+function idTokenMatches(p,token){
+  let id=String(p.id||"").normalize("NFKC").toLocaleLowerCase();
+  let num=id.replace(/^p/,"");
+
+  let t=String(token||"")
+    .normalize("NFKC")
+    .toLocaleLowerCase()
+    .replace(/[\s\u3000]+/g,"");
+
+  t=t.replace(/^no\./,"");
+
+  if(/^p\d+$/.test(t)){
+    return id===t;
+  }
+
+  if(/^\d+$/.test(t)){
+    return num===t;
+  }
+
+  return false;
+}
+
+function nameMatches(p){
+  if(!searchName)return true;
+
+  let tokens=searchTokens();
+  let normalizedName=normalizeSearchText(p.nm);
+
+  return tokens.every(token=>{
+    if(idTokenMatches(p,token)){
+      return true;
+    }
+
+    return normalizedName.includes(
+      normalizeSearchText(token)
+    );
+  });
+}
+
+function currentListUrl(){
+  let url=new URL(location.href);
+
+  url.search="";
+  url.hash="";
+
+  let params=new URLSearchParams();
+
+  if(searchName){
+    params.set("q",searchName);
+  }
+
+  if(crossYearSearch){
+    params.set("cross","1");
+  }
+
+  if(selectedYear){
+    params.set("year",selectedYear);
+  }
+
+  let query=params.toString();
+
+  return url.pathname+(query?"?"+query:"");
+}
+
+function syncListUrl(){
+  if(!document.getElementById("nameSearch"))return;
+
+  let url=new URL(location.href);
+  let params=new URLSearchParams(url.search);
+
+  if(searchName){
+    params.set("q",searchName);
+  }else{
+    params.delete("q");
+  }
+
+  if(crossYearSearch){
+    params.set("cross","1");
+  }else{
+    params.delete("cross");
+  }
+
+  if(selectedYear){
+    params.set("year",selectedYear);
+  }
+
+  params.delete("id");
+  params.delete("from");
+
+  let query=params.toString();
+
+  let newUrl=
+    url.pathname+
+    (query?"?"+query:"")+
+    url.hash;
+
+  history.replaceState(null,"",newUrl);
+}
+
+function detailUrl(id){
+  let url=new URL(location.href);
+
+  url.search="";
+  url.hash="";
+
+  let params=new URLSearchParams();
+  params.set("id",id);
+  params.set(
+    "from",
+    currentListUrl()
+  );
+
+  return url.pathname+"?"+params.toString();
+}
+
+function getReturnUrl(params){
+  let from=params.get("from");
+
+  if(!from){
+    return"players.html";
+  }
+
+  try{
+    let u=new URL(from,location.href);
+
+    if(
+      u.origin===location.origin&&
+      /\/players\.html$/.test(u.pathname)
+    ){
+      return u.pathname+u.search;
+    }
+  }catch(e){}
+
+  return"players.html";
+}
+
+function restoreListState(params){
+  searchName=
+    params.get("q")||"";
+
+  crossYearSearch=
+    params.get("cross")==="1";
+
+  return params.get("year")||"";
+}
+
+
+/* =========================================================
    カード
    ========================================================= */
 
@@ -1217,7 +1452,7 @@ function card(p){
         <div class="team">${teamName}${yearBadge}</div>
 
         <div class="name">
-          <a href="?id=${encodeURIComponent(p.id)}">${p.nm}</a>
+          <a href="${detailUrl(p.id)}">${escapeHtml(p.nm)}</a>
         </div>
 
         <div class="basic">
@@ -1360,63 +1595,6 @@ function baseFilter(p){
   }
 
   return true;
-}
-
-
-/* =========================================================
-   検索
-   ========================================================= */
-
-function normalizeSearchText(s){
-  return String(s||"")
-    .toLocaleLowerCase()
-    .replace(/[\s\u3000]+/g,"");
-}
-
-function searchTokens(){
-  return searchName
-    .trim()
-    .split(/[\s\u3000]+/)
-    .filter(Boolean)
-    .map(x=>x.toLocaleLowerCase());
-}
-
-function idTokenMatches(p,token){
-  let id=String(p.id||"").toLocaleLowerCase();
-  let num=id.replace(/^p/,"");
-
-  let t=String(token||"").toLocaleLowerCase();
-
-  if(/^no\.?\d+$/.test(t)){
-    t=t.replace(/^no\.?/,"");
-  }
-
-  if(/^p\d+$/.test(t)){
-    return id===t;
-  }
-
-  if(/^\d+$/.test(t)){
-    return num===t;
-  }
-
-  return false;
-}
-
-function nameMatches(p){
-  if(!searchName)return true;
-
-  let tokens=searchTokens();
-  let normalizedName=normalizeSearchText(p.nm);
-
-  return tokens.every(token=>{
-    if(idTokenMatches(p,token)){
-      return true;
-    }
-
-    return normalizedName.includes(
-      normalizeSearchText(token)
-    );
-  });
 }
 
 
@@ -1912,6 +2090,8 @@ function updateYearText(year){
         selectYear(e.target.value);
       }
     );
+
+  syncListUrl();
 }
 
 async function selectYear(year){
@@ -1958,6 +2138,7 @@ async function selectYear(year){
 async function refreshCrossYearSearch(){
 
   renderLimit=RENDER_STEP;
+  syncListUrl();
 
   if(!crossYearSearch||!searchName){
     render();
@@ -1996,7 +2177,7 @@ async function refreshCrossYearSearch(){
     grid.innerHTML=
       `<div class="searchNotice">
         全年度のデータを読み込めませんでした。<br>
-        ${e.message}
+        ${escapeHtml(e.message)}
       </div>`;
   }
 }
@@ -2057,9 +2238,17 @@ function findRetired(id){
    ========================================================= */
 
 function detailItem(label,value){
+  let empty=
+    value===undefined||
+    value===null||
+    value==="";
+
   return`
     <div class="detailItem">
-      <b>${label}</b>${value===undefined||value===null||value===""?"—":value}
+      <b>${escapeHtml(label)}</b>
+      ${empty
+        ?`<span class="emptyValue">—</span>`
+        :value}
     </div>`;
 }
 
@@ -2067,8 +2256,82 @@ function objectText(obj){
   if(!obj||typeof obj!=="object")return"—";
 
   return Object.entries(obj)
-    .map(([k,v])=>`${k}:${v}`)
+    .map(([k,v])=>
+      `<span class="codeValue">${escapeHtml(k)}:${escapeHtml(v)}</span>`
+    )
     .join(" / ");
+}
+
+function growText(p){
+  if(!p.grow||typeof p.grow!=="object"){
+    return"—";
+  }
+
+  let labels={
+    mt:"ミート",
+    pw:"パワー",
+    sp:"走力",
+    am:"肩力",
+    fd:"守備",
+    vl:"球速",
+    ct:"制球",
+    st:"スタミナ",
+    br:"変化"
+  };
+
+  return Object.entries(p.grow)
+    .map(([k,v])=>
+      `${labels[k]||k} ${v}`
+    )
+    .join(" / ");
+}
+
+function conditionText(p){
+  let a=[];
+
+  if(p.cond!==undefined){
+    a.push(`状態 ${p.cond}`);
+  }
+
+  if(p.fat!==undefined){
+    a.push(`疲労 ${p.fat}`);
+  }
+
+  if(p.inj!==undefined){
+    a.push(`故障 ${p.inj}`);
+  }
+
+  return a.length?a.join(" / "):"—";
+}
+
+function devFocusText(p){
+  let focus={
+    mt:"ミート",
+    pw:"パワー",
+    sp:"走力",
+    am:"肩力",
+    fd:"守備",
+    vl:"球速",
+    ct:"制球",
+    st:"スタミナ",
+    br:"変化"
+  };
+
+  return focus[p.devFocus]||p.devFocus||"—";
+}
+
+function devRoleText(p){
+  let role={
+    sp:"先発",
+    rp:"中継ぎ",
+    cl:"抑え"
+  };
+
+  return role[p.devRole]||p.devRole||"—";
+}
+
+function devPosText(p){
+  return POS_NAMES[p.devPos]||p.devPos||"—";
 }
 
 function detailAbilityBlock(p){
@@ -2076,15 +2339,15 @@ function detailAbilityBlock(p){
   return`
     <div class="detailGrid">
       ${detailItem("特殊能力",abilityText(p))}
-      ${detailItem("潜在",POT_NAMES[p.pot]||p.pot)}
-      ${detailItem("成長タイプ",GROWTH_NAMES[p.gt]||p.gt)}
-      ${detailItem("成長期",phaseOf(p))}
-      ${detailItem("成長注目",p.devFocus)}
-      ${detailItem("成長役割",p.devRole)}
-      ${detailItem("成長ポジション",p.devPos)}
+      ${detailItem("潜在",escapeHtml(POT_NAMES[p.pot]||p.pot))}
+      ${detailItem("成長タイプ",escapeHtml(GROWTH_NAMES[p.gt]||p.gt))}
+      ${detailItem("成長段階",escapeHtml(phaseOf(p)))}
+      ${detailItem("成長注目",escapeHtml(devFocusText(p)))}
+      ${detailItem("成長役割",escapeHtml(devRoleText(p)))}
+      ${detailItem("成長ポジション",escapeHtml(devPosText(p)))}
       ${detailItem("スター",p.star?"あり":"なし")}
       ${detailItem("スカウト誤差",p.scErr)}
-      ${detailItem("コメント",p.comment)}
+      ${detailItem("コメント",escapeHtml(p.comment||"—"))}
     </div>
   `;
 }
@@ -2104,17 +2367,54 @@ function detailCurrentAbility(p){
     <div class="detailGrid" style="margin-top:8px">
       ${detailItem(
         "守備適性",
-        p.t==="P"?"—":defenseText(p)
+        p.t==="P"?"—":escapeHtml(defenseText(p))
       )}
+
       ${detailItem(
-        "投手役割",
+        "投手起用適性",
         p.t==="P"?roleText(p):"—"
       )}
-      ${detailItem("当前成長",objectText(p.grow))}
-      ${detailItem("現在状態",`コンディション ${p.cond} / 疲労 ${p.fat} / 故障 ${p.inj}`)}
-      ${detailItem("subG",objectText(p.subG))}
-      ${detailItem("rl",objectText(p.rl))}
+
+      ${detailItem(
+        "現在の成長補正",
+        escapeHtml(growText(p))
+      )}
+
+      ${detailItem(
+        "現在状態",
+        escapeHtml(conditionText(p))
+      )}
+
+      ${detailItem(
+        "成長対象",
+        escapeHtml(devFocusText(p))
+      )}
+
+      ${detailItem(
+        "成長役割",
+        escapeHtml(devRoleText(p))
+      )}
     </div>
+
+    ${p.t==="P"
+      ?`<div class="info">
+          <b>投手起用適性の詳細：</b>
+          ${roleDetailText(p)}
+        </div>`
+      :""
+    }
+
+    ${p.subG&&Object.keys(p.subG).length
+      ?`<div class="info">
+          <b>サブ成長値（subG）</b>
+          <div class="internalNote">
+            ゲーム内部で使用されている補助的な成長値と考えられます。
+            現時点では各キーの正確な意味までは確定していないため、値をそのまま表示しています。
+          </div>
+          <div style="margin-top:5px">${objectText(p.subG)}</div>
+        </div>`
+      :""
+    }
   `;
 }
 
@@ -2138,13 +2438,18 @@ function detailCareerTable(p,hist){
         ?"current"
         :"";
 
+    let teamName=
+      TEAM_MAP[h.tm]?.nm||
+      TEAM_MAP[h.tm]?.sh||
+      (h.tm!==undefined?`球団${h.tm}`:"—");
+
     if(p.t==="B"){
 
       return`
         <tr class="${current}">
           <td>${h.y}</td>
           <td>${h.age??"—"}</td>
-          <td>${h.tm??"—"}</td>
+          <td>${escapeHtml(teamName)}</td>
           <td>${s.G||0}</td>
           <td>${s.PA||0}</td>
           <td>${s.AB||0}</td>
@@ -2166,7 +2471,7 @@ function detailCareerTable(p,hist){
       <tr class="${current}">
         <td>${h.y}</td>
         <td>${h.age??"—"}</td>
-        <td>${h.tm??"—"}</td>
+        <td>${escapeHtml(teamName)}</td>
         <td>${s.G||0}</td>
         <td>${s.GS||0}</td>
         <td>${inningsText(s.IPo)}</td>
@@ -2193,9 +2498,9 @@ function detailCareerTable(p,hist){
           <thead>
             <tr>
               <th>年度</th><th>年齢</th><th>球団</th>
-              <th>G</th><th>PA</th><th>AB</th><th>H</th>
-              <th>2B</th><th>3B</th><th>HR</th><th>RBI</th>
-              <th>R</th><th>SB</th><th>BB</th><th>SO</th>
+              <th>試合</th><th>打席</th><th>打数</th><th>安打</th>
+              <th>二塁打</th><th>三塁打</th><th>本塁打</th><th>打点</th>
+              <th>得点</th><th>盗塁</th><th>四球</th><th>三振</th>
               <th>打率</th><th>OPS</th>
             </tr>
           </thead>
@@ -2210,10 +2515,10 @@ function detailCareerTable(p,hist){
         <thead>
           <tr>
             <th>年度</th><th>年齢</th><th>球団</th>
-            <th>G</th><th>GS</th><th>IP</th><th>W</th><th>L</th>
-            <th>HLD</th><th>SV</th><th>H</th><th>HR</th>
-            <th>BB</th><th>SO</th><th>ER</th>
-            <th>ERA</th><th>WHIP</th><th>CG</th>
+            <th>試合</th><th>先発</th><th>投球回</th><th>勝</th><th>敗</th>
+            <th>ホールド</th><th>セーブ</th><th>被安打</th><th>被本塁打</th>
+            <th>四球</th><th>奪三振</th><th>自責点</th>
+            <th>防御率</th><th>WHIP</th><th>完投</th>
           </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -2232,9 +2537,9 @@ function detailTotalTable(p,totals){
         <table class="detailTable">
           <thead>
             <tr>
-              <th>G</th><th>PA</th><th>AB</th><th>H</th>
-              <th>2B</th><th>3B</th><th>HR</th><th>RBI</th>
-              <th>R</th><th>SB</th><th>BB</th><th>SO</th>
+              <th>試合</th><th>打席</th><th>打数</th><th>安打</th>
+              <th>二塁打</th><th>三塁打</th><th>本塁打</th><th>打点</th>
+              <th>得点</th><th>盗塁</th><th>四球</th><th>三振</th>
               <th>打率</th><th>OPS</th>
             </tr>
           </thead>
@@ -2265,10 +2570,10 @@ function detailTotalTable(p,totals){
       <table class="detailTable">
         <thead>
           <tr>
-            <th>G</th><th>GS</th><th>IP</th><th>W</th><th>L</th>
-            <th>HLD</th><th>SV</th><th>H</th><th>HR</th>
-            <th>BB</th><th>SO</th><th>ER</th><th>ERA</th>
-            <th>WHIP</th><th>CG</th>
+            <th>試合</th><th>先発</th><th>投球回</th><th>勝</th><th>敗</th>
+            <th>ホールド</th><th>セーブ</th><th>被安打</th><th>被本塁打</th>
+            <th>四球</th><th>奪三振</th><th>自責点</th><th>防御率</th>
+            <th>WHIP</th><th>完投</th>
           </tr>
         </thead>
         <tbody>
@@ -2305,7 +2610,7 @@ function detailTitles(p){
   return`
     <div class="titleList">
       ${titles.map(x=>
-        `<span class="titleBadge">${x}</span>`
+        `<span class="titleBadge">${escapeHtml(x)}</span>`
       ).join("")}
     </div>`;
 }
@@ -2313,10 +2618,10 @@ function detailTitles(p){
 function detailDraft(p){
   return`
     <div class="detailGrid">
-      ${detailItem("ドラフト",draftText(p))}
+      ${detailItem("ドラフト",escapeHtml(draftText(p)))}
       ${detailItem("ドラフト年",p.drft?.y)}
-      ${detailItem("ドラフト順位",p.drft?.rd)}
-      ${detailItem("出身区分",draftSourceName(p.drft?.src))}
+      ${detailItem("ドラフト順位",p.drft?.rd!==undefined?p.drft.rd+"位":"—")}
+      ${detailItem("出身区分",escapeHtml(draftSourceName(p.drft?.src)))}
     </div>`;
 }
 
@@ -2325,7 +2630,7 @@ function detailDraft(p){
    詳細ページ本体
    ========================================================= */
 
-async function renderDetail(id){
+async function renderDetail(id,params){
 
   document.title="選手詳細 - 在籍選手データベース";
 
@@ -2336,16 +2641,31 @@ async function renderDetail(id){
 
     await fetchGitHubYears();
     rebuildAvailableYears();
+
+    /*
+     * 詳細ページでは全年度を読み込む。
+     * これにより現役選手でも過去年度のhistを確認できる。
+     */
     await ensureAllYearsLoaded();
-    await fetchCareer();
+
+    /*
+     * CAREERは存在しない・一時的に取得できない場合でも
+     * 現役選手の詳細ページ自体は表示できるようにする。
+     */
+    try{
+      await fetchCareer();
+    }catch(e){
+      console.warn("CAREERデータを取得できませんでした",e);
+      careerData=null;
+    }
 
     let p=latestPlayerSnapshot(id);
     let hof=findHof(id);
     let retired=findRetired(id);
 
     /*
-     * HOF側に保存されているhistは、現役スナップショットより
-     * 優先して使える。
+     * HOF側に保存されているhistは、引退後の選手について
+     * 現役時代の年度別成績を保持しているため優先する。
      */
     if(hof&&Array.isArray(hof.hist)){
 
@@ -2361,7 +2681,8 @@ async function renderDetail(id){
           titles:hof.titles,
           mvp:hof.mvp,
           hist:hof.hist,
-          __year:hof.retY
+          __year:hof.retY,
+          team:null
         };
       }else{
         p=Object.assign({},p,{
@@ -2381,23 +2702,34 @@ async function renderDetail(id){
         age:retired.age,
         hist:[],
         titles:[],
-        mvp:retired.mvp||0
+        mvp:retired.mvp||0,
+        team:null
       };
     }
 
     if(!p){
       document.getElementById("app").innerHTML=
         `<div class="searchNotice">
-          選手 ${id} は見つかりませんでした。
+          選手 ${escapeHtml(id)} は見つかりませんでした。
           <br><br>
           <a href="players.html">一覧へ戻る</a>
         </div>`;
       return;
     }
 
-    let team=TEAM_MAP[p.team];
-    let teamColor=team?.col||"#999";
-    let teamName=team?.nm||retired?.teamNm||hof?.teamNm||"—";
+    let team=
+      TEAM_MAP[p.team];
+
+    let teamColor=
+      team?.col||
+      (retired?.teamCol)||
+      "#999";
+
+    let teamName=
+      team?.nm||
+      retired?.teamNm||
+      hof?.teamNm||
+      "—";
 
     let totals=
       hof?.totals||
@@ -2425,6 +2757,10 @@ async function renderDetail(id){
     let isHof=
       !!hof||!!retired?.hof;
 
+    /*
+     * 現在の年度途中保存データ。
+     * histにその年度がなければcsを使う。
+     */
     let currentSeason=
       hist.length
         ?hist[hist.length-1]
@@ -2438,13 +2774,22 @@ async function renderDetail(id){
 
     let currentSummary=
       currentSeason
-        ?seasonSummary(p,currentSeason.s||currentSeason,currentYear)
+        ?seasonSummary(
+            p,
+            currentSeason.s||currentSeason,
+            currentYear
+          )
         :"";
+
+    let returnUrl=
+      getReturnUrl(params);
 
     document.getElementById("app").innerHTML=`
 
       <div class="detailTop">
-        <a class="backBtn" href="players.html">← 在籍選手一覧へ戻る</a>
+        <a class="backBtn" href="${escapeHtml(returnUrl)}">
+          ← 在籍選手一覧へ戻る
+        </a>
       </div>
 
       <div class="detailCard" style="--team-color:${teamColor}">
@@ -2452,14 +2797,17 @@ async function renderDetail(id){
 
         <div class="detailHeader">
           <div>
-            <div class="team">${teamName}</div>
-            <div class="detailName">${p.nm}</div>
+            <div class="team">${escapeHtml(teamName)}</div>
+
+            <div class="detailName">
+              ${escapeHtml(p.nm)}
+            </div>
 
             <div class="detailSub">
-              No.${String(p.id||"").replace(/^p/,"")}
-             　${POS_NAMES[p.pos]||p.pos}
-             　${p.age!==undefined?p.age+"歳":""}
-             　${p.th==="L"?"左":"右"}投
+              No.${escapeHtml(String(p.id||"").replace(/^p/,""))}
+              　${escapeHtml(POS_NAMES[p.pos]||p.pos||"")}
+              　${p.age!==undefined?escapeHtml(p.age+"歳"):""}
+              　${p.th==="L"?"左":"右"}投
               ${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
             </div>
           </div>
@@ -2486,11 +2834,20 @@ async function renderDetail(id){
       </div>
 
       <div class="detailSection">
-        <h2>ドラフト・特殊能力</h2>
+        <h2>特殊能力・育成情報</h2>
+        ${detailAbilityBlock(p)}
+
+        ${p.sa&&p.sa.length
+          ?`<div class="info detailAbility">
+              <b>特殊能力：</b>${abilityText(p)}
+            </div>`
+          :""
+        }
+      </div>
+
+      <div class="detailSection">
+        <h2>ドラフト情報</h2>
         ${detailDraft(p)}
-        <div class="info detailAbility">
-          <b>特殊能力：</b>${abilityText(p)}
-        </div>
       </div>
 
       <div class="detailSection">
@@ -2508,6 +2865,7 @@ async function renderDetail(id){
         <div class="detailStatsLine">
           <b>MVP：</b>${p.mvp||0}回
         </div>
+
         <div class="info">
           <b>タイトル：</b>
           ${detailTitles(p)}
@@ -2517,10 +2875,18 @@ async function renderDetail(id){
       ${retY
         ?`<div class="detailSection">
             <h2>引退情報</h2>
+
             <div class="detailGrid">
               ${detailItem("引退年",retY+"年")}
-              ${detailItem("引退時年齢",(hof?.age??retired?.age??"—")+"歳")}
-              ${detailItem("殿堂入り",isHof?"あり":"なし")}
+              ${detailItem(
+                "引退時年齢",
+                (hof?.age??retired?.age??"—")+
+                (hof?.age!==undefined||retired?.age!==undefined?"歳":"")
+              )}
+              ${detailItem(
+                "殿堂入り",
+                isHof?"あり":"なし"
+              )}
             </div>
           </div>`
         :""
@@ -2529,21 +2895,126 @@ async function renderDetail(id){
       ${isHof
         ?`<div class="detailSection">
             <h2>殿堂入り</h2>
+
             <div class="hofBox">
               <b>殿堂入り理由</b><br>
+
               ${hofReasons.length
-                ?hofReasons.map(x=>`・${x}`).join("<br>")
-                :"殿堂入り"}
+                ?hofReasons
+                    .map(x=>`・${escapeHtml(x)}`)
+                    .join("<br>")
+                :"殿堂入り"
+              }
             </div>
           </div>`
         :""
       }
 
       <div class="detailSection">
+        <h2>その他の保存情報</h2>
+
+        <div class="detailGrid">
+          ${detailItem(
+            "選手ID",
+            `<span class="codeValue">${escapeHtml(p.id)}</span>`
+          )}
+
+          ${detailItem(
+            "現在チームID",
+            p.team!==undefined
+              ?`<span class="codeValue">${escapeHtml(p.team)}</span>`
+              :"—"
+          )}
+
+          ${detailItem(
+            "成長タイプ内部値",
+            `<span class="codeValue">${escapeHtml(p.gt||"—")}</span>`
+          )}
+
+          ${detailItem(
+            "潜在内部値",
+            `<span class="codeValue">${p.pot??"—"}</span>`
+          )}
+
+          ${detailItem(
+            "開発注目内部値",
+            `<span class="codeValue">${escapeHtml(p.devFocus||"—")}</span>`
+          )}
+
+          ${detailItem(
+            "開発役割内部値",
+            `<span class="codeValue">${escapeHtml(p.devRole||"—")}</span>`
+          )}
+
+          ${detailItem(
+            "開発ポジション内部値",
+            `<span class="codeValue">${escapeHtml(p.devPos||"—")}</span>`
+          )}
+
+          ${detailItem(
+            "スター",
+            p.star===undefined
+              ?"—"
+              :(p.star?"あり":"なし")
+          )}
+
+          ${detailItem(
+            "未来生成選手",
+            p.fromFuture===undefined
+              ?"—"
+              :(p.fromFuture?"はい":"いいえ")
+          )}
+
+          ${detailItem(
+            "スカウト誤差",
+            p.scErr
+          )}
+        </div>
+
+        ${p.subG&&Object.keys(p.subG).length
+          ?`<div class="info">
+              <b>subG（補助成長値）</b>
+
+              <div class="internalNote">
+                subGはゲーム内部で使用されている補助的な成長値と思われます。
+                現時点では各キーの正確な意味を断定せず、保存されている値をそのまま表示しています。
+              </div>
+
+              <div style="margin-top:5px">
+                ${objectText(p.subG)}
+              </div>
+            </div>`
+          :""
+        }
+
+        ${p.rl&&Object.keys(p.rl).length
+          ?`<div class="info">
+              <b>rl（投手起用適性）</b>
+              <div style="margin-top:5px">
+                ${roleDetailText(p)}
+              </div>
+            </div>`
+          :""
+        }
+
+        ${p.comment
+          ?`<div class="info">
+              <b>選手コメント：</b>
+              ${escapeHtml(p.comment)}
+            </div>`
+          :""
+        }
+      </div>
+
+      <div class="detailSection">
         <h2>保存データ</h2>
+
         <details>
           <summary>元データを表示</summary>
-          <pre class="rawData">${escapeHtml(JSON.stringify(p,null,2))}</pre>
+
+          <pre class="rawData">${escapeHtml(
+            JSON.stringify(p,null,2)
+          )}</pre>
         </details>
       </div>
     `;
@@ -2566,18 +3037,78 @@ function detailGridBasic(p,teamName,retY){
 
   return`
     <div class="detailGrid">
-      ${detailItem("選手ID",p.id)}
-      ${detailItem("背番号",p.no??"—")}
-      ${detailItem("球団",teamName)}
-      ${detailItem("ポジション",POS_NAMES[p.pos]||p.pos)}
-      ${detailItem("年齢",p.age!==undefined?p.age+"歳":"—")}
-      ${detailItem("在籍年数",p.years!==undefined?p.years+"年":"—")}
-      ${detailItem("投打",(p.th==="L"?"左":"右")+"投 / "+(p.bt==="L"?"左":p.bt==="S"?"両":"右")+"打")}
-      ${detailItem("成長タイプ",GROWTH_NAMES[p.gt]||p.gt)}
-      ${detailItem("潜在",POT_NAMES[p.pot]||p.pot)}
-      ${detailItem("スター",p.star?"あり":"なし")}
-      ${detailItem("引退",retY?retY+"年":"現役")}
-      ${detailItem("コメント",p.comment)}
+      ${detailItem(
+        "選手ID",
+        `<span class="codeValue">${escapeHtml(p.id)}</span>`
+      )}
+
+      ${detailItem(
+        "背番号",
+        p.no!==undefined
+          ?escapeHtml(p.no)
+          :"—"
+      )}
+
+      ${detailItem(
+        "球団",
+        escapeHtml(teamName)
+      )}
+
+      ${detailItem(
+        "ポジション",
+        escapeHtml(POS_NAMES[p.pos]||p.pos||"—")
+      )}
+
+      ${detailItem(
+        "年齢",
+        p.age!==undefined
+          ?escapeHtml(p.age+"歳")
+          :"—"
+      )}
+
+      ${detailItem(
+        "在籍年数",
+        p.years!==undefined
+          ?escapeHtml(p.years+"年")
+          :"—"
+      )}
+
+      ${detailItem(
+        "投打",
+        (p.th==="L"?"左":"右")+
+        "投 / "+
+        (p.bt==="L"?"左":p.bt==="S"?"両":"右")+
+        "打"
+      )}
+
+      ${detailItem(
+        "成長タイプ",
+        escapeHtml(GROWTH_NAMES[p.gt]||p.gt||"—")
+      )}
+
+      ${detailItem(
+        "潜在能力",
+        escapeHtml(POT_NAMES[p.pot]||p.pot||"—")
+      )}
+
+      ${detailItem(
+        "スター",
+        p.star===undefined
+          ?"—"
+          :(p.star?"あり":"なし")
+      )}
+
+      ${detailItem(
+        "引退",
+        retY
+          ?escapeHtml(retY+"年")
+          :"現役"
+      )}
+
+      ${detailItem(
+        "選手コメント",
+        escapeHtml(p.comment||"—")
+      )}
     </div>`;
 }
 
@@ -2983,6 +3514,12 @@ function setup(){
 
         searchName=e.target.value.trim();
 
+        /*
+         * 入力するたびにURLも更新。
+         * 選手詳細へ移動して戻った際に検索条件が残る。
+         */
+        syncListUrl();
+
         clearTimeout(searchTimer);
 
         searchTimer=
@@ -3009,6 +3546,8 @@ function setup(){
 
         crossYearSearch=e.target.checked;
 
+        syncListUrl();
+
         if(crossYearSearch){
           refreshCrossYearSearch();
         }else{
@@ -3030,14 +3569,33 @@ function setup(){
 
 
 /* =========================================================
+   初期状態復元
+   ========================================================= */
+
+function applyRestoredSearchState(params){
+
+  let input=
+    document.getElementById("nameSearch");
+
+  let cross=
+    document.getElementById("crossYearSearch");
+
+  if(input){
+    input.value=searchName;
+  }
+
+  if(cross){
+    cross.checked=crossYearSearch;
+  }
+}
+
+
+/* =========================================================
    初期ロード
    ========================================================= */
 
 async function loadData(){
 
-  /*
-   * ?id=p6 があれば詳細ページ。
-   */
   let params=
     new URLSearchParams(location.search);
 
@@ -3045,11 +3603,21 @@ async function loadData(){
     params.get("id");
 
   if(detailId){
-    await renderDetail(detailId);
+    await renderDetail(
+      detailId,
+      params
+    );
     return;
   }
 
+  /*
+   * ?q= / ?cross= / ?year= を一覧状態として復元。
+   */
+  let requestedYear=
+    restoreListState(params);
+
   setup();
+  applyRestoredSearchState(params);
 
   let hash=location.hash.slice(1);
 
@@ -3117,7 +3685,14 @@ async function loadData(){
     return;
   }
 
-  let firstYear=availableYears[0];
+  /*
+   * URLに年度指定があり、その年度が存在するなら優先。
+   * なければ最新年度。
+   */
+  let firstYear=
+    requestedYear&&availableYears.includes(String(requestedYear))
+      ?String(requestedYear)
+      :availableYears[0];
 
   try{
 
@@ -3127,7 +3702,29 @@ async function loadData(){
     players=list;
 
     updateYearText(firstYear);
-    render();
+
+    /*
+     * URLから復元した検索条件を反映。
+     */
+    let input=
+      document.getElementById("nameSearch");
+
+    let cross=
+      document.getElementById("crossYearSearch");
+
+    if(input){
+      input.value=searchName;
+    }
+
+    if(cross){
+      cross.checked=crossYearSearch;
+    }
+
+    if(crossYearSearch&&searchName){
+      await refreshCrossYearSearch();
+    }else{
+      render();
+    }
 
   }catch(e){
 
