@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>在籍選手データベース</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   padding:16px;
@@ -13,6 +15,7 @@ body{
   color:#222;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif
 }
+
 .header{
   display:flex;
   justify-content:space-between;
@@ -20,16 +23,19 @@ body{
   gap:12px;
   margin-bottom:4px
 }
+
 h1{
   margin:0;
   font-size:22px
 }
+
 .searchArea{
   display:flex;
   align-items:center;
   gap:7px;
   flex-shrink:0
 }
+
 .nameSearch{
   width:190px;
   font-size:13px;
@@ -39,10 +45,12 @@ h1{
   background:#fff;
   color:#333
 }
+
 .nameSearch:focus{
   outline:none;
   border-color:#888
 }
+
 .crossSearchLabel{
   display:inline-flex;
   align-items:center;
@@ -52,16 +60,19 @@ h1{
   font-weight:600;
   cursor:pointer
 }
+
 .crossSearchLabel input{
   margin:0;
   width:14px;
   height:14px
 }
+
 .sub{
   color:#666;
   font-size:12px;
   margin-bottom:12px
 }
+
 .yearSelect{
   font-size:12px;
   padding:3px 6px;
@@ -70,6 +81,7 @@ h1{
   background:#fff;
   color:#333
 }
+
 .panel{
   background:#fff;
   border-radius:10px;
@@ -77,22 +89,22 @@ h1{
   margin-bottom:13px;
   box-shadow:0 2px 7px rgba(0,0,0,.07)
 }
+
 .controls{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
   align-items:center
 }
+
 .filterRow + .filterRow{
   margin-top:11px
 }
+
 .sortControls{
   column-gap:13px
 }
-.filterLabel{
-  font-size:13px;
-  font-weight:600
-}
+
 select,button{
   font-size:13px;
   padding:6px 8px;
@@ -100,14 +112,17 @@ select,button{
   border-radius:7px;
   background:#fff
 }
+
 button{
   cursor:pointer
 }
+
 button.active{
   background:#333;
   color:#fff;
   border-color:#333
 }
+
 .checkLabel{
   display:inline-flex;
   align-items:center;
@@ -117,20 +132,24 @@ button.active{
   cursor:pointer;
   padding:4px 2px
 }
+
 .checkLabel input{
   margin:0;
   width:14px;
   height:14px
 }
+
 .posTitle{
   width:100%;
   font-size:12px;
   font-weight:700;
   margin-bottom:0
 }
+
 .positionControls{
   gap:4px
 }
+
 .roleArea{
   display:flex;
   flex-wrap:wrap;
@@ -138,41 +157,49 @@ button.active{
   gap:6px;
   font-size:12px
 }
+
 .roleLabel{
   font-size:12px;
   font-weight:700;
   margin-right:2px
 }
+
 .multiFilterArea{
   display:flex;
   flex-wrap:wrap;
   align-items:center;
   gap:6px
 }
+
 .multiFilterLabel{
   font-size:12px;
   font-weight:700;
   margin-right:1px
 }
+
 .multiFilterButtons{
   display:inline-flex;
   flex-wrap:wrap;
   gap:4px
 }
+
 .multiFilterButtons button{
   padding:5px 8px;
   font-size:12px
 }
+
 .count{
   margin-top:7px;
   font-size:12px;
   color:#666
 }
+
 .grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:11px
 }
+
 .card{
   position:relative;
   background:#fff;
@@ -182,21 +209,25 @@ button.active{
   border:1px solid #e5e7eb;
   overflow:hidden
 }
+
 .teamLine{
   height:4px;
   margin:0 -11px 9px;
   background:var(--team-color,#999)
 }
+
 .cardHead{
   position:relative;
   min-height:64px;
   margin-bottom:7px
 }
+
 .team{
   font-size:11px;
   color:var(--team-color,#666);
   font-weight:700
 }
+
 .crossYear{
   display:inline-block;
   margin-left:8px;
@@ -208,6 +239,7 @@ button.active{
   font-weight:600;
   vertical-align:1px
 }
+
 .name{
   font-size:19px;
   font-weight:700;
@@ -215,6 +247,16 @@ button.active{
   padding-right:76px;
   line-height:1.15
 }
+
+.nameLink{
+  color:inherit;
+  text-decoration:none
+}
+
+.nameLink:hover{
+  text-decoration:underline
+}
+
 .playerId{
   font-size:10px;
   font-weight:500;
@@ -222,6 +264,7 @@ button.active{
   margin-left:4px;
   white-space:nowrap
 }
+
 .basic{
   display:flex;
   align-items:center;
@@ -232,6 +275,7 @@ button.active{
   margin-top:4px;
   padding-right:76px
 }
+
 .posBadge{
   position:absolute;
   right:0;
@@ -247,16 +291,34 @@ button.active{
   border:2px solid transparent;
   box-shadow:0 1px 3px rgba(0,0,0,.12)
 }
-.pos-pitcher{background:#f04452;border-color:#f04452}
-.pos-catcher{background:#00a6a8;border-color:#00a6a8}
-.pos-infield{background:#e09a00;border-color:#e09a00}
-.pos-outfield{background:#35a853;border-color:#35a853}
+
+.pos-pitcher{
+  background:#f04452;
+  border-color:#f04452
+}
+
+.pos-catcher{
+  background:#00a6a8;
+  border-color:#00a6a8
+}
+
+.pos-infield{
+  background:#e09a00;
+  border-color:#e09a00
+}
+
+.pos-outfield{
+  background:#35a853;
+  border-color:#35a853
+}
+
 .summary{
   display:flex;
   gap:5px;
   margin:7px 0;
   flex-wrap:wrap
 }
+
 .badge{
   padding:4px 7px;
   border-radius:6px;
@@ -264,11 +326,25 @@ button.active{
   font-size:11px;
   font-weight:600
 }
+
+.seasonSummary{
+  border-top:1px solid #eee;
+  border-bottom:1px solid #eee;
+  padding:6px 0;
+  margin:7px 0;
+  font-size:11px;
+  line-height:1.5;
+  color:#333;
+  white-space:nowrap;
+  overflow:hidden
+}
+
 .statTitle{
   font-size:12px;
   font-weight:700;
   margin:8px 0 4px
 }
+
 .stat{
   display:grid;
   grid-template-columns:48px 28px 1fr 21px;
@@ -277,25 +353,43 @@ button.active{
   font-size:11px;
   margin:3px 0
 }
+
 .bar{
   height:8px;
   background:#e7e9ec;
   border-radius:99px;
   overflow:hidden
 }
+
 .bar i{
   display:block;
   height:100%;
   border-radius:99px
 }
+
 .rank{
   font-weight:700;
   text-align:center
 }
-.rank-S{color:#e83f91}.rank-A{color:#ed485f}.rank-B{color:#ee7835}.rank-C{color:#cda515}
-.rank-D{color:#68ae3e}.rank-E{color:#239fbd}.rank-F{color:#657f98}.rank-G{color:#596b7f}
-.bar-S{background:#f38fbe}.bar-A{background:#f18391}.bar-B{background:#f3a06c}.bar-C{background:#e4cb67}
-.bar-D{background:#9bcf76}.bar-E{background:#6fc4d8}.bar-F{background:#93a7ba}.bar-G{background:#8494a6}
+
+.rank-S{color:#e83f91}
+.rank-A{color:#ed485f}
+.rank-B{color:#ee7835}
+.rank-C{color:#cda515}
+.rank-D{color:#68ae3e}
+.rank-E{color:#239fbd}
+.rank-F{color:#657f98}
+.rank-G{color:#596b7f}
+
+.bar-S{background:#f38fbe}
+.bar-A{background:#f18391}
+.bar-B{background:#f3a06c}
+.bar-C{background:#e4cb67}
+.bar-D{background:#9bcf76}
+.bar-E{background:#6fc4d8}
+.bar-F{background:#93a7ba}
+.bar-G{background:#8494a6}
+
 .info{
   border-top:1px solid #eee;
   margin-top:8px;
@@ -303,54 +397,67 @@ button.active{
   font-size:11px;
   line-height:1.55
 }
+
 .info b{
   font-weight:700
 }
+
 .growthInfo{
   white-space:nowrap;
   overflow:hidden;
   color:#222
 }
+
 .peakLine{
   white-space:nowrap;
   overflow:hidden;
   color:inherit
 }
+
 .peakStats{
   display:inline;
   white-space:nowrap;
   color:inherit
 }
+
 .peakStat{
   white-space:nowrap;
   color:inherit
 }
+
 .peakStat b{
   color:inherit;
   margin-right:1px
 }
+
 .abilities{
   margin-top:5px
 }
+
 .good{
   color:#dc2626;
   font-weight:600
 }
+
 .bad{
   color:#2563eb;
   font-weight:600
 }
+
 .normalAbility{
   color:#555
 }
+
 .moreArea{
   display:none;
   justify-content:center;
   margin:16px 0 8px
 }
+
 .moreArea.show{
   display:flex
 }
+
 .moreBtn{
   min-width:140px;
   padding:8px 14px;
@@ -360,9 +467,11 @@ button.active{
   border:1px solid #ccc;
   border-radius:8px
 }
+
 .moreBtn:hover{
   background:#f7f7f7
 }
+
 .searchNotice{
   padding:28px 10px;
   text-align:center;
@@ -371,136 +480,285 @@ button.active{
   background:#fff;
   border-radius:10px
 }
-@media(max-width:1050px){
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .header{flex-wrap:wrap}
-  .searchArea{width:100%}
-  .nameSearch{flex:1;width:auto}
+
+/* =========================================================
+   詳細ページ
+   ========================================================= */
+
+.detailTop{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px
 }
+
+.backBtn{
+  text-decoration:none;
+  color:#333;
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:7px;
+  padding:6px 10px;
+  font-size:13px
+}
+
+.detailTitle{
+  margin:0;
+  font-size:23px
+}
+
+.detailSub{
+  color:#666;
+  font-size:12px;
+  margin-bottom:13px
+}
+
+.detailGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px
+}
+
+.detailPanel{
+  background:#fff;
+  border-radius:10px;
+  padding:12px;
+  box-shadow:0 2px 7px rgba(0,0,0,.07)
+}
+
+.detailPanel.full{
+  grid-column:1/-1
+}
+
+.detailPanel h2{
+  margin:0 0 9px;
+  font-size:15px
+}
+
+.detailPanel h3{
+  margin:11px 0 5px;
+  font-size:13px
+}
+
+.detailRows{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:5px 10px;
+  font-size:12px;
+  line-height:1.5
+}
+
+.detailRows .label{
+  color:#666;
+  font-weight:600
+}
+
+.detailRows .value{
+  min-width:0
+}
+
+.detailAbility{
+  line-height:1.8
+}
+
+.detailStatGrid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(70px,1fr));
+  gap:7px
+}
+
+.detailStatBox{
+  background:#f5f6f7;
+  border-radius:8px;
+  padding:7px;
+  text-align:center
+}
+
+.detailStatBox .label{
+  font-size:10px;
+  color:#666
+}
+
+.detailStatBox .value{
+  margin-top:2px;
+  font-size:18px;
+  font-weight:700
+}
+
+.seasonTableWrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch
+}
+
+.seasonTable{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+  white-space:nowrap
+}
+
+.seasonTable th,
+.seasonTable td{
+  border-bottom:1px solid #eee;
+  padding:6px 7px;
+  text-align:right
+}
+
+.seasonTable th{
+  background:#f6f7f8;
+  font-weight:700;
+  color:#555
+}
+
+.seasonTable th:first-child,
+.seasonTable td:first-child{
+  text-align:left
+}
+
+.careerHighlight{
+  font-size:12px;
+  line-height:1.7
+}
+
+.titleList{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px
+}
+
+.titleBadge{
+  display:inline-block;
+  background:#f0f0f0;
+  border-radius:6px;
+  padding:4px 7px;
+  font-size:11px
+}
+
+.hofBox{
+  border:1px solid #d8b24a;
+  background:#fffaf0;
+  border-radius:8px;
+  padding:9px;
+  font-size:12px;
+  line-height:1.6
+}
+
+.recordBox{
+  background:#f7f7f7;
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  line-height:1.6;
+  overflow:auto
+}
+
+.rawData{
+  width:100%;
+  min-height:180px;
+  resize:vertical;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;
+  line-height:1.45;
+  border:1px solid #ddd;
+  border-radius:7px;
+  padding:8px;
+  background:#fafafa
+}
+
+.loading{
+  padding:35px 10px;
+  text-align:center;
+  color:#777;
+  background:#fff;
+  border-radius:10px
+}
+
+.errorBox{
+  padding:20px;
+  background:#fff;
+  border-radius:10px;
+  color:#b91c1c
+}
+
+.empty{
+  color:#888;
+  font-size:12px
+}
+
+@media(max-width:1050px){
+  .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px
+  }
+
+  .header{
+    flex-wrap:wrap
+  }
+
+  .searchArea{
+    width:100%
+  }
+
+  .nameSearch{
+    flex:1;
+    width:auto
+  }
+
+  .detailGrid{
+    grid-template-columns:1fr
+  }
+
+  .detailPanel.full{
+    grid-column:auto
+  }
+}
+
 @media(max-width:600px){
-  body{padding:9px}
-  .grid{grid-template-columns:1fr}
-  .card{padding:0 11px 11px}
-  .teamLine{margin-left:-11px;margin-right:-11px}
-  .header{display:block}
-  .searchArea{margin-top:8px;flex-wrap:wrap}
-  .nameSearch{width:100%;flex:none}
+  body{
+    padding:9px
+  }
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .card{
+    padding:0 11px 11px
+  }
+
+  .teamLine{
+    margin-left:-11px;
+    margin-right:-11px
+  }
+
+  .header{
+    display:block
+  }
+
+  .searchArea{
+    margin-top:8px;
+    flex-wrap:wrap
+  }
+
+  .nameSearch{
+    width:100%;
+    flex:none
+  }
+
+  .detailStatGrid{
+    grid-template-columns:repeat(3,minmax(70px,1fr))
+  }
+
+  .detailRows{
+    grid-template-columns:100px 1fr
+  }
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">
-  <h1>在籍選手データベース</h1>
-  <div class="searchArea">
-    <input type="search" id="nameSearch" class="nameSearch" placeholder="選手名を検索…" autocomplete="off">
-    <label class="crossSearchLabel">
-      <input type="checkbox" id="crossYearSearch">
-      全年度横断
-    </label>
-  </div>
-</div>
-
-<div class="sub" id="yearText">データを読み込んでいます…</div>
-
-<div class="panel">
-  <div class="controls filterRow">
-    <label>リーグ
-      <select id="leagueFilter">
-        <option value="ALL">全部</option>
-        <option value="C">セ・リーグ</option>
-        <option value="P">パ・リーグ</option>
-      </select>
-    </label>
-    <label>球団
-      <select id="teamFilter"></select>
-    </label>
-  </div>
-
-  <div class="controls filterRow positionControls">
-    <div class="posTitle">ポジション</div>
-    <button class="posBtn active" data-pos="ALL">全部</button>
-    <button class="posBtn" data-pos="C">捕手</button>
-    <button class="posBtn" data-pos="1B">一塁</button>
-    <button class="posBtn" data-pos="2B">二塁</button>
-    <button class="posBtn" data-pos="3B">三塁</button>
-    <button class="posBtn" data-pos="SS">遊撃</button>
-    <button class="posBtn" data-pos="OF">外野</button>
-    <button class="posBtn" data-pos="P">投手</button>
-  </div>
-
-  <div class="roleArea filterRow">
-    <span class="roleLabel">野手なら</span>
-    <label class="checkLabel">
-      <input type="checkbox" id="includeSub">
-      サブポジションも含める
-    </label>
-
-    <span class="roleLabel" style="margin-left:14px">投手なら</span>
-
-    <label class="checkLabel">
-      <input type="checkbox" class="roleCheck" data-role="sp">
-      先発
-    </label>
-    <label class="checkLabel">
-      <input type="checkbox" class="roleCheck" data-role="rp">
-      中継ぎ
-    </label>
-    <label class="checkLabel">
-      <input type="checkbox" class="roleCheck" data-role="cl">
-      抑え
-    </label>
-    <label class="checkLabel">
-      <input type="checkbox" id="excludeLowRole">
-      △適性を除外
-    </label>
-  </div>
-
-  <div class="controls filterRow sortControls">
-    <div class="multiFilterArea">
-      <span class="multiFilterLabel">潜在</span>
-      <span class="multiFilterButtons" id="potButtons">
-        <button class="potBtn active" data-pot="ALL">全部</button>
-        <button class="potBtn" data-pot="5">S</button>
-        <button class="potBtn" data-pot="4">A</button>
-        <button class="potBtn" data-pot="3">B</button>
-        <button class="potBtn" data-pot="2">C</button>
-        <button class="potBtn" data-pot="1">D</button>
-      </span>
-    </div>
-
-    <div class="multiFilterArea">
-      <span class="multiFilterLabel">成長</span>
-      <span class="multiFilterButtons" id="growthButtons">
-        <button class="growthBtn active" data-growth="ALL">全部</button>
-        <button class="growthBtn" data-growth="early">早熟</button>
-        <button class="growthBtn" data-growth="normal">普通</button>
-        <button class="growthBtn" data-growth="late">晩成</button>
-        <button class="growthBtn" data-growth="long">持続</button>
-      </span>
-    </div>
-
-    <label>並び順
-      <select id="sortFilter">
-        <option value="overall">総合値</option>
-        <option value="pot">潜在</option>
-        <option value="age">年齢</option>
-        <option value="name">名前</option>
-        <option value="peakGap">現在→ピーク</option>
-      </select>
-    </label>
-
-    <button id="orderBtn">↓ 高い順</button>
-  </div>
-
-  <div class="count" id="count"></div>
-</div>
-
-<div class="grid" id="grid"></div>
-
-<div class="moreArea" id="moreArea">
-  <button class="moreBtn" id="moreBtn">もっと見る</button>
-</div>
+<div id="app"></div>
 
 <script>
 /* =========================================================
@@ -512,6 +770,9 @@ const GITHUB_API_BASE=
 
 const GITHUB_RAW_BASE=
   "https://raw.githubusercontent.com/sato2000gmi-png/.github.io/main/data/players";
+
+const CAREER_RAW_URL=
+  "https://raw.githubusercontent.com/sato2000gmi-png/.github.io/main/data/career/career.json.gz";
 
 
 /* =========================================================
@@ -665,21 +926,16 @@ const BAD_ABILITIES=new Set([
 
 
 /* =========================================================
-   データ・状態
+   状態
    ========================================================= */
 
 let players=[];
 let yearData={};
 let availableYears=[];
-
-/* GitHubに存在する年度 */
 let githubYears=[];
-
-/* GitHubから実際に読み込んだ年度 */
 let githubLoadedYears=new Set();
-
-/* 読み込み中Promiseのキャッシュ */
 let loadingPromises={};
+let careerData=null;
 
 let selectedLeague="ALL";
 let selectedTeam="MY";
@@ -693,6 +949,7 @@ let sortMode="overall";
 let descending=true;
 let searchName="";
 let crossYearSearch=false;
+let currentYear="";
 
 const RENDER_STEP=150;
 let renderLimit=RENDER_STEP;
@@ -700,10 +957,20 @@ let searchTimer=null;
 
 
 /* =========================================================
-   基本処理
+   共通ユーティリティ
    ========================================================= */
 
+function esc(v){
+  return String(v??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+
 function rankOf(v){
+  v=Number(v)||0;
   if(v>=90)return"S";
   if(v>=80)return"A";
   if(v>=70)return"B";
@@ -717,50 +984,41 @@ function rankOf(v){
 function overallOf(p){
   if(p.t==="B"){
     return(
-      p.ab.mt+
-      p.ab.pw+
-      p.ab.sp+
-      p.ab.am+
-      p.ab.fd
+      (Number(p.ab?.mt)||0)+
+      (Number(p.ab?.pw)||0)+
+      (Number(p.ab?.sp)||0)+
+      (Number(p.ab?.am)||0)+
+      (Number(p.ab?.fd)||0)
     )/5;
   }
 
   return(
-    p.ap.vl+
-    p.ap.ct+
-    p.ap.st+
-    p.ap.br
+    (Number(p.ap?.vl)||0)+
+    (Number(p.ap?.ct)||0)+
+    (Number(p.ap?.st)||0)+
+    (Number(p.ap?.br)||0)
   )/4;
 }
 
 function pitchValue(p){
   return(
-    p.ap.vl*.30+
-    p.ap.ct*.30+
-    p.ap.st*.16+
-    p.ap.br*.24
+    (Number(p.ap?.vl)||0)*.30+
+    (Number(p.ap?.ct)||0)*.30+
+    (Number(p.ap?.st)||0)*.16+
+    (Number(p.ap?.br)||0)*.24
   );
 }
 
 function positionClass(pos){
   if(pos==="P")return"pos-pitcher";
   if(pos==="C")return"pos-catcher";
-
-  if(
-    pos==="1B"||
-    pos==="2B"||
-    pos==="3B"||
-    pos==="SS"
-  ){
-    return"pos-infield";
-  }
-
+  if(["1B","2B","3B","SS"].includes(pos))return"pos-infield";
   if(pos==="OF")return"pos-outfield";
   return"";
 }
 
 function positionBadge(pos){
-  return`<span class="posBadge ${positionClass(pos)}">${POS_NAMES[pos]||pos}</span>`;
+  return`<span class="posBadge ${positionClass(pos)}">${esc(POS_NAMES[pos]||pos)}</span>`;
 }
 
 function abilityText(p){
@@ -770,14 +1028,14 @@ function abilityText(p){
     const name=ABILITY_NAMES[x]||x;
 
     if(GOOD_ABILITIES.has(x)){
-      return`<span class="good">${name}</span>`;
+      return`<span class="good">${esc(name)}</span>`;
     }
 
     if(BAD_ABILITIES.has(x)){
-      return`<span class="bad">${name}</span>`;
+      return`<span class="bad">${esc(name)}</span>`;
     }
 
-    return`<span class="normalAbility">${name}</span>`;
+    return`<span class="normalAbility">${esc(name)}</span>`;
   }).join("、");
 }
 
@@ -798,8 +1056,8 @@ function phaseOf(p){
     peakE=33;
   }
 
-  if(p.age<peakS)return"成長期";
-  if(p.age<=peakE)return"ピーク";
+  if(Number(p.age)<peakS)return"成長期";
+  if(Number(p.age)<=peakE)return"ピーク";
   return"衰退期";
 }
 
@@ -812,22 +1070,22 @@ function barClass(v){
 }
 
 function statRows(p){
-  let arr=[];
+  let arr;
 
   if(p.t==="B"){
     arr=[
-      ["ミート",p.ab.mt],
-      ["パワー",p.ab.pw],
-      ["走力",p.ab.sp],
-      ["肩力",p.ab.am],
-      ["守備",p.ab.fd]
+      ["ミート",p.ab?.mt],
+      ["パワー",p.ab?.pw],
+      ["走力",p.ab?.sp],
+      ["肩力",p.ab?.am],
+      ["守備",p.ab?.fd]
     ];
   }else{
     arr=[
-      ["球速",p.ap.vl],
-      ["制球",p.ap.ct],
-      ["スタ",p.ap.st],
-      ["変化",p.ap.br]
+      ["球速",p.ap?.vl],
+      ["制球",p.ap?.ct],
+      ["スタ",p.ap?.st],
+      ["変化",p.ap?.br]
     ];
   }
 
@@ -872,19 +1130,19 @@ function peakGap(p){
 
   if(p.t==="B"){
     return(
-      (p.peak.mt-p.ab.mt)+
-      (p.peak.pw-p.ab.pw)+
-      (p.peak.sp-p.ab.sp)+
-      (p.peak.am-p.ab.am)+
-      (p.peak.fd-p.ab.fd)
+      (Number(p.peak.mt)||0)-(Number(p.ab?.mt)||0)+
+      (Number(p.peak.pw)||0)-(Number(p.ab?.pw)||0)+
+      (Number(p.peak.sp)||0)-(Number(p.ab?.sp)||0)+
+      (Number(p.peak.am)||0)-(Number(p.ab?.am)||0)+
+      (Number(p.peak.fd)||0)-(Number(p.ab?.fd)||0)
     );
   }
 
   return(
-    (p.peak.vl-p.ap.vl)+
-    (p.peak.ct-p.ap.ct)+
-    (p.peak.st-p.ap.st)+
-    (p.peak.br-p.ap.br)
+    (Number(p.peak.vl)||0)-(Number(p.ap?.vl)||0)+
+    (Number(p.peak.ct)||0)-(Number(p.ap?.ct)||0)+
+    (Number(p.peak.st)||0)-(Number(p.ap?.st)||0)+
+    (Number(p.peak.br)||0)-(Number(p.ap?.br)||0)
   );
 }
 
@@ -894,8 +1152,8 @@ function defenseText(p){
   let a=[];
 
   for(let k in p.df){
-    if(p.df[k]>0){
-      let lv=p.df[k];
+    if(Number(p.df[k])>0){
+      let lv=Number(p.df[k]);
       let mark=lv>=3?"◎":lv===2?"○":"△";
       a.push((POS_NAMES[k]||k)+mark);
     }
@@ -909,35 +1167,166 @@ function roleText(p){
 
   let a=[];
 
-  if(p.rl.sp>0){
+  if(Number(p.rl.sp)>0){
     a.push("先発"+(p.rl.sp>=3?"◎":p.rl.sp===2?"○":"△"));
   }
 
-  if(p.rl.rp>0){
+  if(Number(p.rl.rp)>0){
     a.push("中継ぎ"+(p.rl.rp>=3?"◎":p.rl.rp===2?"○":"△"));
   }
 
-  if(p.rl.cl>0){
+  if(Number(p.rl.cl)>0){
     a.push("抑え"+(p.rl.cl>=3?"◎":p.rl.cl===2?"○":"△"));
   }
 
   return a.length?a.join("、"):"—";
 }
 
+function draftSource(src){
+  return{
+    HS:"高卒",
+    UV:"大卒",
+    UNI:"大卒",
+    SC:"社会人",
+    SOC:"社会人",
+    IND:"独立",
+    FRI:"自由契約",
+    FOR:"外国人",
+    create:"作成選手"
+  }[src]||src||"";
+}
+
 function draftText(p){
   if(!p.drft)return"—";
   if(!p.drft.y)return"未ドラフト";
 
-  let src={
-    HS:"高卒",
-    UNI:"大卒",
-    SOC:"社会人",
-    IND:"独立",
-    FRI:"自由契約",
-    FOR:"外国人"
-  }[p.drft.src]||p.drft.src||"";
+  let src=draftSource(p.drft.src);
 
   return`${p.drft.y}年 ${p.drft.rd}位 ${src}`;
+}
+
+
+/* =========================================================
+   成績計算
+   ========================================================= */
+
+function battingAverage(s){
+  if(!s||!Number(s.AB))return null;
+  return Number(s.H||0)/Number(s.AB);
+}
+
+function totalBases(s){
+  if(!s)return 0;
+
+  return(
+    Number(s.H||0)+
+    Number(s.D2||0)+
+    Number(s.D3||0)*2+
+    Number(s.HR||0)*3
+  );
+}
+
+function approximateOBP(s){
+  if(!s)return null;
+
+  let ab=Number(s.AB||0);
+  let bb=Number(s.BB||0);
+  let h=Number(s.H||0);
+
+  if(ab+bb<=0)return null;
+
+  return(h+bb)/(ab+bb);
+}
+
+function slugging(s){
+  if(!s||!Number(s.AB))return null;
+  return totalBases(s)/Number(s.AB);
+}
+
+function ops(s){
+  let obp=approximateOBP(s);
+  let slg=slugging(s);
+
+  if(obp===null||slg===null)return null;
+
+  return obp+slg;
+}
+
+function era(s){
+  if(!s||!Number(s.IPo))return null;
+  return Number(s.ER||0)*27/Number(s.IPo);
+}
+
+function whip(s){
+  if(!s||!Number(s.IPo))return null;
+  return(Number(s.H||0)+Number(s.BB||0))*3/Number(s.IPo);
+}
+
+function inningsText(ipo){
+  ipo=Number(ipo)||0;
+
+  let whole=Math.floor(ipo/3);
+  let rem=ipo%3;
+
+  return rem
+    ?`${whole}.${rem}`
+    :`${whole}.0`;
+}
+
+function fmtAvg(v){
+  return v===null?"—":v.toFixed(3).replace(/^0/,"");
+}
+
+function fmtEra(v){
+  return v===null?"—":v.toFixed(2);
+}
+
+function fmtWhip(v){
+  return v===null?"—":v.toFixed(3);
+}
+
+function seasonStats(p,year){
+  year=String(year);
+
+  if(Array.isArray(p.hist)){
+    let h=p.hist.find(x=>String(x.y)===year);
+    if(h&&h.s)return h.s;
+  }
+
+  /*
+   * 現在年度だけ、histにまだ確定記録がない場合はcsを使用。
+   */
+  if(
+    p.cs&&
+    String(p.__year||currentYear)===year
+  ){
+    return p.cs;
+  }
+
+  return null;
+}
+
+function seasonSummary(p,year){
+  let s=seasonStats(p,year);
+
+  if(!s)return"成績データなし";
+
+  if(p.t==="B"){
+    let avg=battingAverage(s);
+    let op=ops(s);
+
+    return`${year}年　${s.G||0}試合　${fmtAvg(avg)}　${s.HR||0}本　${s.RBI||0}打点　${s.SB||0}盗塁　OPS ${op===null?"—":op.toFixed(3)}`;
+  }
+
+  let e=era(s);
+  let w=Number(s.W||0);
+  let l=Number(s.L||0);
+  let gs=Number(s.GS||0);
+  let hld=Number(s.HLD||0);
+  let sv=Number(s.SV||0);
+  let wh=whip(s);
+
+  return`${year}年　${s.G||0}試合　${inningsText(s.IPo)}回　防御率 ${fmtEra(e)}　${w}勝${l}敗　${gs}先発　${hld}H　${sv}S　WHIP ${fmtWhip(wh)}`;
 }
 
 
@@ -946,17 +1335,24 @@ function draftText(p){
    ========================================================= */
 
 function card(p){
+
   let overall=overallOf(p);
   let team=TEAM_MAP[p.team];
   let teamName=team?team.nm:"球団"+p.team;
   let teamColor=team?team.col:"#999";
 
+  let cardYear=p.__year||currentYear;
+
   let yearBadge=p.__year
-    ?`<span class="crossYear">${p.__year}年度</span>`
+    ?`<span class="crossYear">${esc(p.__year)}年度</span>`
+    :"";
+
+  let playerNo=p.id
+    ?p.id.replace(/^p/,"")
     :"";
 
   let playerId=p.id
-    ?`<span class="playerId">No.${p.id.replace(/^p/,"")}</span>`
+    ?`<span class="playerId">No.${esc(playerNo)}</span>`
     :"";
 
   return`<div class="card" style="--team-color:${teamColor}">
@@ -964,11 +1360,14 @@ function card(p){
 
     <div class="cardHead">
       <div>
-        <div class="team">${teamName}${yearBadge}</div>
-        <div class="name">${p.nm}</div>
+        <div class="team">${esc(teamName)}${yearBadge}</div>
+
+        <div class="name">
+          <a class="nameLink" href="?id=${encodeURIComponent(p.id)}">${esc(p.nm)}</a>
+        </div>
 
         <div class="basic">
-          <span>${p.age}歳</span>
+          <span>${esc(p.age)}歳</span>
           <span>${p.th==="L"?"左":"右"}投${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打</span>
           ${playerId}
         </div>
@@ -979,18 +1378,26 @@ function card(p){
 
     <div class="summary">
       <span class="badge">総合 ${overall.toFixed(1)}</span>
+
       ${p.t==="P"
         ?`<span class="badge">地力 ${pitchValue(p).toFixed(1)}</span>`
-        :""}
+        :""
+      }
+
       <span class="badge">潜在 ${POT_NAMES[p.pot]||"?"}</span>
-      <span class="badge">${GROWTH_NAMES[p.gt]||p.gt}</span>
+      <span class="badge">${esc(GROWTH_NAMES[p.gt]||p.gt||"—")}</span>
+    </div>
+
+    <div class="seasonSummary">
+      <b>${esc(cardYear)}年成績：</b>${esc(seasonSummary(p,cardYear))}
     </div>
 
     <div class="statTitle">現在能力</div>
+
     ${statRows(p)}
 
     <div class="info growthInfo">
-      <div><b>成長：</b>${phaseOf(p)}</div>
+      <div><b>成長：</b>${esc(phaseOf(p))}</div>
       <div class="peakLine"><b>ピーク：</b>${peakText(p)}</div>
     </div>
 
@@ -1004,8 +1411,8 @@ function card(p){
     </div>
 
     <div class="info">
-      <b>ドラフト：</b>${draftText(p)}
-      <b>　　在籍：</b>${p.years||0}年
+      <b>ドラフト：</b>${esc(draftText(p))}
+      <b>　　在籍：</b>${esc(p.years||0)}年
     </div>
   </div>`;
 }
@@ -1016,6 +1423,7 @@ function card(p){
    ========================================================= */
 
 function positionMatches(p){
+
   if(selectedPositions.has("ALL"))return true;
 
   for(let pos of selectedPositions){
@@ -1042,6 +1450,7 @@ function positionMatches(p){
 }
 
 function roleMatches(p){
+
   if(p.t!=="P"){
     return selectedRoles.size===0;
   }
@@ -1050,6 +1459,7 @@ function roleMatches(p){
   if(!p.rl)return false;
 
   for(let role of selectedRoles){
+
     let lv=Number(p.rl[role]||0);
 
     if(excludeLowRole){
@@ -1107,17 +1517,86 @@ function baseFilter(p){
   return true;
 }
 
+
+/* =========================================================
+   検索
+   ========================================================= */
+
+/*
+ * 名前比較用。
+ *
+ * 「佐藤 太郎」
+ * 「佐藤太郎」
+ *
+ * のどちらでも一致させる。
+ */
+function normalizeSearchText(v){
+  return String(v||"")
+    .toLocaleLowerCase("ja-JP")
+    .replace(/[\s\u3000]+/g,"");
+}
+
+function searchTokens(){
+  return String(searchName||"")
+    .trim()
+    .split(/[\s\u3000]+/)
+    .filter(Boolean);
+}
+
+function tokenMatchesPlayer(p,token){
+
+  let raw=String(token||"");
+  let t=normalizeSearchText(raw);
+
+  if(!t)return true;
+
+  /*
+   * No.検索
+   *
+   * 6
+   * No.6
+   * no6
+   * p6
+   * P6
+   */
+  let noToken=
+    raw
+      .toLowerCase()
+      .replace(/^no[.\s]*/,"")
+      .replace(/^p/,"");
+
+  if(/^\d+$/.test(noToken)){
+
+    let idNo=String(p.id||"").replace(/^p/i,"");
+
+    if(idNo===noToken){
+      return true;
+    }
+  }
+
+  let name=normalizeSearchText(p.nm);
+
+  return name.includes(t);
+}
+
 function nameMatches(p){
+
   if(!searchName)return true;
 
-  return String(p.nm||"")
-    .toLocaleLowerCase()
-    .includes(searchName.toLocaleLowerCase());
+  let tokens=searchTokens();
+
+  /*
+   * スペース区切りはAND。
+   *
+   * 「佐藤 太郎」
+   * → 名前に「佐藤」も「太郎」も含む。
+   */
+  return tokens.every(token=>tokenMatchesPlayer(p,token));
 }
 
 
 /* =========================================================
-   検索結果作成
+   検索結果
    ========================================================= */
 
 function applyFilters(){
@@ -1208,7 +1687,7 @@ function applyFilters(){
 
 
 /* =========================================================
-   表示
+   一覧表示
    ========================================================= */
 
 function render(){
@@ -1216,14 +1695,16 @@ function render(){
   let grid=document.getElementById("grid");
   let moreArea=document.getElementById("moreArea");
 
+  if(!grid)return;
+
   if(crossYearSearch&&!searchName){
 
     document.getElementById("count").textContent=
-      "全年度横断検索：選手名を入力してください";
+      "全年度横断検索：選手名またはNo.を入力してください";
 
     grid.innerHTML=
       `<div class="searchNotice">
-        選手名を入力すると、保存されている全年度から検索します。
+        選手名またはNo.を入力すると、保存されている全年度から検索します。
       </div>`;
 
     moreArea.classList.remove("show");
@@ -1268,20 +1749,51 @@ function resetAndRender(){
 
 
 /* =========================================================
-   GitHubデータ読み込み
+   gzip JSON読み込み
    ========================================================= */
 
-/*
- * GitHubの data/players/ フォルダを見て、
- * YYYY.json.gz の年度だけ自動取得する。
- */
+async function gunzipJSON(buffer){
+
+  let ds=new DecompressionStream("gzip");
+
+  let writer=ds.writable.getWriter();
+  let reader=ds.readable.getReader();
+
+  writer.write(new Uint8Array(buffer));
+  writer.close();
+
+  let chunks=[];
+  let x;
+
+  while(!(x=await reader.read()).done){
+    chunks.push(x.value);
+  }
+
+  let total=chunks.reduce((n,a)=>n+a.length,0);
+  let out=new Uint8Array(total);
+
+  let off=0;
+
+  for(let c of chunks){
+    out.set(c,off);
+    off+=c.length;
+  }
+
+  return JSON.parse(
+    new TextDecoder().decode(out)
+  );
+}
+
+
+/* =========================================================
+   GitHub年度読み込み
+   ========================================================= */
+
 async function fetchGitHubYears(){
 
   let res=await fetch(
     GITHUB_API_BASE+"?ref=main&per_page=100",
-    {
-      cache:"no-store"
-    }
+    {cache:"no-store"}
   );
 
   if(!res.ok){
@@ -1304,13 +1816,6 @@ async function fetchGitHubYears(){
       .sort((a,b)=>Number(b)-Number(a));
 }
 
-
-/*
- * GitHubから特定年度のgzipファイルを取得。
- *
- * GitHubに同じ年度が存在する場合は、
- * 旧URLのデータよりGitHub側を優先する。
- */
 async function fetchYearFromGitHub(year){
 
   year=String(year);
@@ -1323,105 +1828,50 @@ async function fetchYearFromGitHub(year){
     return loadingPromises[year];
   }
 
-  loadingPromises[year]=
-    (async()=>{
+  loadingPromises[year]=(async()=>{
 
-      let url=
-        GITHUB_RAW_BASE+
-        "/"+
-        encodeURIComponent(year)+
-        ".json.gz";
+    let url=
+      GITHUB_RAW_BASE+
+      "/"+
+      encodeURIComponent(year)+
+      ".json.gz";
 
-      let res=await fetch(
-        url,
-        {
-          cache:"no-cache"
-        }
+    let res=await fetch(
+      url,
+      {cache:"no-cache"}
+    );
+
+    if(!res.ok){
+      throw new Error(
+        `${year}年度データ取得失敗：HTTP ${res.status}`
+      );
+    }
+
+    let data=
+      await gunzipJSON(
+        await res.arrayBuffer()
       );
 
-      if(!res.ok){
-        throw new Error(
-          `${year}年度データ取得失敗：HTTP ${res.status}`
-        );
-      }
+    if(!Array.isArray(data.players)){
+      throw new Error(
+        `${year}年度データの形式が正しくありません`
+      );
+    }
 
-      let compressed=
-        new Uint8Array(
-          await res.arrayBuffer()
-        );
+    yearData[year]=data.players;
+    githubLoadedYears.add(year);
 
-      let ds=
-        new DecompressionStream("gzip");
+    return yearData[year];
 
-      let writer=
-        ds.writable.getWriter();
-
-      let reader=
-        ds.readable.getReader();
-
-      writer.write(compressed);
-      writer.close();
-
-      let chunks=[];
-      let x;
-
-      while(!(x=await reader.read()).done){
-        chunks.push(x.value);
-      }
-
-      let total=
-        chunks.reduce(
-          (n,a)=>n+a.length,
-          0
-        );
-
-      let out=
-        new Uint8Array(total);
-
-      let off=0;
-
-      for(let c of chunks){
-        out.set(c,off);
-        off+=c.length;
-      }
-
-      let text=
-        new TextDecoder().decode(out);
-
-      let data=
-        JSON.parse(text);
-
-      if(!Array.isArray(data.players)){
-        throw new Error(
-          `${year}年度データの形式が正しくありません`
-        );
-      }
-
-      yearData[year]=data.players;
-
-      githubLoadedYears.add(year);
-
-      return yearData[year];
-
-    })();
+  })();
 
   try{
-
     return await loadingPromises[year];
-
   }finally{
-
     delete loadingPromises[year];
   }
 }
 
-
-/*
- * 指定年度を読み込む。
- *
- * GitHubにその年度が存在するならGitHubを優先。
- * GitHubに存在しない年度なら旧URLデータを使用。
- */
 async function ensureYearLoaded(year){
 
   year=String(year);
@@ -1444,11 +1894,6 @@ async function ensureYearLoaded(year){
   );
 }
 
-
-/*
- * 全年度横断検索用。
- * 普通にページを開いたときは実行しない。
- */
 async function ensureAllYearsLoaded(){
 
   await Promise.all(
@@ -1460,23 +1905,42 @@ async function ensureAllYearsLoaded(){
 
 
 /* =========================================================
-   旧URLデータ読み込み
+   CAREER読み込み
    ========================================================= */
 
-/*
- * 以前作っていた
- *
- * players.html#圧縮データ
- *
- * の形式を引き続き読み込めるようにする。
- */
+async function loadCareer(){
+
+  if(careerData)return careerData;
+
+  let res=await fetch(
+    CAREER_RAW_URL,
+    {cache:"no-cache"}
+  );
+
+  if(!res.ok){
+    throw new Error(
+      "CAREERデータ取得失敗：HTTP "+res.status
+    );
+  }
+
+  careerData=
+    await gunzipJSON(
+      await res.arrayBuffer()
+    );
+
+  return careerData;
+}
+
+
+/* =========================================================
+   旧URLデータ
+   ========================================================= */
+
 async function decodeLegacyHash(){
 
   let hash=location.hash.slice(1);
 
-  if(!hash){
-    return null;
-  }
+  if(!hash)return null;
 
   hash=
     hash
@@ -1488,26 +1952,15 @@ async function decodeLegacyHash(){
   }
 
   let bin=atob(hash);
+  let u=new Uint8Array(bin.length);
 
-  let u=
-    new Uint8Array(bin.length);
-
-  for(
-    let i=0;
-    i<bin.length;
-    i++
-  ){
+  for(let i=0;i<bin.length;i++){
     u[i]=bin.charCodeAt(i);
   }
 
-  let ds=
-    new DecompressionStream("deflate");
-
-  let writer=
-    ds.writable.getWriter();
-
-  let reader=
-    ds.readable.getReader();
+  let ds=new DecompressionStream("deflate");
+  let writer=ds.writable.getWriter();
+  let reader=ds.readable.getReader();
 
   writer.write(u);
   writer.close();
@@ -1519,14 +1972,8 @@ async function decodeLegacyHash(){
     chunks.push(x.value);
   }
 
-  let total=
-    chunks.reduce(
-      (n,a)=>n+a.length,
-      0
-    );
-
-  let out=
-    new Uint8Array(total);
+  let total=chunks.reduce((n,a)=>n+a.length,0);
+  let out=new Uint8Array(total);
 
   let off=0;
 
@@ -1535,16 +1982,11 @@ async function decodeLegacyHash(){
     off+=c.length;
   }
 
-  let text=
-    new TextDecoder().decode(out);
-
-  return JSON.parse(text);
+  return JSON.parse(
+    new TextDecoder().decode(out)
+  );
 }
 
-
-/*
- * GitHub年度と旧URL年度を合体。
- */
 function rebuildAvailableYears(){
 
   let set=new Set([
@@ -1564,13 +2006,15 @@ function rebuildAvailableYears(){
 
 function updateYearText(year){
 
+  currentYear=String(year);
+
   document.getElementById("yearText").innerHTML=
-    `${year}年度　
+    `${esc(year)}年度　
       <select class="yearSelect" id="yearFilter">
         ${availableYears.map(y=>
-          `<option value="${y}"
+          `<option value="${esc(y)}"
             ${String(y)===String(year)?"selected":""}>
-            ${y}年度
+            ${esc(y)}年度
           </option>`
         ).join("")}
       </select>
@@ -1586,12 +2030,6 @@ function updateYearText(year){
     );
 }
 
-
-/*
- * 年度を切り替える。
- *
- * ここで初めて、その年度のGitHubファイルを取得する。
- */
 async function selectYear(year){
 
   year=String(year);
@@ -1609,7 +2047,6 @@ async function selectYear(year){
     players=list;
 
     updateYearText(year);
-
     resetAndRender();
 
   }catch(e){
@@ -1619,7 +2056,7 @@ async function selectYear(year){
     players=previousPlayers;
 
     updateYearText(
-      availableYears[0]||year
+      currentYear||availableYears[0]||year
     );
 
     alert(
@@ -1631,7 +2068,7 @@ async function selectYear(year){
 
 
 /* =========================================================
-   全年度横断検索
+   全年度検索
    ========================================================= */
 
 async function refreshCrossYearSearch(){
@@ -1639,16 +2076,12 @@ async function refreshCrossYearSearch(){
   renderLimit=RENDER_STEP;
 
   if(!crossYearSearch||!searchName){
-
     render();
     return;
   }
 
-  let grid=
-    document.getElementById("grid");
-
-  let moreArea=
-    document.getElementById("moreArea");
+  let grid=document.getElementById("grid");
+  let moreArea=document.getElementById("moreArea");
 
   document.getElementById("count").textContent=
     "全年度のデータを読み込んでいます…";
@@ -1663,7 +2096,6 @@ async function refreshCrossYearSearch(){
   try{
 
     await ensureAllYearsLoaded();
-
     render();
 
   }catch(e){
@@ -1676,21 +2108,19 @@ async function refreshCrossYearSearch(){
     grid.innerHTML=
       `<div class="searchNotice">
         全年度のデータを読み込めませんでした。<br>
-        ${e.message}
+        ${esc(e.message)}
       </div>`;
-
   }
 }
 
 
 /* =========================================================
-   UI初期化
+   一覧UI
    ========================================================= */
 
-function setup(){
+function setupList(){
 
-  let sel=
-    document.getElementById("teamFilter");
+  let sel=document.getElementById("teamFilter");
 
   sel.innerHTML=
     `<option value="MY">自球団（横浜）</option>
@@ -1698,7 +2128,7 @@ function setup(){
     Object.keys(TEAM_MAP)
       .map(i=>
         `<option value="${i}">
-          ${TEAM_MAP[i].nm}
+          ${esc(TEAM_MAP[i].nm)}
         </option>`
       )
       .join("");
@@ -1711,7 +2141,6 @@ function setup(){
     }
   );
 
-
   document
     .getElementById("leagueFilter")
     .addEventListener(
@@ -1721,7 +2150,6 @@ function setup(){
         resetAndRender();
       }
     );
-
 
   document
     .querySelectorAll(".posBtn")
@@ -1760,9 +2188,7 @@ function setup(){
             .forEach(x=>{
               x.classList.toggle(
                 "active",
-                selectedPositions.has(
-                  x.dataset.pos
-                )
+                selectedPositions.has(x.dataset.pos)
               );
             });
 
@@ -1770,7 +2196,6 @@ function setup(){
         }
       );
     });
-
 
   document
     .getElementById("includeSub")
@@ -1782,7 +2207,6 @@ function setup(){
       }
     );
 
-
   document
     .querySelectorAll(".roleCheck")
     .forEach(box=>{
@@ -1790,23 +2214,19 @@ function setup(){
       box.addEventListener(
         "change",
         ()=>{
+
           selectedRoles=
             new Set(
               [
                 ...document
-                  .querySelectorAll(
-                    ".roleCheck:checked"
-                  )
-              ].map(
-                x=>x.dataset.role
-              )
+                  .querySelectorAll(".roleCheck:checked")
+              ].map(x=>x.dataset.role)
             );
 
           resetAndRender();
         }
       );
     });
-
 
   document
     .getElementById("excludeLowRole")
@@ -1817,7 +2237,6 @@ function setup(){
         resetAndRender();
       }
     );
-
 
   document
     .querySelectorAll(".potBtn")
@@ -1830,23 +2249,13 @@ function setup(){
           let pot=btn.dataset.pot;
 
           if(pot==="ALL"){
-
             selectedPots.clear();
-
           }else{
 
-            if(
-              selectedPots.has(
-                Number(pot)
-              )
-            ){
-              selectedPots.delete(
-                Number(pot)
-              );
+            if(selectedPots.has(Number(pot))){
+              selectedPots.delete(Number(pot));
             }else{
-              selectedPots.add(
-                Number(pot)
-              );
+              selectedPots.add(Number(pot));
             }
           }
 
@@ -1868,7 +2277,6 @@ function setup(){
       );
     });
 
-
   document
     .querySelectorAll(".growthBtn")
     .forEach(btn=>{
@@ -1880,14 +2288,10 @@ function setup(){
           let growth=btn.dataset.growth;
 
           if(growth==="ALL"){
-
             selectedGrowths.clear();
-
           }else{
 
-            if(
-              selectedGrowths.has(growth)
-            ){
+            if(selectedGrowths.has(growth)){
               selectedGrowths.delete(growth);
             }else{
               selectedGrowths.add(growth);
@@ -1912,7 +2316,6 @@ function setup(){
       );
     });
 
-
   document
     .getElementById("sortFilter")
     .addEventListener(
@@ -1922,7 +2325,6 @@ function setup(){
         resetAndRender();
       }
     );
-
 
   document
     .getElementById("orderBtn")
@@ -1940,49 +2342,38 @@ function setup(){
       }
     );
 
-
-  /*
-   * 名前検索
-   */
   document
     .getElementById("nameSearch")
     .addEventListener(
       "input",
       e=>{
 
-        searchName=
-          e.target.value.trim();
+        searchName=e.target.value.trim();
 
         clearTimeout(searchTimer);
 
-        searchTimer=
-          setTimeout(
-            ()=>{
+        searchTimer=setTimeout(
+          ()=>{
 
-              if(crossYearSearch){
-                refreshCrossYearSearch();
-              }else{
-                resetAndRender();
-              }
+            if(crossYearSearch){
+              refreshCrossYearSearch();
+            }else{
+              resetAndRender();
+            }
 
-            },
-            150
-          );
+          },
+          150
+        );
       }
     );
 
-
-  /*
-   * 全年度横断
-   */
   document
     .getElementById("crossYearSearch")
     .addEventListener(
       "change",
       e=>{
 
-        crossYearSearch=
-          e.target.checked;
+        crossYearSearch=e.target.checked;
 
         if(crossYearSearch){
           refreshCrossYearSearch();
@@ -1992,10 +2383,6 @@ function setup(){
       }
     );
 
-
-  /*
-   * もっと見る
-   */
   document
     .getElementById("moreBtn")
     .addEventListener(
@@ -2009,20 +2396,1006 @@ function setup(){
 
 
 /* =========================================================
-   初期ロード
+   一覧HTML
    ========================================================= */
 
-async function loadData(){
+function listHTML(){
+
+  return`
+    <div class="header">
+      <h1>在籍選手データベース</h1>
+
+      <div class="searchArea">
+        <input
+          type="search"
+          id="nameSearch"
+          class="nameSearch"
+          placeholder="選手名・No.を検索…"
+          autocomplete="off">
+
+        <label class="crossSearchLabel">
+          <input type="checkbox" id="crossYearSearch">
+          全年度横断
+        </label>
+      </div>
+    </div>
+
+    <div class="sub" id="yearText">
+      データを読み込んでいます…
+    </div>
+
+    <div class="panel">
+
+      <div class="controls filterRow">
+        <label>リーグ
+          <select id="leagueFilter">
+            <option value="ALL">全部</option>
+            <option value="C">セ・リーグ</option>
+            <option value="P">パ・リーグ</option>
+          </select>
+        </label>
+
+        <label>球団
+          <select id="teamFilter"></select>
+        </label>
+      </div>
+
+      <div class="controls filterRow positionControls">
+        <div class="posTitle">ポジション</div>
+
+        <button class="posBtn active" data-pos="ALL">全部</button>
+        <button class="posBtn" data-pos="C">捕手</button>
+        <button class="posBtn" data-pos="1B">一塁</button>
+        <button class="posBtn" data-pos="2B">二塁</button>
+        <button class="posBtn" data-pos="3B">三塁</button>
+        <button class="posBtn" data-pos="SS">遊撃</button>
+        <button class="posBtn" data-pos="OF">外野</button>
+        <button class="posBtn" data-pos="P">投手</button>
+      </div>
+
+      <div class="roleArea filterRow">
+
+        <span class="roleLabel">野手なら</span>
+
+        <label class="checkLabel">
+          <input type="checkbox" id="includeSub">
+          サブポジションも含める
+        </label>
+
+        <span class="roleLabel" style="margin-left:14px">
+          投手なら
+        </span>
+
+        <label class="checkLabel">
+          <input type="checkbox" class="roleCheck" data-role="sp">
+          先発
+        </label>
+
+        <label class="checkLabel">
+          <input type="checkbox" class="roleCheck" data-role="rp">
+          中継ぎ
+        </label>
+
+        <label class="checkLabel">
+          <input type="checkbox" class="roleCheck" data-role="cl">
+          抑え
+        </label>
+
+        <label class="checkLabel">
+          <input type="checkbox" id="excludeLowRole">
+          △適性を除外
+        </label>
+      </div>
+
+      <div class="controls filterRow sortControls">
+
+        <div class="multiFilterArea">
+          <span class="multiFilterLabel">潜在</span>
+
+          <span class="multiFilterButtons" id="potButtons">
+            <button class="potBtn active" data-pot="ALL">全部</button>
+            <button class="potBtn" data-pot="5">S</button>
+            <button class="potBtn" data-pot="4">A</button>
+            <button class="potBtn" data-pot="3">B</button>
+            <button class="potBtn" data-pot="2">C</button>
+            <button class="potBtn" data-pot="1">D</button>
+          </span>
+        </div>
+
+        <div class="multiFilterArea">
+          <span class="multiFilterLabel">成長</span>
+
+          <span class="multiFilterButtons" id="growthButtons">
+            <button class="growthBtn active" data-growth="ALL">全部</button>
+            <button class="growthBtn" data-growth="early">早熟</button>
+            <button class="growthBtn" data-growth="normal">普通</button>
+            <button class="growthBtn" data-growth="late">晩成</button>
+            <button class="growthBtn" data-growth="long">持続</button>
+          </span>
+        </div>
+
+        <label>並び順
+          <select id="sortFilter">
+            <option value="overall">総合値</option>
+            <option value="pot">潜在</option>
+            <option value="age">年齢</option>
+            <option value="name">名前</option>
+            <option value="peakGap">現在→ピーク</option>
+          </select>
+        </label>
+
+        <button id="orderBtn">↓ 高い順</button>
+      </div>
+
+      <div class="count" id="count"></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="moreArea" id="moreArea">
+      <button class="moreBtn" id="moreBtn">
+        もっと見る
+      </button>
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   詳細ページ用ヘルパー
+   ========================================================= */
+
+function findLatestPlayer(id){
+
+  let found=null;
+  let foundYear=-Infinity;
+
+  for(let y of availableYears){
+
+    let list=yearData[y]||[];
+
+    let p=list.find(x=>String(x.id)===String(id));
+
+    if(p&&Number(y)>foundYear){
+      found=Object.assign({},p,{__year:y});
+      foundYear=Number(y);
+    }
+  }
+
+  return found;
+}
+
+function findCareerPlayer(id){
+
+  if(!careerData)return null;
+
+  let hof=Array.isArray(careerData.hof)
+    ?careerData.hof.find(x=>String(x.pid)===String(id))
+    :null;
+
+  if(hof){
+    return{
+      kind:"hof",
+      data:hof
+    };
+  }
+
+  let retired=
+    careerData.retired&&
+    careerData.retired[id];
+
+  if(retired){
+    return{
+      kind:"retired",
+      data:retired
+    };
+  }
+
+  return null;
+}
+
+function latestOrCareer(id){
+
+  let active=findLatestPlayer(id);
 
   /*
-   * UIイベントは最初に一度だけ登録。
+   * 現役選手が最新年度ファイルに存在する場合はこちらを優先。
    */
-  setup();
+  if(active){
+    return{
+      kind:"active",
+      data:active
+    };
+  }
+
+  let career=findCareerPlayer(id);
+
+  if(career)return career;
+
+  return null;
+}
+
+function abilityDetail(p){
+
+  if(!p.sa||!p.sa.length){
+    return`<span class="empty">なし</span>`;
+  }
+
+  return`<div class="detailAbility">${abilityText(p)}</div>`;
+}
+
+function abilityValues(p,obj,labelMap){
+
+  if(!obj||typeof obj!=="object"){
+    return`<div class="empty">データなし</div>`;
+  }
+
+  let keys=Object.keys(obj);
+
+  if(!keys.length){
+    return`<div class="empty">なし</div>`;
+  }
+
+  return`
+    <div class="detailStatGrid">
+      ${keys.map(k=>`
+        <div class="detailStatBox">
+          <div class="label">${esc(labelMap[k]||k)}</div>
+          <div class="value">${esc(obj[k])}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+const BAT_ABILITY_LABELS={
+  mt:"ミート",
+  pw:"パワー",
+  sp:"走力",
+  am:"肩力",
+  fd:"守備"
+};
+
+const PIT_ABILITY_LABELS={
+  vl:"球速",
+  ct:"制球",
+  st:"スタミナ",
+  br:"変化球"
+};
+
+const DEF_LABELS={
+  C:"捕手",
+  "1B":"一塁",
+  "2B":"二塁",
+  "3B":"三塁",
+  SS:"遊撃",
+  OF:"外野"
+};
+
+const ROLE_LABELS={
+  sp:"先発",
+  rp:"中継ぎ",
+  cl:"抑え"
+};
+
+const GROW_LABELS={
+  mt:"ミート",
+  pw:"パワー",
+  sp:"走力",
+  am:"肩力",
+  fd:"守備",
+  vl:"球速",
+  ct:"制球",
+  st:"スタミナ",
+  br:"変化球"
+};
+
+function titlesHTML(p){
+
+  let titles=Array.isArray(p.titles)?p.titles:[];
+
+  if(!titles.length){
+    return`<div class="empty">なし</div>`;
+  }
+
+  return`
+    <div class="titleList">
+      ${titles.map(x=>
+        `<span class="titleBadge">${esc(x)}</span>`
+      ).join("")}
+    </div>
+  `;
+}
+
+function careerTotalsFor(p,careerEntry){
+
+  if(careerEntry?.data?.totals){
+    return careerEntry.data.totals;
+  }
+
+  if(Array.isArray(p.hist)&&p.hist.length){
+
+    let keys=p.t==="B"
+      ?["G","PA","AB","H","D2","D3","HR","RBI","R","SB","BB","SO"]
+      :["G","GS","W","L","SV","HLD","IPo","H","HR","BB","SO","ER","CG"];
+
+    let out={};
+
+    for(let k of keys)out[k]=0;
+
+    for(let h of p.hist){
+
+      if(!h.s)continue;
+
+      for(let k of keys){
+        out[k]+=Number(h.s[k]||0);
+      }
+    }
+
+    /*
+     * 最新年度のhistに当年分がまだなく、
+     * csが存在する場合は追加。
+     */
+    let lastYear=p.hist.length
+      ?String(p.hist[p.hist.length-1].y)
+      :null;
+
+    if(
+      p.cs&&
+      String(p.__year||currentYear)!==lastYear
+    ){
+      for(let k of keys){
+        out[k]+=Number(p.cs[k]||0);
+      }
+    }
+
+    return out;
+  }
+
+  return null;
+}
+
+function careerStatsHTML(p,careerEntry){
+
+  let t=careerTotalsFor(p,careerEntry);
+
+  if(!t){
+    return`<div class="empty">通算成績データなし</div>`;
+  }
+
+  if(p.t==="B"){
+
+    let avg=
+      Number(t.AB)
+        ?Number(t.H||0)/Number(t.AB)
+        :null;
+
+    let op=ops(t);
+
+    return`
+      <div class="careerHighlight">
+        打率 <b>${fmtAvg(avg)}</b>　
+        OPS <b>${op===null?"—":op.toFixed(3)}</b>
+      </div>
+
+      <div class="detailRows" style="margin-top:9px">
+        <div class="label">試合</div><div class="value">${t.G||0}</div>
+        <div class="label">打席</div><div class="value">${t.PA||0}</div>
+        <div class="label">打数</div><div class="value">${t.AB||0}</div>
+        <div class="label">安打</div><div class="value">${t.H||0}</div>
+        <div class="label">二塁打</div><div class="value">${t.D2||0}</div>
+        <div class="label">三塁打</div><div class="value">${t.D3||0}</div>
+        <div class="label">本塁打</div><div class="value">${t.HR||0}</div>
+        <div class="label">打点</div><div class="value">${t.RBI||0}</div>
+        <div class="label">得点</div><div class="value">${t.R||0}</div>
+        <div class="label">盗塁</div><div class="value">${t.SB||0}</div>
+        <div class="label">四球</div><div class="value">${t.BB||0}</div>
+        <div class="label">三振</div><div class="value">${t.SO||0}</div>
+      </div>
+    `;
+  }
+
+  let e=era(t);
+  let wh=whip(t);
+
+  return`
+    <div class="careerHighlight">
+      防御率 <b>${fmtEra(e)}</b>　
+      WHIP <b>${fmtWhip(wh)}</b>
+    </div>
+
+    <div class="detailRows" style="margin-top:9px">
+      <div class="label">登板</div><div class="value">${t.G||0}</div>
+      <div class="label">先発</div><div class="value">${t.GS||0}</div>
+      <div class="label">投球回</div><div class="value">${inningsText(t.IPo)}</div>
+      <div class="label">勝利</div><div class="value">${t.W||0}</div>
+      <div class="label">敗戦</div><div class="value">${t.L||0}</div>
+      <div class="label">セーブ</div><div class="value">${t.SV||0}</div>
+      <div class="label">ホールド</div><div class="value">${t.HLD||0}</div>
+      <div class="label">被安打</div><div class="value">${t.H||0}</div>
+      <div class="label">被本塁打</div><div class="value">${t.HR||0}</div>
+      <div class="label">与四球</div><div class="value">${t.BB||0}</div>
+      <div class="label">奪三振</div><div class="value">${t.SO||0}</div>
+      <div class="label">自責点</div><div class="value">${t.ER||0}</div>
+      <div class="label">完投</div><div class="value">${t.CG||0}</div>
+    </div>
+  `;
+}
+
+function seasonTableHTML(p){
+
+  let hist=
+    Array.isArray(p.hist)
+      ?[...p.hist]
+      :[];
 
   /*
-   * まず旧URLのデータを読む。
-   *
-   * 失敗してもGitHub側の読み込みは続行する。
+   * 年度順。
+   */
+  hist.sort(
+    (a,b)=>Number(a.y)-Number(b.y)
+  );
+
+  /*
+   * 最新年度でhistに当年が存在しない場合はcsを追加。
+   */
+  let latestYear=String(p.__year||currentYear);
+
+  if(
+    p.cs&&
+    !hist.some(x=>String(x.y)===latestYear)
+  ){
+    let hasCurrent=
+      p.cs.G!==undefined||
+      p.cs.AB!==undefined||
+      p.cs.IPo!==undefined;
+
+    if(hasCurrent&&latestYear){
+      hist.push({
+        y:latestYear,
+        tm:p.team,
+        age:p.age,
+        s:p.cs,
+        __current:true
+      });
+    }
+  }
+
+  if(!hist.length){
+    return`<div class="empty">年度別成績データなし</div>`;
+  }
+
+  if(p.t==="B"){
+
+    return`
+      <div class="seasonTableWrap">
+        <table class="seasonTable">
+          <thead>
+            <tr>
+              <th>年度</th>
+              <th>年齢</th>
+              <th>球団</th>
+              <th>G</th>
+              <th>PA</th>
+              <th>AB</th>
+              <th>打率</th>
+              <th>H</th>
+              <th>2B</th>
+              <th>3B</th>
+              <th>HR</th>
+              <th>RBI</th>
+              <th>R</th>
+              <th>SB</th>
+              <th>BB</th>
+              <th>SO</th>
+              <th>OPS</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${hist.map(h=>{
+              let s=h.s||{};
+              let avg=battingAverage(s);
+              let op=ops(s);
+              let tm=TEAM_MAP[h.tm];
+
+              return`
+                <tr>
+                  <td>${esc(h.y)}${h.__current?"*":""}</td>
+                  <td>${esc(h.age??"—")}</td>
+                  <td>${esc(tm?.sh||h.tm??"—")}</td>
+                  <td>${s.G||0}</td>
+                  <td>${s.PA||0}</td>
+                  <td>${s.AB||0}</td>
+                  <td>${fmtAvg(avg)}</td>
+                  <td>${s.H||0}</td>
+                  <td>${s.D2||0}</td>
+                  <td>${s.D3||0}</td>
+                  <td>${s.HR||0}</td>
+                  <td>${s.RBI||0}</td>
+                  <td>${s.R||0}</td>
+                  <td>${s.SB||0}</td>
+                  <td>${s.BB||0}</td>
+                  <td>${s.SO||0}</td>
+                  <td>${op===null?"—":op.toFixed(3)}</td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  return`
+    <div class="seasonTableWrap">
+      <table class="seasonTable">
+        <thead>
+          <tr>
+            <th>年度</th>
+            <th>年齢</th>
+            <th>球団</th>
+            <th>G</th>
+            <th>GS</th>
+            <th>IP</th>
+            <th>ERA</th>
+            <th>W</th>
+            <th>L</th>
+            <th>SV</th>
+            <th>HLD</th>
+            <th>H</th>
+            <th>HR</th>
+            <th>BB</th>
+            <th>SO</th>
+            <th>ER</th>
+            <th>CG</th>
+            <th>WHIP</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${hist.map(h=>{
+            let s=h.s||{};
+            let tm=TEAM_MAP[h.tm];
+
+            return`
+              <tr>
+                <td>${esc(h.y)}${h.__current?"*":""}</td>
+                <td>${esc(h.age??"—")}</td>
+                <td>${esc(tm?.sh||h.tm??"—")}</td>
+                <td>${s.G||0}</td>
+                <td>${s.GS||0}</td>
+                <td>${inningsText(s.IPo)}</td>
+                <td>${fmtEra(era(s))}</td>
+                <td>${s.W||0}</td>
+                <td>${s.L||0}</td>
+                <td>${s.SV||0}</td>
+                <td>${s.HLD||0}</td>
+                <td>${s.H||0}</td>
+                <td>${s.HR||0}</td>
+                <td>${s.BB||0}</td>
+                <td>${s.SO||0}</td>
+                <td>${s.ER||0}</td>
+                <td>${s.CG||0}</td>
+                <td>${fmtWhip(whip(s))}</td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function rawDataHTML(p){
+
+  /*
+   * 内部データも保存されている限り確認できるようにする。
+   * __yearは表示用なので除外。
+   */
+  let copy=Object.assign({},p);
+  delete copy.__year;
+
+  return`
+    <textarea class="rawData" readonly>${esc(
+      JSON.stringify(copy,null,2)
+    )}</textarea>
+  `;
+}
+
+
+/* =========================================================
+   詳細ページHTML
+   ========================================================= */
+
+function detailHTML(entry){
+
+  let p=entry.data;
+  let careerEntry=
+    entry.kind==="active"
+      ?null
+      :entry;
+
+  let team=TEAM_MAP[p.team];
+  let teamName=
+    team?.nm||
+    p.teamNm||
+    "—";
+
+  let teamColor=
+    team?.col||
+    p.teamCol||
+    "#999";
+
+  let hof=
+    entry.kind==="hof";
+
+  let retired=
+    entry.kind==="retired"||
+    entry.kind==="hof";
+
+  let age=p.age??"—";
+  let titles=
+    Array.isArray(p.titles)
+      ?p.titles
+      :[];
+
+  let mvp=
+    p.mvp??0;
+
+  let playerId=p.id||p.pid;
+
+  let draft=
+    p.drft
+      ?draftText(p)
+      :"—";
+
+  /*
+   * retired/hof entryには元選手の能力値がない場合がある。
+   * hofにはpeak/sa/titles/mvpがある。
+   */
+  let peak=p.peak;
+  let sa=p.sa||[];
+
+  let sourceLabel=
+    p.drft
+      ?draftSource(p.drft.src)
+      :"—";
+
+  let careerTotals=
+    careerTotalsFor(p,careerEntry);
+
+  let retiredYear=
+    p.retY??"—";
+
+  let titleList=
+    titles.length
+      ?titlesHTML({titles})
+      :`<div class="empty">なし</div>`;
+
+  let hofReasons=
+    hof&&Array.isArray(p.reasons)
+      ?p.reasons
+      :[];
+
+  return`
+    <div class="detailTop">
+      <a class="backBtn" href="./players.html">← 一覧へ戻る</a>
+      <h1 class="detailTitle">${esc(p.nm||"選手詳細")}</h1>
+    </div>
+
+    <div class="detailSub">
+      No.${esc(String(playerId||"").replace(/^p/i,""))}
+     　${esc(POS_NAMES[p.pos]||p.pos||"—")}
+     　${retired?"引退":"現役"}
+    </div>
+
+    <div class="detailGrid">
+
+      <div class="detailPanel">
+        <h2>基本情報</h2>
+
+        <div class="detailRows">
+          <div class="label">選手ID</div>
+          <div class="value">${esc(playerId)}</div>
+
+          <div class="label">名前</div>
+          <div class="value">${esc(p.nm)}</div>
+
+          <div class="label">タイプ</div>
+          <div class="value">${p.t==="B"?"野手":"投手"}</div>
+
+          <div class="label">ポジション</div>
+          <div class="value">${esc(POS_NAMES[p.pos]||p.pos||"—")}</div>
+
+          <div class="label">年齢</div>
+          <div class="value">${esc(age)}歳</div>
+
+          <div class="label">投打</div>
+          <div class="value">
+            ${p.th==="L"?"左":"右"}投
+            ${p.bt==="L"?"左":p.bt==="S"?"両":"右"}打
+          </div>
+
+          <div class="label">所属</div>
+          <div class="value">${esc(teamName)}</div>
+
+          <div class="label">在籍年数</div>
+          <div class="value">${esc(p.years??"—")}年</div>
+
+          <div class="label">ドラフト</div>
+          <div class="value">${esc(draft)}</div>
+
+          <div class="label">出身区分</div>
+          <div class="value">${esc(sourceLabel)}</div>
+
+          <div class="label">スター</div>
+          <div class="value">${p.star===true?"あり":p.star===false?"なし":"—"}</div>
+
+          <div class="label">未来選手</div>
+          <div class="value">${p.fromFuture===true?"はい":p.fromFuture===false?"いいえ":"—"}</div>
+
+          ${retired?`
+            <div class="label">引退年</div>
+            <div class="value">${esc(retiredYear)}</div>
+          `:""}
+        </div>
+      </div>
+
+
+      <div class="detailPanel">
+        <h2>能力・成長</h2>
+
+        <h3>現在能力</h3>
+        ${abilityValues(
+          p,
+          p.t==="B"?p.ab:p.ap,
+          p.t==="B"?BAT_ABILITY_LABELS:PIT_ABILITY_LABELS
+        )}
+
+        <h3>ピーク能力</h3>
+        ${abilityValues(
+          p,
+          peak,
+          p.t==="B"?BAT_ABILITY_LABELS:PIT_ABILITY_LABELS
+        )}
+
+        <div class="detailRows" style="margin-top:10px">
+
+          <div class="label">潜在能力</div>
+          <div class="value">${POT_NAMES[p.pot]||p.pot??"—"}</div>
+
+          <div class="label">成長タイプ</div>
+          <div class="value">${esc(GROWTH_NAMES[p.gt]||p.gt||"—")}</div>
+
+          <div class="label">成長段階</div>
+          <div class="value">${esc(phaseOf(p))}</div>
+
+          <div class="label">成長値</div>
+          <div class="value">
+            ${p.grow
+              ?Object.entries(p.grow)
+                .map(([k,v])=>
+                  `${esc(GROW_LABELS[k]||k)} ${esc(v)}`
+                ).join(" / ")
+              :"—"}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="detailPanel">
+        <h2>特殊能力</h2>
+
+        ${abilityDetail(p)}
+
+        <h3>守備適性</h3>
+        <div class="careerHighlight">
+          ${esc(defenseText(p))}
+        </div>
+
+        <h3>投手役割</h3>
+        <div class="careerHighlight">
+          ${esc(roleText(p))}
+        </div>
+      </div>
+
+
+      <div class="detailPanel">
+        <h2>その他の情報</h2>
+
+        <div class="detailRows">
+
+          <div class="label">コメント</div>
+          <div class="value">${esc(p.comment||"—")}</div>
+
+          <div class="label">成長注目</div>
+          <div class="value">${esc(p.devFocus||"—")}</div>
+
+          <div class="label">成長役割</div>
+          <div class="value">${esc(p.devRole||"—")}</div>
+
+          <div class="label">成長ポジション</div>
+          <div class="value">${esc(p.devPos||"—")}</div>
+
+          <div class="label">スカウト誤差</div>
+          <div class="value">${esc(p.scErr??"—")}</div>
+
+          <div class="label">コンディション</div>
+          <div class="value">${esc(p.cond??"—")}</div>
+
+          <div class="label">故障</div>
+          <div class="value">${esc(p.inj??"—")}</div>
+
+          <div class="label">疲労</div>
+          <div class="value">${esc(p.fat??"—")}</div>
+
+          <div class="label">サブ成績等</div>
+          <div class="value">
+            ${p.subG
+              ?esc(JSON.stringify(p.subG))
+              :"—"}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="detailPanel full">
+        <h2>タイトル・MVP</h2>
+
+        <div class="detailRows">
+          <div class="label">MVP回数</div>
+          <div class="value">${esc(mvp)}回</div>
+
+          <div class="label">タイトル回数</div>
+          <div class="value">${esc(titles.length)}回</div>
+        </div>
+
+        <h3>獲得タイトル</h3>
+
+        ${titleList}
+      </div>
+
+
+      <div class="detailPanel full">
+        <h2>通算成績</h2>
+        ${careerStatsHTML(p,careerEntry)}
+      </div>
+
+
+      <div class="detailPanel full">
+        <h2>年度別成績</h2>
+
+        ${seasonTableHTML(p)}
+
+        <div class="detailSub" style="margin-top:7px;margin-bottom:0">
+          * は当年度の現役成績（hist未確定の場合にcsから表示）
+        </div>
+      </div>
+
+
+      ${hof?`
+        <div class="detailPanel full">
+          <h2>殿堂入り</h2>
+
+          <div class="hofBox">
+            <b>殿堂入りしています。</b><br>
+            引退：${esc(p.retY??"—")}年・${esc(p.age??"—")}歳<br>
+            理由：
+            ${hofReasons.length
+              ?hofReasons.map(x=>esc(x)).join("・")
+              :"—"}
+          </div>
+        </div>
+      `:""}
+
+
+      ${retired&&!hof?`
+        <div class="detailPanel full">
+          <h2>引退情報</h2>
+
+          <div class="recordBox">
+            ${esc(p.nm||"")}は
+            ${esc(p.retY??"—")}年に
+            ${esc(p.age??"—")}歳で引退。<br>
+            殿堂入り：なし
+          </div>
+        </div>
+      `:""}
+
+
+      <div class="detailPanel full">
+        <h2>保存データ</h2>
+
+        <details>
+          <summary>保存されている元データを表示</summary>
+          <div style="margin-top:8px">
+            ${rawDataHTML(p)}
+          </div>
+        </details>
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   詳細ページ
+   ========================================================= */
+
+async function loadDetail(id){
+
+  document.title="選手詳細";
+
+  document.getElementById("app").innerHTML=
+    `<div class="loading">
+      選手データを読み込んでいます…
+    </div>`;
+
+  try{
+
+    /*
+     * 詳細ページは自動的に全年度横断。
+     */
+    await ensureAllYearsLoaded();
+
+    /*
+     * CAREERも自動読み込み。
+     */
+    try{
+      await loadCareer();
+    }catch(e){
+      console.warn("CAREER読み込み失敗",e);
+      careerData=null;
+    }
+
+    let entry=latestOrCareer(id);
+
+    if(!entry){
+
+      document.getElementById("app").innerHTML=
+        `<div class="errorBox">
+          選手ID「${esc(id)}」の選手が見つかりません。<br><br>
+          <a href="./players.html">一覧へ戻る</a>
+        </div>`;
+
+      return;
+    }
+
+    document.getElementById("app").innerHTML=
+      detailHTML(entry);
+
+    document.title=
+      `${entry.data.nm||"選手"} - 在籍選手データベース`;
+
+  }catch(e){
+
+    console.error(e);
+
+    document.getElementById("app").innerHTML=
+      `<div class="errorBox">
+        データの読み込みに失敗しました。<br><br>
+        ${esc(e.message)}<br><br>
+        <a href="./players.html">一覧へ戻る</a>
+      </div>`;
+  }
+}
+
+
+/* =========================================================
+   一覧初期ロード
+   ========================================================= */
+
+async function loadList(){
+
+  document.getElementById("app").innerHTML=
+    listHTML();
+
+  setupList();
+
+  /*
+   * 旧URLのデータを読む。
    */
   let hash=location.hash.slice(1);
 
@@ -2036,17 +3409,13 @@ async function loadData(){
       if(data.years){
 
         for(let y of Object.keys(data.years)){
-          yearData[String(y)]=
-            data.years[y];
+          yearData[String(y)]=data.years[y];
         }
 
       }else if(data.players){
 
-        let y=
-          String(data.year||"?");
-
-        yearData[y]=
-          data.players;
+        let y=String(data.year||"?");
+        yearData[y]=data.players;
 
       }else{
 
@@ -2061,17 +3430,12 @@ async function loadData(){
         "旧URLデータ読み込み失敗",
         e
       );
-
-      /*
-       * GitHubだけで動く可能性があるので、
-       * ここでは停止しない。
-       */
     }
   }
 
 
   /*
-   * GitHubの年度一覧を取得。
+   * GitHub年度一覧。
    */
   let githubError=null;
 
@@ -2082,34 +3446,20 @@ async function loadData(){
   }catch(e){
 
     console.error(e);
-
     githubError=e;
-
     githubYears=[];
   }
 
 
-  /*
-   * 旧URLとGitHubの年度を統合。
-   */
   rebuildAvailableYears();
 
 
-  /*
-   * どちらにも年度がない場合。
-   */
   if(!availableYears.length){
 
-    if(githubError){
-
-      document.getElementById("yearText").textContent=
-        "GitHubから年度データを取得できませんでした。";
-
-    }else{
-
-      document.getElementById("yearText").textContent=
-        "保存されている年度データがありません。";
-    }
+    document.getElementById("yearText").textContent=
+      githubError
+        ?"GitHubから年度データを取得できませんでした。"
+        :"保存されている年度データがありません。";
 
     document.getElementById("count").textContent=
       "データなし";
@@ -2118,13 +3468,7 @@ async function loadData(){
   }
 
 
-  /*
-   * 最新年度だけ最初に読み込む。
-   *
-   * ここでは全年度を読み込まない。
-   */
-  let firstYear=
-    availableYears[0];
+  let firstYear=availableYears[0];
 
   try{
 
@@ -2134,17 +3478,12 @@ async function loadData(){
     players=list;
 
     updateYearText(firstYear);
-
     render();
 
   }catch(e){
 
     console.error(e);
 
-    /*
-     * 最新年度のGitHub読み込みに失敗した場合、
-     * 旧URL側に同年度が残っていればそれを使用。
-     */
     if(
       Object.prototype.hasOwnProperty.call(
         yearData,
@@ -2152,8 +3491,7 @@ async function loadData(){
       )
     ){
 
-      players=
-        yearData[firstYear];
+      players=yearData[firstYear];
 
       updateYearText(firstYear);
       render();
@@ -2169,7 +3507,36 @@ async function loadData(){
   }
 }
 
-loadData();
+
+/* =========================================================
+   起動
+   ========================================================= */
+
+(async()=>{
+
+  let params=
+    new URLSearchParams(
+      location.search
+    );
+
+  let id=params.get("id");
+
+  if(id){
+
+    /*
+     * players.html?id=p6
+     */
+    await loadDetail(id);
+
+  }else{
+
+    /*
+     * 通常の一覧。
+     */
+    await loadList();
+  }
+
+})();
 </script>
 
 </body>
