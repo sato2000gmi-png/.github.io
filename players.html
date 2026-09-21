@@ -1781,29 +1781,58 @@ function resetAndRender(){
 
 async function fetchGitHubYears(){
 
-  let res=await fetch(
-    GITHUB_API_BASE+"?ref=main&per_page=100",
-    {cache:"no-store"}
-  );
-
-  if(!res.ok){
-    throw new Error(
-      "GitHub年度一覧取得失敗：HTTP "+res.status
+  try{
+    let res=await fetch(
+      GITHUB_API_BASE+"?ref=main&per_page=100",
+      {cache:"no-store"}
     );
+
+    if(!res.ok){
+      throw new Error(
+        "GitHub年度一覧取得失敗：HTTP "+res.status
+      );
+    }
+
+    let files=await res.json();
+
+    githubYears=
+      files
+        .filter(x=>
+          x.type==="file"&&
+          /^\d{4}\.json\.gz$/.test(x.name)
+        )
+        .map(x=>
+          x.name.replace(/\.json\.gz$/,"")
+        )
+        .sort((a,b)=>Number(b)-Number(a));
+
+    if(githubYears.length){
+      return;
+    }
+
+    throw new Error("年度ファイルが見つかりません");
+
+  }catch(e){
+
+    console.warn(
+      "GitHub APIから年度一覧を取得できなかったため、既知の年度を使用します。",
+      e
+    );
+
+    /*
+     * GitHub APIがレート制限・一時障害・CORS等で使えなくても
+     * Raw GitHubから直接年度データを取得できるようにする。
+     *
+     * 現在保存されている年度。
+     */
+    githubYears=[
+      "2030",
+      "2029",
+      "2028",
+      "2027",
+      "2026"
+    ];
   }
-
-  let files=await res.json();
-
-  githubYears=
-    files
-      .filter(x=>
-        x.type==="file"&&
-        /^\d{4}\.json\.gz$/.test(x.name)
-      )
-      .map(x=>
-        x.name.replace(/\.json\.gz$/,"")
-      )
-      .sort((a,b)=>Number(b)-Number(a));
 }
 
 async function fetchYearFromGitHub(year){
