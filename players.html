@@ -2644,10 +2644,22 @@ function detailTitles(p){
 function detailDraft(p){
   return`
     <div class="detailGrid">
-      ${detailItem("ドラフト",escapeHtml(draftText(p)))}
-      ${detailItem("ドラフト年",p.drft?.y)}
-      ${detailItem("ドラフト順位",p.drft?.rd!==undefined?p.drft.rd+"位":"—")}
-      ${detailItem("出身区分",escapeHtml(draftSourceName(p.drft?.src)))}
+      ${detailItem(
+        "ドラフト年",
+        p.drft?.y!==undefined
+          ?p.drft.y+"年"
+          :"—"
+      )}
+      ${detailItem(
+        "ドラフト順位",
+        p.drft?.rd!==undefined
+          ?p.drft.rd+"位"
+          :"—"
+      )}
+      ${detailItem(
+        "出身区分",
+        escapeHtml(draftSourceName(p.drft?.src)||"—")
+      )}
     </div>`;
 }
 
@@ -2990,21 +3002,30 @@ async function renderDetail(id,params){
           )}
         </div>
 
-        ${p.subG&&Object.keys(p.subG).length
-          ?`<div class="info">
-              <b>subG（補助成長値）</b>
-
-              <div class="internalNote">
-                subGはゲーム内部で使用されている補助的な成長値と思われます。
-                現時点では各キーの正確な意味を断定せず、保存されている値をそのまま表示しています。
-              </div>
-
-              <div style="margin-top:5px">
-                ${objectText(p.subG)}
-              </div>
-            </div>`
-          :""
-        }
+      ${p.subG && Object.keys(p.subG).length
+  ? `
+    <div class="info">
+      <b>サブポジション実戦経験</b>
+      <div class="muted">
+        本来の守備位置以外での実戦経験。40回に達すると、そのポジションの守備適性が1段階上昇します。
+      </div>
+      <div class="subPosExp">
+        ${Object.entries(p.subG).map(([slot,n]) => {
+          const count = Number(n) || 0;
+          const remain = Math.max(0, 40 - count);
+          return `
+            <div>
+              <span>${escapeHtml(POS_NAMES[slot] || slot)}</span>
+              <span>${count} / 40回</span>
+              <span>あと${remain}回</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `
+  : ""
+}
 
         ${p.rl&&Object.keys(p.rl).length
           ?`<div class="info">
