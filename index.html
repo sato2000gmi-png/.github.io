@@ -137,7 +137,6 @@ input[type="text"]{
   font-size:12px;
 }
 
-/* ポジション欄の補助フィルターを同じ高さに揃える */
 .positionOptions{
   display:inline-flex;
   align-items:center;
@@ -493,6 +492,17 @@ input[type="text"]{
 <script>
 
 /* =========================================================
+   GitHub
+   ========================================================= */
+
+const GITHUB_DRAFT_API_BASE=
+  "https://api.github.com/repos/sato2000gmi-png/.github.io/contents/data/draft";
+
+const GITHUB_DRAFT_RAW_BASE=
+  "https://raw.githubusercontent.com/sato2000gmi-png/.github.io/main/data/draft";
+
+
+/* =========================================================
    特殊能力マスタ
    ========================================================= */
 
@@ -744,11 +754,8 @@ const filters={
   name:"",
   positions:new Set(),
   includeSubPos:true,
-
-  /* 複数選択 */
   potential:new Set(),
   growth:new Set(),
-
   role:"",
   excludeLowRole:false,
   draft:"",
@@ -1348,12 +1355,6 @@ function matchesPosition(x){
   return false;
 }
 
-
-/* =========================================================
-   潜在能力
-   複数選択対応
-   ========================================================= */
-
 function matchesPotential(x){
 
   if(filters.potential.size===0){
@@ -1365,12 +1366,6 @@ function matchesPotential(x){
   );
 }
 
-
-/* =========================================================
-   成長タイプ
-   複数選択対応
-   ========================================================= */
-
 function matchesGrowth(x){
 
   if(filters.growth.size===0){
@@ -1379,7 +1374,6 @@ function matchesGrowth(x){
 
   return filters.growth.has(x.gt);
 }
-
 
 function matchesRole(x){
 
@@ -1608,21 +1602,208 @@ function setupYears(){
   }
 }
 
-function switchYear(y){
+async function loadYearFromGitHub(y){
 
-  if(!years[y]){
+  const url=
+    GITHUB_DRAFT_RAW_BASE+
+    "/"+encodeURIComponent(y)+".json.gz";
+
+  const res=
+    await fetch(
+      url,
+      {
+        cache:"no-store"
+      }
+    );
+
+  if(!res.ok){
+
+    throw new Error(
+      y+"年度データ取得失敗：HTTP "+
+      res.status
+    );
+  }
+
+  const buffer=
+    await res.arrayBuffer();
+
+  const ds=
+    new DecompressionStream("gzip");
+
+  const stream=
+    new Blob([buffer])
+      .stream()
+      .pipeThrough(ds);
+
+  const text=
+    await new Response(stream)
+      .text();
+
+  const data=
+    JSON.parse(text);
+
+  if(!Array.isArray(data)){
+    throw new Error(
+      y+"年度データの形式が不正です"
+    );
+  }
+
+  return data;
+}
+
+async function switchYear(y){
+
+  if(!y){
     return;
   }
 
-  currentYear=y;
+  currentYear=String(y);
 
-  current=
-    Array.isArray(years[y])
-      ?years[y]
-      :[];
+  document.getElementById("info").textContent=
+    currentYear+"年度のデータを読み込み中…";
 
-  setupYears();
-  applyFiltersAndRender();
+  try{
+
+    if(!Array.isArray(years[currentYear])){
+
+      years[currentYear]=
+        await loadYearFromGitHub(currentYear);
+    }
+
+    current=
+      Array.isArray(years[currentYear])
+        ?years[currentYear]
+        :[];
+
+    setupYears();
+    applyFiltersAndRender();
+
+  }catch(e){
+
+    console.error(e);
+
+    current=[];
+
+    document.getElementById("cards").innerHTML=`
+      <div style="
+        grid-column:1/-1;
+        padding:20px;
+        color:#777;
+      ">
+        ${currentYear}年度のデータを読み込めませんでした。<br>
+        GitHub上の年度ファイルを確認してください。
+      </div>
+    `;
+
+    document.getElementById("yearInfo").textContent=
+      currentYear+"年度";
+
+    document.getElementById("totalInfo").textContent=
+      "全体：0人";
+
+    document.getElementById("matchInfo").textContent=
+      "該当：0人";
+
+    document.getElementById("info").textContent=
+      "データの読み込みに失敗しました";
+  }
+}
+
+
+/* =========================================================
+   GitHub年度一覧
+   ========================================================= */
+
+async function fetchGitHubYears(){
+
+  const res=
+    await fetch(
+      GITHUB_DRAFT_API_BASE+
+      "?ref=main&per_page=100",
+      {
+        cache:"no-store"
+      }
+    );
+
+  if(!res.ok){
+
+    throw new Error(
+      "GitHub年度一覧取得失敗：HTTP "+
+      res.status
+    );
+  }
+
+  const files=
+    await res.json();
+
+  const result=
+    files
+      .filter(x=>
+        x.type==="file" &&
+        /^\d{4}\.json\.gz$/.test(x.name)
+      )
+      .map(x=>
+        x.name.replace(
+          /\.json\.gz$/,
+          ""
+        )
+      )
+      .sort(
+        (a,b)=>Number(b)-Number(a)
+      );
+
+  if(!result.length){
+
+    throw new Error(
+      "GitHubにドラフト候補年度ファイルがありません"
+    );
+  }
+
+  return result;
+}
+
+
+/* =========================================================
+   旧ハッシュURL用
+   ========================================================= */
+
+async function decodeData(hash){
+
+  let s=
+    hash
+      .replace(/-/g,"+")
+      .replace(/_/g,"/");
+
+  while(s.length%4){
+    s+="=";
+  }
+
+  const binary=
+    atob(s);
+
+  const bytes=
+    Uint8Array.from(
+      binary,
+      c=>c.charCodeAt(0)
+    );
+
+  const ds=
+    new DecompressionStream("deflate");
+
+  const stream=
+    new Blob([bytes])
+      .stream()
+      .pipeThrough(ds);
+
+  const buffer=
+    await new Response(stream)
+      .arrayBuffer();
+
+  const text=
+    new TextDecoder()
+      .decode(buffer);
+
+  return JSON.parse(text);
 }
 
 
@@ -1751,11 +1932,6 @@ function updatePositionButtons(){
     });
 }
 
-
-/* =========================================================
-   潜在能力ボタン状態
-   ========================================================= */
-
 function updatePotentialButtons(){
 
   document
@@ -1783,11 +1959,6 @@ function updatePotentialButtons(){
     });
 }
 
-
-/* =========================================================
-   成長タイプボタン状態
-   ========================================================= */
-
 function updateGrowthButtons(){
 
   document
@@ -1813,7 +1984,6 @@ function updateGrowthButtons(){
     });
 }
 
-
 function updateDraftButtons(){
 
   document
@@ -1826,6 +1996,51 @@ function updateDraftButtons(){
         filters.draft
       );
     });
+}
+
+
+/* =========================================================
+   並べ替えUI
+   ========================================================= */
+
+function updateSortOrderUI(){
+
+  const select=
+    document.getElementById("sortOrder");
+
+  const key=
+    document.getElementById("sortKey").value;
+
+  if(key==="name"){
+
+    select.innerHTML=`
+      <option value="asc">あいうえお順</option>
+      <option value="desc">逆順</option>
+    `;
+
+    sortOrder="asc";
+    select.value="asc";
+    select.disabled=false;
+
+  }else if(key==="orig"){
+
+    select.innerHTML=`
+      <option value="desc">そのまま</option>
+    `;
+
+    sortOrder="desc";
+    select.disabled=true;
+
+  }else{
+
+    select.innerHTML=`
+      <option value="desc">高い順</option>
+      <option value="asc">低い順</option>
+    `;
+
+    select.disabled=false;
+    select.value=sortOrder;
+  }
 }
 
 
@@ -1864,10 +2079,6 @@ function bindEvents(){
     });
 
 
-  /* =======================================================
-     潜在能力：複数選択
-     ======================================================= */
-
   document
     .getElementById("potentialButtons")
     .addEventListener("click",e=>{
@@ -1898,10 +2109,6 @@ function bindEvents(){
       applyFiltersAndRender();
     });
 
-
-  /* =======================================================
-     成長タイプ：複数選択
-     ======================================================= */
 
   document
     .getElementById("growthButtons")
@@ -2084,95 +2291,7 @@ function bindEvents(){
 
 
 /* =========================================================
-   並べ替えUI
-   ========================================================= */
-
-function updateSortOrderUI(){
-
-  const select=
-    document.getElementById("sortOrder");
-
-  const key=
-    document.getElementById("sortKey").value;
-
-  if(key==="name"){
-
-    select.innerHTML=`
-      <option value="asc">あいうえお順</option>
-      <option value="desc">逆順</option>
-    `;
-
-    sortOrder="asc";
-    select.value="asc";
-    select.disabled=false;
-
-  }else if(key==="orig"){
-
-    select.innerHTML=`
-      <option value="desc">そのまま</option>
-    `;
-
-    sortOrder="desc";
-    select.disabled=true;
-
-  }else{
-
-    select.innerHTML=`
-      <option value="desc">高い順</option>
-      <option value="asc">低い順</option>
-    `;
-
-    select.disabled=false;
-    select.value=sortOrder;
-  }
-}
-
-
-/* =========================================================
-   URLデータ解凍
-   ========================================================= */
-
-async function decodeData(hash){
-
-  let s=
-    hash
-      .replace(/-/g,"+")
-      .replace(/_/g,"/");
-
-  while(s.length%4){
-    s+="=";
-  }
-
-  const binary=atob(s);
-
-  const bytes=
-    Uint8Array.from(
-      binary,
-      c=>c.charCodeAt(0)
-    );
-
-  const ds=
-    new DecompressionStream("deflate");
-
-  const stream=
-    new Blob([bytes])
-      .stream()
-      .pipeThrough(ds);
-
-  const buffer=
-    await new Response(stream)
-      .arrayBuffer();
-
-  const text=
-    new TextDecoder()
-      .decode(buffer);
-
-  return JSON.parse(text);
-}
-
-
-/* =========================================================
-   読み込み
+   初期読み込み
    ========================================================= */
 
 async function load(){
@@ -2185,56 +2304,102 @@ async function load(){
   const hash=
     location.hash.slice(1);
 
-  if(!hash){
+  /*
+   * ハッシュがある場合は旧バックアップURLとして扱う。
+   * これまで作った巨大URLも引き続き閲覧可能。
+   */
+  if(hash){
 
-    document.getElementById("info").textContent=
-      "URLに新人候補データがありません";
+    try{
 
-    return;
+      const obj=
+        await decodeData(hash);
+
+      if(obj.years){
+
+        years=obj.years;
+
+      }else if(
+        obj.y!=null &&
+        obj.d
+      ){
+
+        years[String(obj.y)]=obj.d;
+
+      }else{
+
+        throw new Error(
+          "データ形式が不正です"
+        );
+      }
+
+      const ys=
+        Object.keys(years)
+          .sort(
+            (a,b)=>Number(b)-Number(a)
+          );
+
+      if(!ys.length){
+        throw new Error(
+          "年度データがありません"
+        );
+      }
+
+      currentYear=ys[0];
+
+      current=
+        Array.isArray(years[currentYear])
+          ?years[currentYear]
+          :[];
+
+      setupYears();
+      applyFiltersAndRender();
+
+      document.getElementById("info").textContent=
+        "旧バックアップURLのデータを表示中";
+
+      return;
+
+    }catch(e){
+
+      console.warn(
+        "旧ハッシュデータの読み込みに失敗しました。GitHubから読み込みます。",
+        e
+      );
+    }
   }
+
+
+  /*
+   * 通常はこちら。
+   * GitHubのdata/draft/に存在する年度を自動取得。
+   */
+
+  document.getElementById("info").textContent=
+    "GitHubから年度一覧を取得中…";
 
   try{
 
-    const obj=
-      await decodeData(hash);
+    const githubYears=
+      await fetchGitHubYears();
 
-    if(obj.years){
+    years={};
 
-      years=obj.years;
+    githubYears.forEach(y=>{
+      years[y]=null;
+    });
 
-    }else if(
-      obj.y!=null &&
-      obj.d
-    ){
+    currentYear=
+      githubYears[0];
 
-      years[String(obj.y)]=obj.d;
-
-    }else{
-
-      throw new Error(
-        "データ形式が不正です"
-      );
-    }
-
-    const ys=
-      Object.keys(years)
-        .sort(
-          (a,b)=>Number(b)-Number(a)
-        );
-
-    if(!ys.length){
-
-      throw new Error(
-        "年度データがありません"
-      );
-    }
-
-    currentYear=ys[0];
+    setupYears();
 
     current=
-      Array.isArray(years[currentYear])
-        ?years[currentYear]
-        :[];
+      await loadYearFromGitHub(
+        currentYear
+      );
+
+    years[currentYear]=current;
 
     setupYears();
     applyFiltersAndRender();
@@ -2244,7 +2409,7 @@ async function load(){
     console.error(e);
 
     document.getElementById("info").textContent=
-      "データの読み込みに失敗しました";
+      "GitHubからデータを読み込めませんでした";
 
     document.getElementById("cards").innerHTML=`
       <div style="
@@ -2252,8 +2417,9 @@ async function load(){
         padding:20px;
         color:#777;
       ">
-        データを読み込めませんでした。<br>
-        URLが途中で切れていないか確認してください。
+        新人候補データを読み込めませんでした。<br>
+        GitHubの data/draft/ に年度ファイルが存在するか確認してください。<br><br>
+        ${escapeAttr(e.message||String(e))}
       </div>
     `;
   }
