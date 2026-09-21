@@ -2430,13 +2430,6 @@ function detailCurrentAbility(p){
       :""
     }
 
-    ${p.t==="P"
-      ?`<div class="info">
-          <b>投手起用適性の詳細：</b>
-          ${roleDetailText(p)}
-        </div>`
-      :""
-    }
   `;
 }
 
@@ -2795,16 +2788,22 @@ async function renderDetail(id,params){
      * 現在の年度途中保存データ。
      * histにその年度がなければcsを使う。
      */
-    let currentSeason=
-      hist.length
-        ?hist[hist.length-1]
-        :p.cs;
 
-    let currentYear=
-      currentSeason?.y||
-      p.__year||
-      selectedYear||
-      "";
+    let currentSeason=
+  p.cs
+    ?{
+        y:p.__year,
+        s:p.cs
+      }
+    :(hist.length
+      ?hist[hist.length-1]
+      :null);
+
+let currentYear=
+  currentSeason?.y||
+  p.__year||
+  selectedYear||
+  "";
 
     let currentSummary=
       currentSeason
