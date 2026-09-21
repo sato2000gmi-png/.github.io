@@ -1627,6 +1627,9 @@ async function loadYearFromGitHub(y){
   const buffer=
     await res.arrayBuffer();
 
+  /*
+   * GitHub保存データは gzip 圧縮。
+   */
   const ds=
     new DecompressionStream("gzip");
 
@@ -1642,13 +1645,53 @@ async function loadYearFromGitHub(y){
   const data=
     JSON.parse(text);
 
-  if(!Array.isArray(data)){
-    throw new Error(
-      y+"年度データの形式が不正です"
-    );
+  /*
+   * 年度ファイルのデータ形式を吸収する。
+   *
+   * ① [ {...}, {...} ]
+   * ② { candidates:[ {...}, {...} ] }
+   * ③ { cands:[ {...}, {...} ] }
+   * ④ { y:"2030", d:[ {...}, {...} ] }
+   * ⑤ { years:{ "2030":[...] } }
+   */
+
+  if(Array.isArray(data)){
+    return data;
   }
 
-  return data;
+  if(
+    data &&
+    Array.isArray(data.candidates)
+  ){
+    return data.candidates;
+  }
+
+  if(
+    data &&
+    Array.isArray(data.cands)
+  ){
+    return data.cands;
+  }
+
+  if(
+    data &&
+    data.y!=null &&
+    Array.isArray(data.d)
+  ){
+    return data.d;
+  }
+
+  if(
+    data &&
+    data.years &&
+    Array.isArray(data.years[String(y)])
+  ){
+    return data.years[String(y)];
+  }
+
+  throw new Error(
+    y+"年度データの形式が不正です"
+  );
 }
 
 async function switchYear(y){
